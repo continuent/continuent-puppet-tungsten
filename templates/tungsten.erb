@@ -1,0 +1,51 @@
+# === Copyright
+#
+# Copyright 2013 Continuent Inc.
+#
+# === License
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+[defaults]
+user=tungsten
+home-directory=/opt/continuent
+mysql-connectorj-path=<%= scope['::continuent_tungsten::mysqljLocation'] %>
+datasource-user=<%= scope['::continuent_tungsten::masterUser'] %>
+datasource-password=<%= scope['::continuent_tungsten::masterPassword'] %>
+datasource-port=<%= scope['::continuent_tungsten::mysqlPort'] %>
+connector-listen-port=<%= scope['::continuent_tungsten::connectorPort'] %>
+datasource-log-directory=/var/lib/mysql
+connector-user=<%= scope['::continuent_tungsten::appUser'] %>
+connector-password=<%= scope['::continuent_tungsten::appPassword'] %>
+<% if scope['::continuent_tungsten::provisionNode']  %>
+start-and-report=false
+<% else %>
+start-and-report=true
+<% end %>
+
+
+<% scope['::continuent_tungsten::clusterData'].each_pair do |key, cluster| %>
+[<%= key %>]
+members=<%= cluster['members'] %>
+connectors=<%= cluster['connectors'] %>
+master=<%= cluster['master'] %>
+<% if cluster['relay-source']  %>
+relay-source=<%= cluster['relay-source'] %>
+<% end %>
+<% end %>
+
+
+<% if scope['::continuent_tungsten::compositeName'] != '' %>
+[<%= scope['::continuent_tungsten::compositeName'] %>]
+composite-datasources=<%= scope['::continuent_tungsten::compositeDS'] %>
+<% end %>
