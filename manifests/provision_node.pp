@@ -22,7 +22,7 @@ class provision_node {
       path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/tungsten-replicator"],
       environment => "HOME=/root",
       logoutput => true,
-      command => "/opt/continuent/tungsten/tungsten-replicator/scripts/provision_slave.sh --source=$::continuent_tungsten::provisionDonor --restore-to-datadir",
+      command => "/opt/continuent/tungsten/tungsten-replicator/scripts/tungsten_provision_slave.sh --source=$::continuent_tungsten::provisionDonor --restore-to-datadir",
       require => Class['tungsten_install'],
     }
 

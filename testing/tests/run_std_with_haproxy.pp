@@ -27,5 +27,5 @@ class { 'continuent_tungsten' :
       } ,
       connectorJDownload         => 'http://yumtest.continuent.com/',
       installHaproxy           => true  ,
-installCluster            => true
+      installCluster            => true
 }

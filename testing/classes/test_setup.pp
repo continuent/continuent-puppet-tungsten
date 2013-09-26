@@ -74,13 +74,13 @@ exec { "authk":
   require => File['/root/.ssh/id_rsa.pub'],
 }
 
-file {"/etc/resolv.conf":
-  ensure => file,
-  mode => 777,
-  owner   => root,
-  group   => root,
-  source => '/etc/puppet/modules/continuent_tungsten/testing/files/resolv.conf',
-}
+#file {"/etc/resolv.conf":
+#  ensure => file,
+#  mode => 777,
+#  owner   => root,
+#  group   => root,
+#  source => '/etc/puppet/modules/continuent_tungsten/testing/files/resolv.conf',
+#}
 
 
 

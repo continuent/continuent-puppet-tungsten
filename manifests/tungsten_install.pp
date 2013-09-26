@@ -36,6 +36,7 @@ class tungsten_install {
     }
 
 
+
     if  $::continuent_tungsten::installMysql == true {
       if  $::continuent_tungsten::installMysqlj == true {
           $req= [File ["tungsten.ini"],Class['mysql_config'],Exec['install-mysqlj'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
