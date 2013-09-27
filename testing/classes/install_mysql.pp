@@ -33,7 +33,7 @@ if ($operatingsystem =~ /(?i:centos|redhat|oel)/) {
         owner   => root,
         group   => root,
         mode    => 644,
-        content => template("/etc/puppet/modules/continuent_tungsten/testing/classes/templates/my.erb"),
+        content => template("/etc/puppet/modules/continuent_install/testing/classes/templates/my.erb"),
 
       }
     $ServiceName=mysqld

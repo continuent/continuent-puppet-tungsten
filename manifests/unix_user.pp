@@ -48,13 +48,13 @@ class unix_user {
      mode => '700',
    }
 
-   if  $::continuent_tungsten::installSSHKeys {
+   if  $::continuent_install::installSSHKeys {
        file {"/home/tungsten/.ssh/authorized_keys":
           ensure => file,
           mode => 600,
           owner   => tungsten,
           group   => tungsten,
-          content => template('continuent_tungsten/tungsten-auth-keys.erb'),
+          content => template('continuent_install/tungsten-auth-keys.erb'),
           require => File['/home/tungsten/.ssh'],
        }
 
@@ -63,7 +63,7 @@ class unix_user {
           mode => 600,
           owner   => tungsten,
           group   => tungsten,
-          content => template('continuent_tungsten/tungsten_id_rsa.erb'),
+          content => template('continuent_install/tungsten_id_rsa.erb'),
           require => File['/home/tungsten/.ssh'],
        }
 
@@ -72,7 +72,7 @@ class unix_user {
           mode => 600,
           owner   => tungsten,
           group   => tungsten,
-          content => template('continuent_tungsten/tungsten_id_rsa.pub.erb'),
+          content => template('continuent_install/tungsten_id_rsa.pub.erb'),
           require => File['/home/tungsten/.ssh'],
        }
    }
@@ -82,7 +82,7 @@ class unix_user {
       mode => 644,
       owner   => tungsten,
       group   => tungsten,
-      content => template('continuent_tungsten/tungsten_bash_profile.erb'),
+      content => template('continuent_install/tungsten_bash_profile.erb'),
       require => File['/home/tungsten/.ssh'],
    }
 }

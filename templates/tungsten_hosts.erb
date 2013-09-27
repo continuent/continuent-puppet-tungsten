@@ -9,13 +9,13 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
 
-<% if  scope['::continuent_tungsten::tungstenRepoIp'] != ''  %>
-<%= scope['::continuent_tungsten::tungstenRepoIp'] %> <%= scope['::continuent_tungsten::tungstenRepoHost'] %>
+<% if  scope['::continuent_install::tungstenRepoIp'] != ''  %>
+<%= scope['::continuent_install::tungstenRepoIp'] %> <%= scope['::continuent_install::tungstenRepoHost'] %>
 <% end %>
 
 
 #Hosts in the current tungsten cluster
-<% scope['::continuent_tungsten::hostsFile'].each do |server| -%>
+<% scope['::continuent_install::hostsFile'].each do |server| -%>
 <%= server %>
 <% end -%>
 

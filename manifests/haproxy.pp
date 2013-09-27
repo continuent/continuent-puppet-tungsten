@@ -37,7 +37,7 @@ if ($operatingsystem =~ /(?i:centos|redhat|oel)/) {
         group => tungsten,
         mode => 700,
         require => [Class['tungsten_install']],
-        content => template("continuent_tungsten/connectorchk.sh.erb") ,
+        content => template("continuent_install/connectorchk.sh.erb") ,
     }
 
     exec { "add-service":
@@ -48,7 +48,7 @@ if ($operatingsystem =~ /(?i:centos|redhat|oel)/) {
 
     exec { "add-user-map":
       onlyif  => "/bin/cat /opt/continuent/tungsten/tungsten-connector/conf/user.map | /bin/grep haproxy|wc -l",
-      command => "/bin/echo '$::continuent_tungsten::haproxyUser $::continuent_tungsten::haproxyPassword  $::continuent_tungsten::clusterName'  >> /opt/continuent/tungsten/tungsten-connector/conf/user.map",
+      command => "/bin/echo '$::continuent_install::haproxyUser $::continuent_install::haproxyPassword  $::continuent_install::clusterName'  >> /opt/continuent/tungsten/tungsten-connector/conf/user.map",
       require => [Class['tungsten_install']],
     }
 
@@ -57,17 +57,17 @@ if ($operatingsystem =~ /(?i:centos|redhat|oel)/) {
         group => root,
         mode => 600,
         require => [File['/opt/continuent/share/connectorchk.sh'],Package['xinetd']],
-        content => template("continuent_tungsten/connectorchk.erb") ,
+        content => template("continuent_install/connectorchk.erb") ,
         notify  => Service['xinetd'],
     }
 
-    $sqlCheck="select * from mysql.user where user='$::continuent_tungsten::haproxyUser'"
-    $sqlExec="grant usage, replication client  on *.* to $::continuent_tungsten::haproxyUser
-                identified by '$::continuent_tungsten::haproxyPassword';"
+    $sqlCheck="select * from mysql.user where user='$::continuent_install::haproxyUser'"
+    $sqlExec="grant usage, replication client  on *.* to $::continuent_install::haproxyUser
+                identified by '$::continuent_install::haproxyPassword';"
     exec { "create-haproxy-user":
-      onlyif  => "/usr/bin/mysql -u root -p$::continuent_tungsten::masterPassword -P $::continuent_tungsten::mysqlPort -Be \"$sqlCheck\"|wc -l",
-      command => "/usr/bin/mysql -u root -p$::continuent_tungsten::masterPassword -P $::continuent_tungsten::mysqlPort -Be \"$sqlExec\" ",
-      require => [Exec['add-service'],Service[$::continuent_tungsten::mysqlServiceName],Exec['set-mysql-password']],
+      onlyif  => "/usr/bin/mysql -u root -p$::continuent_install::masterPassword -P $::continuent_install::mysqlPort -Be \"$sqlCheck\"|wc -l",
+      command => "/usr/bin/mysql -u root -p$::continuent_install::masterPassword -P $::continuent_install::mysqlPort -Be \"$sqlExec\" ",
+      require => [Exec['add-service'],Service[$::continuent_install::mysqlServiceName],Exec['set-mysql-password']],
     }
 
 }

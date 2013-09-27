@@ -23,5 +23,5 @@ file {"/etc/resolv.conf":
   mode => 777,
   owner   => root,
   group   => root,
-  source => '/etc/puppet/modules/continuent_tungsten/testing/files/resolv.conf',
+  source => '/etc/puppet/modules/continuent_install/testing/files/resolv.conf',
 }

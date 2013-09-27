@@ -23,5 +23,5 @@
 #  mode => 777,
 #  owner   => root,
 #  group   => root,
-#  source => '/etc/puppet/modules/continuent_tungsten/testing/files/percona.repo',
+#  source => '/etc/puppet/modules/continuent_install/testing/files/percona.repo',
 #}

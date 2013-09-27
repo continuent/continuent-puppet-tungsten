@@ -18,30 +18,30 @@
 #
 class mysql_config {
 
-  $port=$::continuent_tungsten::mysqlPort
+  $port=$::continuent_install::mysqlPort
   exec { "set-mysql-password":
     path => ["/bin", "/usr/bin"],
-    command => "mysqladmin -uroot password $::continuent_tungsten::masterPassword",
-    require => Service[$::continuent_tungsten::mysqlServiceName],
+    command => "mysqladmin -uroot password $::continuent_install::masterPassword",
+    require => Service[$::continuent_install::mysqlServiceName],
     onlyif  => "mysql -u root"
   }
   
-  $sqlCheck="select * from mysql.user where user='$::continuent_tungsten::masterUser'"
-  $sqlExec="grant all on *.* to $::continuent_tungsten::masterUser identified by '$::continuent_tungsten::masterPassword' with grant option;"
+  $sqlCheck="select * from mysql.user where user='$::continuent_install::masterUser'"
+  $sqlExec="grant all on *.* to $::continuent_install::masterUser identified by '$::continuent_install::masterPassword' with grant option;"
   exec { "create-tungsten-user":
-      onlyif  => "/usr/bin/mysql -u root -p$::continuent_tungsten::masterPassword -P $port -Be \"$sqlCheck\"|wc -l",
-      command => "/usr/bin/mysql -u root -p$::continuent_tungsten::masterPassword -P $port -Be \"$sqlExec\" ",
+      onlyif  => "/usr/bin/mysql -u root -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l",
+      command => "/usr/bin/mysql -u root -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec\" ",
       require => Exec['set-mysql-password'],
   
   }
   
-  $sqlCheck2="select * from mysql.user where user='$::continuent_tungsten::appUser'"
-  $sqlExec2 ="grant all privileges on *.* to $::continuent_tungsten::appUser
-            identified by '$::continuent_tungsten::appPassword';revoke super on *.* from $::continuent_tungsten::appUser"
+  $sqlCheck2="select * from mysql.user where user='$::continuent_install::appUser'"
+  $sqlExec2 ="grant all privileges on *.* to $::continuent_install::appUser
+            identified by '$::continuent_install::appPassword';revoke super on *.* from $::continuent_install::appUser"
 
   exec { "create-application-user":
-      onlyif  => "/usr/bin/mysql -u root -p$::continuent_tungsten::masterPassword -P $port -Be \"$sqlCheck2\"|wc -l",
-      command => "/usr/bin/mysql -u root -p$::continuent_tungsten::masterPassword -P $port -Be \"$sqlExec2\"",
+      onlyif  => "/usr/bin/mysql -u root -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck2\"|wc -l",
+      command => "/usr/bin/mysql -u root -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec2\"",
       require => Exec['set-mysql-password'],
   
   }
@@ -49,8 +49,8 @@ class mysql_config {
   $sqlCheck3="select * from mysql.user where user=''"
   $sqlExec3="delete from mysql.user where user='';flush privileges;"
    exec { "remove-anon-users":
-      onlyif  => "/usr/bin/mysql -u root -p$::continuent_tungsten::masterPassword -P $port -Be \"$sqlCheck3\"|wc -l",
-      command => "/usr/bin/mysql -u root -p$::continuent_tungsten::masterPassword -P $port -Be \"$sqlExec3\"",
+      onlyif  => "/usr/bin/mysql -u root -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck3\"|wc -l",
+      command => "/usr/bin/mysql -u root -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec3\"",
       require => Exec['set-mysql-password'],
   
   }

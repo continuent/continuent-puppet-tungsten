@@ -1,4 +1,4 @@
-# == Class: continuent_tungsten
+# == Class: continuent_install
 #
 # This is the main class to manage all the components of a Tungsten
 # infrastructure. This is the only class that needs to be declared.
@@ -54,7 +54,7 @@
 # Examples
 #
 # Install a node in a basic Cluster
-#    class { 'continuent_tungsten' :
+#    class { 'continuent_install' :
 #      nodeHostName                => 'east-db1' ,
 #      nodeIpAddress               => "${::ipaddress}" ,
 #      hostsFile                  => ["${::ipaddress}  east-db1",'192.168.0.146 east-db2''],
@@ -66,7 +66,7 @@
 #    }
 #
 # Install a node in a Multi-Site cluster where MySQL is already configured and running
-#     class { 'continuent_tungsten' :
+#     class { 'continuent_install' :
 #        nodeHostName                => 'east-db1' ,
 #        nodeIpAddress               => "${::ipaddress}" ,
 #        hostsFile                  => ["${::ipaddress}  east-db1",'192.168.0.146 east-db2','192.168.0.147 west-db1','192.168.0.148 west-db2'],
@@ -98,7 +98,7 @@
 #
 
 
-class continuent_tungsten (
+class continuent_install (
 
     $nodeHostName                   = '' ,
     $nodeIpAddress                  = '' ,

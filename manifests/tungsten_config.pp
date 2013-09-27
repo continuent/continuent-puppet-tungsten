@@ -36,7 +36,7 @@ class tungsten_config {
           
    file { '/etc/security/limits.d/10tungsten.conf':
       ensure => file,
-      content => template('continuent_tungsten/security.limits.conf.erb'),
+      content => template('continuent_install/security.limits.conf.erb'),
    }
 
    
@@ -54,7 +54,7 @@ class tungsten_config {
    package {'sudo': ensure => present, }
    package {'rsync': ensure => present, }
 
-  if $::continuent_tungsten::installTungstenRepo == true {
+  if $::continuent_install::installTungstenRepo == true {
    package {'percona-xtrabackup': ensure => present,require => [File['tungsten.repo'],File['/etc/hosts']] }
   }
 #  else {

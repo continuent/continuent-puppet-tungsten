@@ -1,6 +1,6 @@
 #This will setup east-db1 ready for east-db2 to be autoprovisioned in prov_run.pp
 
-class { 'continuent_tungsten' :
+class { 'continuent_install' :
       nodeHostName                => 'east-db2' ,
       nodeIpAddress               => "${::ipaddress}" ,
       hostsFile                  => ["east-db1-private-ip  east-db1","${::ipaddress} east-db2"],

@@ -29,15 +29,15 @@ class mysqlj_install {
 
      exec { "download-mysqlj":
         cwd => "/opt/mysql",
-        command => "/usr/bin/wget  ${::continuent_tungsten::connectorJDownload}/mysql-connector-java-${::continuent_tungsten::connectorJVersion}.tar.gz",
-        creates => "/opt/mysql/mysql-connector-java-${::continuent_tungsten::connectorJVersion}.tar.gz",
+        command => "/usr/bin/wget  ${::continuent_install::connectorJDownload}/mysql-connector-java-${::continuent_install::connectorJVersion}.tar.gz",
+        creates => "/opt/mysql/mysql-connector-java-${::continuent_install::connectorJVersion}.tar.gz",
         require => [File['/opt/mysql'],Package['wget']]
       }
 
       exec { "install-mysqlj":
         cwd => "/opt/mysql",
-        command => "/bin/tar xvzf /opt/mysql/mysql-connector-java-${::continuent_tungsten::connectorJVersion}.tar.gz",
-        creates => "/opt/mysql/mysql-connector-java-${::continuent_tungsten::mysqlj_ver}",
+        command => "/bin/tar xvzf /opt/mysql/mysql-connector-java-${::continuent_install::connectorJVersion}.tar.gz",
+        creates => "/opt/mysql/mysql-connector-java-${::continuent_install::mysqlj_ver}",
         require =>  Exec["download-mysqlj"] ,
       }
 

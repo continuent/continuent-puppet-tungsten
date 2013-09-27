@@ -22,6 +22,6 @@ class tungsten_hosts {
     owner => root,
     group => root,
     mode => 644,
-    content => template("continuent_tungsten/tungsten_hosts.erb"),
+    content => template("continuent_install/tungsten_hosts.erb"),
   }
 }

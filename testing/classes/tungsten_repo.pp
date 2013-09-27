@@ -23,5 +23,5 @@ file {"/etc/yum.repos.d/tungsten.rep":
   mode => 777,
   owner   => root,
   group   => root,
-  source => '/etc/puppet/modules/continuent_tungsten/testing/files/tungsten.repo',
+  source => '/etc/puppet/modules/continuent_install/testing/files/tungsten.repo',
 }

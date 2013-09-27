@@ -6,10 +6,10 @@ then
     exit 1
 fi
 
-mkdir -p /etc/puppet/modules/continuent_tungsten/  > /dev/null
-cp -r /tmp/* /etc/puppet/modules/continuent_tungsten/   > /dev/null
+mkdir -p /etc/puppet/modules/continuent_install/  > /dev/null
+cp -r /tmp/* /etc/puppet/modules/continuent_install/   > /dev/null
 
-cd /etc/puppet/modules/continuent_tungsten/testing/classes
+cd /etc/puppet/modules/continuent_install/testing/classes
 puppet apply test_setup.pp
 
 #run any extra puppet classes to support testing
@@ -31,7 +31,7 @@ echo '----------------------------------------------------------'
 echo "--  RUNNING TEST $1                         "
 echo '----------------------------------------------------------'
 echo
-puppet apply /etc/puppet/modules/continuent_tungsten/testing/tests/$1
+puppet apply /etc/puppet/modules/continuent_install/testing/tests/$1
 
  
 

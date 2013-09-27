@@ -31,14 +31,14 @@ class tungsten_install {
       owner => root,
       group => root,
       mode => 644,
-      content => template("continuent_tungsten/tungsten.erb"),
+      content => template("continuent_install/tungsten.erb"),
       require => File["/etc/tungsten"],
     }
 
 
 
-    if  $::continuent_tungsten::installMysql == true {
-      if  $::continuent_tungsten::installMysqlj == true {
+    if  $::continuent_install::installMysql == true {
+      if  $::continuent_install::installMysqlj == true {
           $req= [File ["tungsten.ini"],Class['mysql_config'],Exec['install-mysqlj'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
       }
       else {
@@ -46,7 +46,7 @@ class tungsten_install {
       }
     }
     else {
-      if  $::continuent_tungsten::installMysqlj == true {
+      if  $::continuent_install::installMysqlj == true {
           $req= [File ["tungsten.ini"],Exec['install-mysqlj'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
       }
       else {

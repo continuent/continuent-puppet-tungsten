@@ -19,22 +19,22 @@
 [defaults]
 user=tungsten
 home-directory=/opt/continuent
-mysql-connectorj-path=<%= scope['::continuent_tungsten::mysqljLocation'] %>
-datasource-user=<%= scope['::continuent_tungsten::masterUser'] %>
-datasource-password=<%= scope['::continuent_tungsten::masterPassword'] %>
-datasource-port=<%= scope['::continuent_tungsten::mysqlPort'] %>
-connector-listen-port=<%= scope['::continuent_tungsten::connectorPort'] %>
+mysql-connectorj-path=<%= scope['::continuent_install::mysqljLocation'] %>
+datasource-user=<%= scope['::continuent_install::masterUser'] %>
+datasource-password=<%= scope['::continuent_install::masterPassword'] %>
+datasource-port=<%= scope['::continuent_install::mysqlPort'] %>
+connector-listen-port=<%= scope['::continuent_install::connectorPort'] %>
 datasource-log-directory=/var/lib/mysql
-connector-user=<%= scope['::continuent_tungsten::appUser'] %>
-connector-password=<%= scope['::continuent_tungsten::appPassword'] %>
-<% if scope['::continuent_tungsten::provisionNode']  %>
+connector-user=<%= scope['::continuent_install::appUser'] %>
+connector-password=<%= scope['::continuent_install::appPassword'] %>
+<% if scope['::continuent_install::provisionNode']  %>
 start-and-report=false
 <% else %>
 start-and-report=true
 <% end %>
 
 
-<% scope['::continuent_tungsten::clusterData'].each_pair do |key, cluster| %>
+<% scope['::continuent_install::clusterData'].each_pair do |key, cluster| %>
 [<%= key %>]
 members=<%= cluster['members'] %>
 connectors=<%= cluster['connectors'] %>
@@ -45,7 +45,7 @@ relay-source=<%= cluster['relay-source'] %>
 <% end %>
 
 
-<% if scope['::continuent_tungsten::compositeName'] != '' %>
-[<%= scope['::continuent_tungsten::compositeName'] %>]
-composite-datasources=<%= scope['::continuent_tungsten::compositeDS'] %>
+<% if scope['::continuent_install::compositeName'] != '' %>
+[<%= scope['::continuent_install::compositeName'] %>]
+composite-datasources=<%= scope['::continuent_install::compositeDS'] %>
 <% end %>

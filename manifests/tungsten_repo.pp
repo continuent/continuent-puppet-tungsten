@@ -22,6 +22,6 @@ class tungsten_repo {
       path    => "/etc/yum.repos.d/tungsten.repo",
       ensure => file,
       mode   => 644,
-      content => template("continuent_tungsten/tungsten_repo.erb"),
+      content => template("continuent_install/tungsten_repo.erb"),
     }
 }

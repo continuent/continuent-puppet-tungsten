@@ -24,7 +24,7 @@ class mysql_install {
     package { 'mysql': ensure => present, require => Package["mysql-server"], }
   }
 
-  service { $::continuent_tungsten::mysqlServiceName :
+  service { $::continuent_install::mysqlServiceName :
       enable => true,
       ensure => running,
       require => [File['/etc/my.cnf']],
@@ -35,7 +35,7 @@ class mysql_install {
     owner   => root,
     group   => root,
     mode    => 644,
-    content => template("continuent_tungsten/my.erb"),
+    content => template("continuent_install/my.erb"),
 
   }
   

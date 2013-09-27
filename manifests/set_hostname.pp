@@ -22,15 +22,15 @@ class set_hostname {
       owner => root,
       group => root,
       mode => 644,
-      content => "$::continuent_tungsten::nodeHostName\n",
+      content => "$::continuent_install::nodeHostName\n",
       notify => Exec["set-hostname"],
     }
 
-    if $::continuent_tungsten::installMysql == true {
+    if $::continuent_install::installMysql == true {
       exec { "set-hostname":
         command => "/bin/hostname -F /etc/hostname",
         unless => "/usr/bin/test `hostname` = `/bin/cat /etc/hostname`",
-        notify => Service[$::continuent_tungsten::mysqlServiceName],
+        notify => Service[$::continuent_install::mysqlServiceName],
         require => Package['mysql-server'],
       }
     }

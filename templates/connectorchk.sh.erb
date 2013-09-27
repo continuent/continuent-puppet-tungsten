@@ -28,9 +28,9 @@
 #
 
 MYSQL_HOST=`hostname`
-MYSQL_PORT=<%= scope['::continuent_tungsten::connectorPort'] %>        #Connector Port
-MYSQL_USERNAME=<%= scope['::continuent_tungsten::haproxyUser'] %>
-MYSQL_PASSWORD=<%= scope['::continuent_tungsten::haproxyPassword'] %>
+MYSQL_PORT=<%= scope['::continuent_install::connectorPort'] %>        #Connector Port
+MYSQL_USERNAME=<%= scope['::continuent_install::haproxyUser'] %>
+MYSQL_PASSWORD=<%= scope['::continuent_install::haproxyPassword'] %>
 MYSQL_OPTS="-N -q -A test"
 
 #If you create the following file, the proxy will return mysql down

@@ -30,7 +30,7 @@ file {"/root/.ssh/id_rsa":
   mode => 600,
   owner   => root,
   group   => root,
-source => '/etc/puppet/modules/continuent_tungsten/testing/files/tungsten_id_rsa',
+source => '/etc/puppet/modules/continuent_install/testing/files/tungsten_id_rsa',
   require => File['/root/.ssh'],
 }
 
@@ -39,7 +39,7 @@ file {"/root/.ssh/id_rsa.pub":
   mode => 600,
   owner   => root,
   group   => root,
-source => '/etc/puppet/modules/continuent_tungsten/testing/files/tungsten_id_rsa.pub',
+source => '/etc/puppet/modules/continuent_install/testing/files/tungsten_id_rsa.pub',
   require => File['/root/.ssh'],
 }
 

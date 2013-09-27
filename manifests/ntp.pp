@@ -43,6 +43,6 @@ class ntp {
       path    => '/etc/ntp.conf',
       ensure  => file,
       require => Package['ntp'],
-      content => template("continuent_tungsten/${conf_file}.erb"),
+      content => template("continuent_install/${conf_file}.erb"),
     }
 }
