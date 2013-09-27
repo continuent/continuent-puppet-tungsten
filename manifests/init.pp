@@ -123,6 +123,9 @@ class continuent_tungsten (
       $clusterData                  = '' ,
       $connectorPort                = 3306 ,
       $compositeName                = '',
+    $installTungstenRepo            = 'false',
+      $tungstenRepoHost             = '',
+      $tungstenRepoIp               = '',
 
     #Setting this to true should only be used to support testing as it's not secure
     $installSSHKeys                 = false
@@ -163,6 +166,9 @@ class continuent_tungsten (
       }
     }
 
+    if $installTungstenRepo == true {
+      include tungsten_repo
+    }
 
     include tungsten_config
     include tungsten_hosts

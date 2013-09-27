@@ -26,6 +26,9 @@ class { 'continuent_tungsten' :
       } ,
       installMysqlj => false,
       mysqljLocation => '/tmp/mysql-connector-java-5.1.26/mysql-connector-java-5.1.26-bin.jar'    ,
-installCluster            => true
+installCluster            => true,
+installTungstenRepo => true,
+tungstenRepoHost    => 'yumtest.continuent.com',
+tungstenRepoIp      => '23.21.169.95'
 
 }

@@ -18,32 +18,6 @@
 #
 
 
-if ($operatingsystem =~ /(?i:centos|redhat|oel)/) {
-#    file { 'launcher.repo':
-#      path    => "/etc/yum.repos.d/launcher.repo",
-#      ensure => file,
-#      mode   => 644,
-#      source => '/opt/continuent/launcher/puppet/testing/files/launcher.repo',
-#    }
-  file { 'Centos-Local.repo':
-    path    => "/etc/yum.repos.d/Centos-Local.repo",
-    ensure => file,
-    mode   => 644,
-    source => '/etc/puppet/modules/continuent_tungsten/testing/files/Centos-Local.repo',
-   }
-  file { "/etc/hosts":
-    owner => root,
-    group => root,
-    ensure => file,
-    mode => 644,
-    source => '/etc/puppet/modules/continuent_tungsten/testing/files/hosts-centos',
-  }
-#  file { '/etc/yum.repos.d/':
-#    ensure  => 'directory',
-#    recurse => true,
-#    purge   => true,
-#  }
-}
 
 file { "/root/.ssh":
   ensure => 'directory',
@@ -74,13 +48,6 @@ exec { "authk":
   require => File['/root/.ssh/id_rsa.pub'],
 }
 
-#file {"/etc/resolv.conf":
-#  ensure => file,
-#  mode => 777,
-#  owner   => root,
-#  group   => root,
-#  source => '/etc/puppet/modules/continuent_tungsten/testing/files/resolv.conf',
-#}
 
 
 

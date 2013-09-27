@@ -26,7 +26,10 @@ class { 'continuent_tungsten' :
       west => { 'members' => 'west-db1,west-db2', 'connectors' => 'west-db1,west-db2', 'master' => 'west-db1' ,'relay-source'=> 'east'},
       } ,
       compositeName              => 'world' ,
-      connectorJDownload         => 'http://yumtest.continuent.com/',
+      connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
       installMysql              => false,
-installCluster            => true
+      installCluster            => true,
+      installTungstenRepo => true,
+      tungstenRepoHost    => 'yumtest.continuent.com',
+      tungstenRepoIp      => '23.21.169.95'
 }

@@ -8,9 +8,11 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
-23.21.169.95  yumtest.continuent.com
 
-#<%= scope['::continuent_tungsten::nodeIpAddress'] %> <%= scope['::continuent_tungsten::nodeHostName']  %>
+<% if  scope['::continuent_tungsten::tungstenRepoIp'] != ''  %>
+<%= scope['::continuent_tungsten::tungstenRepoIp'] %> <%= scope['::continuent_tungsten::tungstenRepoHost'] %>
+<% end %>
+
 
 #Hosts in the current tungsten cluster
 <% scope['::continuent_tungsten::hostsFile'].each do |server| -%>

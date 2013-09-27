@@ -1,6 +1,0 @@
-[local-rep]
-name=Centos local Repo
-#baseurl=http://repo.centos-build.local/
-baseurl=http://yumtest.continuent.com/
-enabled=1
-gpgcheck=0

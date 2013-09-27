@@ -8,9 +8,12 @@ class { 'continuent_tungsten' :
       clusterData                => {
       east => { 'members' => 'east-db1,east-db2', 'connectors' => 'east-db1,east-db2', 'master' => 'east-db1' },
       } ,
-      connectorJDownload         => 'http://yumtest.continuent.com/'   ,
       provisionNode             => true,
       provisionDonor           => 'east-db1'   ,
-installSSHKeys => true     ,
-installCluster => true
+      installSSHKeys => true     ,
+      connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
+      installCluster            => true,
+      installTungstenRepo => true,
+      tungstenRepoHost    => 'yumtest.continuent.com',
+      tungstenRepoIp      => '23.21.169.95'
 }

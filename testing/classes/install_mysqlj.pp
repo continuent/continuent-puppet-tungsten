@@ -20,7 +20,7 @@ package {'wget': ensure => present, }
 
 exec { "download-mysqlj":
   cwd => "/tmp",
-  command => "/usr/bin/wget  http://yumtest.continuent.com//mysql-connector-java-5.1.26.tar.gz",
+  command => "/usr/bin/wget  https://dl.dropboxusercontent.com/u/25417984/mysql-connector-java-5.1.26.tar.gz",
   creates => "/tmp/mysql-connector-java-5.1.26.tar.gz",
   require => Package['wget']  ,
 }

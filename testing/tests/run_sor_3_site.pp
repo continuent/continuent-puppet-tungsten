@@ -27,6 +27,9 @@ class { 'continuent_tungsten' :
       west => { 'members' => 'north-db1,north-db2', 'connectors' => 'north-db1,north-db2', 'master' => 'north-db1' ,'relay-source'=> 'east'},
       } ,
       compositeName              => 'world' ,
-      connectorJDownload         => 'http://yumtest.continuent.com/'    ,
-installCluster            => true
+      connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
+        installCluster            => true  ,
+        installTungstenRepo => true,
+        tungstenRepoHost    => 'yumtest.continuent.com',
+        tungstenRepoIp      => '23.21.169.95'
 }

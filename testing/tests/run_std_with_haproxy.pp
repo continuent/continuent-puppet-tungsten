@@ -25,7 +25,10 @@ class { 'continuent_tungsten' :
       clusterData                => {
       east => { 'members' => 'east-db1,east-db2', 'connectors' => 'east-db1,east-db2', 'master' => 'east-db1' },
       } ,
-      connectorJDownload         => 'http://yumtest.continuent.com/',
+connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
       installHaproxy           => true  ,
-      installCluster            => true
+installCluster            => true,
+installTungstenRepo => true,
+tungstenRepoHost    => 'yumtest.continuent.com',
+tungstenRepoIp      => '23.21.169.95'
 }
