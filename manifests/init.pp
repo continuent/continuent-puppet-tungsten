@@ -126,6 +126,8 @@ class continuent_install (
     $installTungstenRepo            = 'false',
       $tungstenRepoHost             = '',
       $tungstenRepoIp               = '',
+    $installSandbox                 = 'false',
+      $sandboxVersion               = '3.0.40',
 
     #Setting this to true should only be used to support testing as it's not secure
     $installSSHKeys                 = false
@@ -190,4 +192,8 @@ class continuent_install (
         include provision_node
       }
     }
+
+   if $installSandbox == true {
+      include sandbox_install
+   }
 }
