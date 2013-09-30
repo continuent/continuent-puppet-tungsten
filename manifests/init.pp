@@ -128,6 +128,7 @@ class continuent_install (
       $tungstenRepoIp               = '',
     $installSandbox                 = 'false',
       $sandboxVersion               = '3.0.40',
+    $installRvm                     = 'false',
 
     #Setting this to true should only be used to support testing as it's not secure
     $installSSHKeys                 = false
@@ -195,5 +196,9 @@ class continuent_install (
 
    if $installSandbox == true {
       include sandbox_install
+   }
+
+   if $installRvm == true {
+      include rvm_install
    }
 }
