@@ -127,7 +127,7 @@ class continuent_install (
       $tungstenRepoHost             = '',
       $tungstenRepoIp               = '',
     $installSandbox                 = 'false',
-      $sandboxVersion               = '3.0.40',
+      $sandboxVersion               = '3.0.42',
     $installRvm                     = 'false',
 
     #Setting this to true should only be used to support testing as it's not secure
