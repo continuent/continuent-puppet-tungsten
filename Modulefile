@@ -1,5 +1,5 @@
 name 'continuent/continuent_install'
-version '0.0.1'
+version '0.0.2'
 
 author 'Continuent'
 license 'Apache 2.0'
