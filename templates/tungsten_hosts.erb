@@ -14,7 +14,7 @@ ff02::3 ip6-allhosts
 <% end %>
 
 
-#Hosts in the current tungsten cluster
+#Hosts in the current tungsten setup
 <% scope['::continuent_install::hostsFile'].each do |server| -%>
 <%= server %>
 <% end -%>
