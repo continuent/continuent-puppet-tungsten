@@ -27,6 +27,7 @@ connector-listen-port=<%= scope['::continuent_install::connectorPort'] %>
 datasource-log-directory=/var/lib/mysql
 connector-user=<%= scope['::continuent_install::appUser'] %>
 connector-password=<%= scope['::continuent_install::appPassword'] %>
+skip-validation-check=MySQLPermissionsCheck
 <% if scope['::continuent_install::provisionNode']  %>
 start-and-report=false
 <% else %>
