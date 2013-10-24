@@ -20,7 +20,7 @@ This module helps install [Continuent Tungsten](https://www.continuent.com) Data
 
 ## Examples
 
-Install the module into /etc/puppet/modules/continuent-tungsten (will be available in puppetforge soon)
+Install the module into /etc/puppet/modules/continuent_install (will be available in puppetforge soon)
 
 To install the Contunuent Tungsten prereqs run the module with the required parameters.
 
