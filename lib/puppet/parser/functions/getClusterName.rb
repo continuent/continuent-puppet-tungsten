@@ -32,7 +32,8 @@ module Puppet::Parser::Functions
 
     clusterHash.each_pair do |currentClusterName, cluster|
       members_a=cluster['members'].split(',')
-      if members_a.include?(hostName)
+      connectors_a=cluster['connectors'].split(',')
+      if members_a.include?(hostName)   or  connectors_a.include?(hostName)
         clusterName=currentClusterName
       end
     end
