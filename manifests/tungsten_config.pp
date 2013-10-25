@@ -55,7 +55,7 @@ class tungsten_config {
    package {'rsync': ensure => present, }
 
   if $::continuent_install::installTungstenRepo == true {
-   package {'percona-xtrabackup': ensure => present,require => [File['tungsten.repo'],File['/etc/hosts']] }
+   package {'percona-xtrabackup': ensure => present,require => [File['tungsten.repo'],Host[$::continuent_install::tungstenRepoHost]] }
   }
 #  else {
 #     package {'percona-xtrabackup': ensure => present, }

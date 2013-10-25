@@ -3,7 +3,7 @@
 class { 'continuent_install' :
       nodeHostName                => 'east-db1' ,
       nodeIpAddress               => "${::ipaddress}" ,
-      hostsFile                  => ["${::ipaddress}  east-db1",'192.168.0.216 east-db2'],
+      hostsFile                  => ["${::ipaddress},east-db1",'192.168.0.216,east-db2'],
 
       clusterData                => {
       east => { 'members' => 'east-db1,east-db2', 'connectors' => 'east-db1,east-db2', 'master' => 'east-db1' },

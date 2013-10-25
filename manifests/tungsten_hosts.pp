@@ -18,10 +18,20 @@
 #
 class tungsten_hosts {
 
-  file { "/etc/hosts":
-    owner => root,
-    group => root,
-    mode => 644,
-    content => template("continuent_install/tungsten_hosts.erb"),
+  #Add the hosts for all of the nodes
+  define createHosts {
+      $servers = split($name, ',')
+      host { $servers[1]:
+        ip => $servers[0],
+      }
   }
+  createHosts { $::continuent_install::hostsFile: }
+
+  #Add the hosts for the repo if required
+  if  $::continuent_install::tungstenRepoIp  != ''   {
+    host { $::continuent_install::tungstenRepoHost:
+          ip => $::continuent_install::tungstenRepoIp,
+    }
+  }
+
 }
