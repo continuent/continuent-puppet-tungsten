@@ -39,7 +39,7 @@ class tungsten_install {
 
     if  $::continuent_install::installMysql == true {
       if  $::continuent_install::installMysqlj == true {
-          $req= [File ["tungsten.ini"],Class['mysql_config'],Exec['install-mysqlj'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
+          $req= [File ["tungsten.ini"],Class['mysql_config'],File['/opt/mysql/mysql-connector-java-5.1.26-bin.jar'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
       }
       else {
           $req= [File ["tungsten.ini"],Class['mysql_config'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
@@ -47,7 +47,7 @@ class tungsten_install {
     }
     else {
       if  $::continuent_install::installMysqlj == true {
-          $req= [File ["tungsten.ini"],Exec['install-mysqlj'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
+          $req= [File ["tungsten.ini"],File['/opt/mysql/mysql-connector-java-5.1.26-bin.jar'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
       }
       else {
           $req= [File ["tungsten.ini"],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
