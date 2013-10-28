@@ -24,7 +24,6 @@ hostsFile                  => ["${::ipaddress} east-db1",'10.0.0.6 north-db1','1
       clusterData                => {
       east => { 'members' => 'east-db1,east-db2', 'connectors' => 'east-db1,east-db2,east-app1', 'master' => 'east-db1' },
       } ,
-connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
 installCluster            => true,
 installTungstenRepo => true,
 tungstenRepoHost    => 'yumtest.continuent.com',

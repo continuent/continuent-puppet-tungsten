@@ -26,7 +26,6 @@ hostsFile                  => ["${::ipaddress},east-db1",'10.0.0.6,north-db1','1
     west => { 'members' => 'west-db1,west-db2', 'connectors' => 'west-db1,west-db2', 'master' => 'west-db1' ,'relay-source'=> 'east'},
     } ,
     compositeName              => 'world' ,
-connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
     installHaproxy           => true           ,
 installCluster            => true,
 installTungstenRepo => true,

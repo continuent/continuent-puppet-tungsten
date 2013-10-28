@@ -26,7 +26,6 @@ class { 'continuent_install' :
       west => { 'members' => 'west-db1,west-db2', 'connectors' => 'west-db1,west-db2', 'master' => 'west-db1' ,'relay-source'=> 'east'},
       } ,
       compositeName              => 'world' ,
-      connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
       installCluster            => true,
       installTungstenRepo => true,
       tungstenRepoHost    => 'yumtest.continuent.com',

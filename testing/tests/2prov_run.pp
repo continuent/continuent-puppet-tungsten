@@ -11,7 +11,6 @@ class { 'continuent_install' :
       provisionNode             => true,
       provisionDonor           => 'east-db1'   ,
       installSSHKeys => true     ,
-      connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
       installCluster            => true,
       installTungstenRepo => true,
       tungstenRepoHost    => 'yumtest.continuent.com',

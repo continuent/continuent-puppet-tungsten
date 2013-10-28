@@ -25,7 +25,6 @@ class { 'continuent_install' :
       clusterData                => {
       east => { 'members' => 'east-db1,east-db2', 'connectors' => 'east-db1,east-db2', 'master' => 'east-db1' },
       } ,
-connectorJDownload         => 'https://dl.dropboxusercontent.com/u/25417984/'    ,
       installHaproxy           => true  ,
 installCluster            => true,
 installTungstenRepo => true,
