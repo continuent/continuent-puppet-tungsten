@@ -23,22 +23,14 @@ class mysqlj_install {
           owner  => "tungsten",
           group  => "tungsten",
           mode   => 750,
-          require => User['tungsten']
+          require => User['tungsten'],
       }
 
 
-     exec { "download-mysqlj":
-        cwd => "/opt/mysql",
-        command => "/usr/bin/wget  ${::continuent_install::connectorJDownload}/mysql-connector-java-${::continuent_install::connectorJVersion}.tar.gz",
-        creates => "/opt/mysql/mysql-connector-java-${::continuent_install::connectorJVersion}.tar.gz",
-        require => [File['/opt/mysql'],Package['wget']]
-      }
-
-      exec { "install-mysqlj":
-        cwd => "/opt/mysql",
-        command => "/bin/tar xvzf /opt/mysql/mysql-connector-java-${::continuent_install::connectorJVersion}.tar.gz",
-        creates => "/opt/mysql/mysql-connector-java-${::continuent_install::mysqlj_ver}",
-        require =>  Exec["download-mysqlj"] ,
+      file { '/opt/mysql/mysql-connector-java-5.1.26-bin.jar':
+        ensure => file,
+        mode   => 644,
+        source => '/etc/puppet/modules/continuent_install/files/connectorj/mysql-connector-java-5.1.26-bin.jar',
       }
 
 }
