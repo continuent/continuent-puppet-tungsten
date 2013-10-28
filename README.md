@@ -3,6 +3,7 @@
 ## About
 
 This module helps install [Continuent Tungsten](https://www.continuent.com) Database clustering software.
+It also installs the pre-requisties for the open source Tungsten Replicator (www.tungsten-replicator.org)
 
 
 ## Authors
