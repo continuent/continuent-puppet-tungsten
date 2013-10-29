@@ -18,11 +18,20 @@
 #
 class install_replicator {
 
-    #@TODO when the repos are available add the stuff to install either the
-    #stable or the nightly repo and remove the 2 dependancies
+    if $::continuent_install::replicatorRepo == 'stable' {
+      exec { "replicator_repo":
+        path => ["/bin", "/usr/bin"],
+        command => "rpm -i http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.x86_64.rpm",
+      }
+    } else {
+      exec { "replicator_repo":
+        path => ["/bin", "/usr/bin"],
+        command => "rpm -i http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.x86_64.rpm",
+      }
+    }
     package { 'tungsten-replicator':
       ensure => present   ,
-      require => [Class['tungsten_repo'],Class['tungsten_hosts']] ,
+      require => [Exec['replicator_repo']] ,
     }
 
     
