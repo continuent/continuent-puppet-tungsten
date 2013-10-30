@@ -49,7 +49,7 @@ class install_replicator {
     }
     package { 'tungsten-replicator':
       ensure => present   ,
-      require => [Exec['replicator_repo'],File['tungsten.ini']] ,
+      require => [Exec['replicator_repo'],File['tungsten.ini'],Class['mysql_config'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']] ,
     }
 
     
