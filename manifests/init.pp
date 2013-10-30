@@ -124,6 +124,9 @@ class continuent_install (
       $clusterData                  = '' ,
       $connectorPort                = 3306 ,
       $compositeName                = '',
+    #This will override all the processing for the ini file as is should contain
+    #an array of entires to create the ini file from
+    $tungstenIniContents            = '',
     $installTungstenRepo            = 'false',
       $tungstenRepoHost             = '',
       $tungstenRepoIp               = '',

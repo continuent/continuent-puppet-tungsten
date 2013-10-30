@@ -16,6 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+<% if scope['::continuent_install::tungstenIniContents'] == '' %>
 [defaults]
 user=tungsten
 home-directory=/opt/continuent
@@ -49,4 +51,14 @@ relay-source=<%= cluster['relay-source'] %>
 <% if scope['::continuent_install::compositeName'] != '' %>
 [<%= scope['::continuent_install::compositeName'] %>]
 composite-datasources=<%= scope['::continuent_install::compositeDS'] %>
+<% end %>
+
+<% else %>
+
+    <% scope['::continuent_install::tungstenIniContents'].each do |iniLine| -%>
+        <%= iniLine %>
+    <% end -%>
+
+
+
 <% end %>

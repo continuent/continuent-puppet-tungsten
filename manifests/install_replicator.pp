@@ -18,6 +18,24 @@
 #
 class install_replicator {
 
+    file { "/etc/tungsten":
+      ensure => "directory",
+      owner  => "root",
+      group  => "root",
+      mode   => 750,
+    }
+
+
+    file { "tungsten.ini":
+      path    => "/etc/tungsten/tungsten.ini",
+      owner => root,
+      group => root,
+      mode => 644,
+      content => template("continuent_install/tungsten_rep.erb"),
+      require => File["/etc/tungsten"],
+    }
+
+
     if $::continuent_install::replicatorRepo == 'stable' {
       exec { "replicator_repo":
         path => ["/bin", "/usr/bin"],
@@ -31,7 +49,7 @@ class install_replicator {
     }
     package { 'tungsten-replicator':
       ensure => present   ,
-      require => [Exec['replicator_repo']] ,
+      require => [Exec['replicator_repo'],File['tungsten.ini']] ,
     }
 
     
