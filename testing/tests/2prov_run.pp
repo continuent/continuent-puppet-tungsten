@@ -12,6 +12,7 @@ class { 'continuent_install' :
       provisionDonor           => 'east-db1'   ,
       installSSHKeys => true     ,
       installCluster            => true,
+      installMysql => true        ,
       installTungstenRepo => true,
       tungstenRepoHost    => 'yumtest.continuent.com',
       tungstenRepoIp      => '23.21.169.95'

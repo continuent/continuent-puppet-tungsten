@@ -26,8 +26,9 @@ class { 'continuent_install' :
       east => { 'members' => 'east-db1,east-db2', 'connectors' => 'east-db1,east-db2', 'master' => 'east-db1' },
       } ,
       installHaproxy           => true  ,
-installCluster            => true,
-installTungstenRepo => true,
-tungstenRepoHost    => 'yumtest.continuent.com',
-tungstenRepoIp      => '23.21.169.95'
+      installMysql => true        ,
+      installCluster            => true,
+      installTungstenRepo => true,
+      tungstenRepoHost    => 'yumtest.continuent.com',
+      tungstenRepoIp      => '23.21.169.95'
 }

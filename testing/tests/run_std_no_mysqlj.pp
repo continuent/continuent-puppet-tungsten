@@ -26,6 +26,7 @@ hostsFile                  => ["${::ipaddress},east-db1",'10.0.0.6,north-db1','1
       } ,
       installMysqlj => false,
       mysqljLocation => '/tmp/mysql-connector-java-5.1.26/mysql-connector-java-5.1.26-bin.jar'    ,
+installMysql => true        ,
 installCluster            => true,
 installTungstenRepo => true,
 tungstenRepoHost    => 'yumtest.continuent.com',

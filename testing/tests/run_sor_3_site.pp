@@ -27,6 +27,7 @@ hostsFile                  => ["${::ipaddress},east-db1",'10.0.0.6,north-db1','1
       west => { 'members' => 'north-db1,north-db2', 'connectors' => 'north-db1,north-db2', 'master' => 'north-db1' ,'relay-source'=> 'east'},
       } ,
       compositeName              => 'world' ,
+      installMysql => true        ,
         installCluster            => true  ,
         installTungstenRepo => true,
         tungstenRepoHost    => 'yumtest.continuent.com',

@@ -9,6 +9,7 @@ class { 'continuent_install' :
       east => { 'members' => 'east-db1,east-db2', 'connectors' => 'east-db1,east-db2', 'master' => 'east-db1' },
       } ,
       installSSHKeys => true,
+      installMysql => true        ,
       installCluster            => true,
       installTungstenRepo => true,
       tungstenRepoHost    => 'yumtest.continuent.com',

@@ -28,6 +28,7 @@ hostsFile                  => ["${::ipaddress},east-db1",'10.0.0.6,north-db1','1
     compositeName              => 'world' ,
     installHaproxy           => true           ,
 installCluster            => true,
+installMysql => true        ,
 installTungstenRepo => true,
 tungstenRepoHost    => 'yumtest.continuent.com',
 tungstenRepoIp      => '23.21.169.95'
