@@ -27,8 +27,8 @@ class mysql_config {
     onlyif  => "mysql -u root"
   }
   
-  $sqlCheck="select * from mysql.user where user='$::continuent_install::replicationUser'"
-  $sqlExec="grant all on *.* to $::continuent_install::replicationUser identified by '$::continuent_install::replicationPassword' with grant option;"
+  $sqlCheck="select * from mysql.user where user='$::continuent_install::int_replicationUser'"
+  $sqlExec="grant all on *.* to $::continuent_install::int_replicationUser identified by '$::continuent_install::int_replicationPassword' with grant option;"
   exec { "create-tungsten-user":
       onlyif  => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l",
       command => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec\" ",
@@ -36,9 +36,9 @@ class mysql_config {
   
   }
   
-  $sqlCheck2="select * from mysql.user where user='$::continuent_install::appUser'"
-  $sqlExec2 ="grant all privileges on *.* to $::continuent_install::appUser
-            identified by '$::continuent_install::appPassword';revoke super on *.* from $::continuent_install::appUser"
+  $sqlCheck2="select * from mysql.user where user='$::continuent_install::int_appUser'"
+  $sqlExec2 ="grant all privileges on *.* to $::continuent_install::int_appUser
+            identified by '$::continuent_install::int_appPassword';revoke super on *.* from $::continuent_install::int_appUser"
 
   exec { "create-application-user":
       onlyif  => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck2\"|wc -l",

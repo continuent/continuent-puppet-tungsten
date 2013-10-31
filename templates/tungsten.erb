@@ -22,7 +22,7 @@
 user=tungsten
 home-directory=/opt/continuent
 mysql-connectorj-path=<%= scope['::continuent_install::mysqljLocation'] %>
-datasource-user=<%= scope['::continuent_install::replicationUser'] %>
+datasource-user=<%= scope['::continuent_install::int_replicationUser'] %>
 datasource-password=<%= scope['::continuent_install::replicationPassword'] %>
 datasource-port=<%= scope['::continuent_install::mysqlPort'] %>
 connector-listen-port=<%= scope['::continuent_install::connectorPort'] %>

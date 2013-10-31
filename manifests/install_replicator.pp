@@ -47,6 +47,7 @@ class install_replicator {
         command => "rpm -i http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.x86_64.rpm",
       }
     }
+
     package { 'tungsten-replicator':
       ensure => present   ,
       require => [Exec['replicator_repo'],File['tungsten.ini'],Class['mysql_config'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']] ,
