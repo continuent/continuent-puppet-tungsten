@@ -30,7 +30,7 @@ class mysqlj_install {
       file { '/opt/mysql/mysql-connector-java-5.1.26-bin.jar':
         ensure => file,
         mode   => 644,
-        source => '/etc/puppet/modules/continuent_install/files/connectorj/mysql-connector-java-5.1.26-bin.jar',
+        source => 'puppet:///modules/continuent_install/connectorj/mysql-connector-java-5.1.26-bin.jar',
       }
 
 }
