@@ -147,6 +147,9 @@ class continuent_install (
       if $appPassword == 'secret' {
         warning 'The default application password is being used'
       }
+      if $replicationPassword == 'secret' {
+        warning 'The default replication password is being used'
+      }
     }
 
     if $installHaproxy == true {
