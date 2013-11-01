@@ -24,13 +24,13 @@ class mysql_config {
     path => ["/bin", "/usr/bin"],
     command => "mysqladmin -uroot password $::continuent_install::masterPassword",
     require => Service[$::continuent_install::mysqlServiceName],
-    onlyif  => "mysql -u root"
+    onlyif  => ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u root"]
   }
   
   $sqlCheck="select * from mysql.user where user='$::continuent_install::int_replicationUser'"
   $sqlExec="grant all on *.* to $::continuent_install::int_replicationUser identified by '$::continuent_install::int_replicationPassword' with grant option;"
   exec { "create-tungsten-user":
-      onlyif  => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l",
+      onlyif  => ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l"],
       command => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec\" ",
       require => Exec['set-mysql-password'],
   
@@ -41,7 +41,7 @@ class mysql_config {
             identified by '$::continuent_install::int_appPassword';revoke super on *.* from $::continuent_install::int_appUser"
 
   exec { "create-application-user":
-      onlyif  => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck2\"|wc -l",
+      onlyif  => ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l"],
       command => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec2\"",
       require => Exec['set-mysql-password'],
   
@@ -50,7 +50,7 @@ class mysql_config {
   $sqlCheck3="select * from mysql.user where user=''"
   $sqlExec3="delete from mysql.user where user='';flush privileges;"
    exec { "remove-anon-users":
-      onlyif  => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck3\"|wc -l",
+      onlyif  => ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l"],
       command => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec3\"",
       require => Exec['set-mysql-password'],
   

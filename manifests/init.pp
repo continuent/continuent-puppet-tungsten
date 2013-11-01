@@ -102,7 +102,7 @@ class continuent_install (
 
     $nodeHostName                   = $fqdn ,
     $nodeIpAddress                  = '' ,
-    $hostsFile                      = '',
+    $hostsFile                      = [],
     $installMysql                   = false ,
       $mysqlPort                    = 13306,
       $mysqlServiceName             = 'mysqld'  ,
