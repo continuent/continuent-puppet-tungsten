@@ -140,14 +140,15 @@ class continuent_install (
     $installSSHKeys                 = false
 ) {
 
+
+    #See if the passed ini file contains any user or password details
+    $int_replicationUser=getReplicationUser($replicationUser,$tungstenIniContents)
+    $int_replicationPassword=getReplicationPassword($replicationPassword,$tungstenIniContents)
+
+    $int_appUser=getApplicationUser($appUser,$tungstenIniContents)
+    $int_appPassword=getApplicationPassword($appPassword,$tungstenIniContents)
+
     if $installMysql == true {
-
-      #See if the passed ini file contains any user or password details
-      $int_replicationUser=getReplicationUser($replicationUser,$tungstenIniContents)
-      $int_replicationPassword=getReplicationPassword($replicationPassword,$tungstenIniContents)
-
-      $int_appUser=getApplicationUser($appUser,$tungstenIniContents)
-      $int_appPassword=getApplicationPassword($appPassword,$tungstenIniContents)
 
       if $masterPassword == 'secret' {
         warning 'The default master password is being used'
