@@ -100,7 +100,7 @@
 
 class continuent_install (
 
-    $nodeHostName                   = '' ,
+    $nodeHostName                   = $fqdn ,
     $nodeIpAddress                  = '' ,
     $hostsFile                      = '',
     $installMysql                   = false ,
