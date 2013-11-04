@@ -16,9 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-mysql           nofile  65535
-tungsten        nofile  65535
-*       soft    nofile  65535
-*       hard    nofile  65535
-tungsten        nproc  8096
+tungsten	soft	nofile	65535
+tungsten	hard	nofile	65535
+tungsten	soft	nproc	8096
+tungsten	hard	nproc	8096
+mysql	soft	nofile	65535
+mysql	hard	nofile	65535
+mysql	soft	nproc	8096
+mysql	hard	nproc	8096
 # End of file
