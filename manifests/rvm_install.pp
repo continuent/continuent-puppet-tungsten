@@ -17,9 +17,9 @@
 # limitations under the License.
 #
 class rvm_install {
-    exec { "install-rvm":
+  exec { "install-rvm":
     cwd => "/tmp/",
     command => "/usr/bin/curl curl -L https://get.rvm.io | bash -s stable",
-    }
-
+    creates => "/usr/local/rvm/bin/rvm",
+  }
 }

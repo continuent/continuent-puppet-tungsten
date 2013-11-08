@@ -38,8 +38,7 @@ class sandbox_install {
   exec { "install-sandbox":
     cwd => "/tmp/MySQL-Sandbox-${::continuent_install::sandboxVersion}",
     command => "/usr/bin/perl Makefile.PL ; /usr/bin/make ; /usr/bin/make install",
-    require =>  [Exec["download-sandbox"],Package['make'],Package['perl-ExtUtils-MakeMaker']] ,
-
+    require =>  [Exec["download-sandbox"],Package['make'],Package['perl-ExtUtils-MakeMaker']],
+    creates => "/usr/local/bin/make_sandbox",
   }
-
 }
