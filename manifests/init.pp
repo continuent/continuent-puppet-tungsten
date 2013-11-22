@@ -175,7 +175,6 @@ class continuent_install (
       #Generate ServerId based on IP
       $serverId=generateServerId($ipaddress)
       include mysql_install
-      include mysql_config
     }
 
     if $installMysqlj == true {

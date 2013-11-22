@@ -38,5 +38,24 @@ class mysql_install {
     content => template("continuent_install/my.erb"),
 
   }
+
+  $port=$::continuent_install::mysqlPort
+
+  exec { "set-mysql-password":
+    path => ["/bin", "/usr/bin"],
+    command => "mysqladmin -uroot password $::continuent_install::masterPassword",
+    require => Service[$::continuent_install::mysqlServiceName],
+    onlyif  => ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u root"]
+  }
+
+  $sqlCheck3="select * from mysql.user where user=''"
+  $sqlExec3="delete from mysql.user where user='';flush privileges;"
+   exec { "remove-anon-users":
+      onlyif  => ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l"],
+      command => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec3\"",
+      require => Exec['set-mysql-password'],
+
+  }
+
   
 }

@@ -40,7 +40,7 @@ if ($operatingsystem =~ /(?i:centos|redhat|oel)/) {
 }
 
 
-$port=13305
+$port=13306
 $masterUser='tungsten'
 $masterPassword='secret'
 $appUser='app_user'
