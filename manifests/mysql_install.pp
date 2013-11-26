@@ -19,7 +19,7 @@
 class mysql_install {
 	$port=$::continuent_install::mysqlPort
 	
-	if ($operatingsystem =~ /(?i:centos|redhat|oel)/) {
+	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
 		package { 'mysql-server': ensure => present, 
 			require => [File["/etc/hostname"]],
  			before => [Package[percona-release]]

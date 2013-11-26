@@ -18,7 +18,7 @@
 #
 class ntp {
 	case $operatingsystem {
-		centos, redhat: {
+		centos, redhat, Amazon: {
 			$service_name = 'ntpd'
 			$conf_file		= 'ntp.conf.el'
 		}

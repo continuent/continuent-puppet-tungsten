@@ -98,7 +98,7 @@
 #
 class continuent_install (
 	$nodeHostName									 = $fqdn ,
-	$nodeIpAddress									= '' ,
+	$nodeIpAddress									= "${::ipaddress}" ,
 	$hostsFile											= [],
 	$installMysql									 = false ,
 		$mysqlPort										= 13306,
@@ -165,7 +165,7 @@ class continuent_install (
 
 	if $installMysql == true {
 		#Generate ServerId based on IP
-		$serverId=generateServerId($ipaddress)
+		$serverId=generateServerId($nodeIpAddress)
 		include mysql_install
 	}
 
