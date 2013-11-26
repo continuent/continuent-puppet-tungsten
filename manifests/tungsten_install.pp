@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#    http://www.apache.org/licenses/LICENSE-2.0
+#		http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,47 +17,41 @@
 # limitations under the License.
 #
 class tungsten_install {
+	file { "/etc/tungsten":
+		ensure => "directory",
+		owner	=> "root",
+		group	=> "root",
+		mode	 => 750,
+	}
+		
+	file { "tungsten.ini":
+		path		=> "/etc/tungsten/tungsten.ini",
+		owner => root,
+		group => root,
+		mode => 644,
+		content => template("continuent_install/tungsten.erb"),
+		require => File["/etc/tungsten"],
+	}
 
-    file { "/etc/tungsten":
-      ensure => "directory",
-      owner  => "root",
-      group  => "root",
-      mode   => 750,
-    }
+	if	$::continuent_install::installMysql == true {
+		if	$::continuent_install::installMysqlj == true {
+			$req= [File ["tungsten.ini"],Class['mysql_install'],File['/opt/mysql/mysql-connector-java-5.1.26-bin.jar'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
+		}
+		else {
+			$req= [File ["tungsten.ini"],Class['mysql_install'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
+		}
+	}
+	else {
+		if	$::continuent_install::installMysqlj == true {
+			$req= [File ["tungsten.ini"],File['/opt/mysql/mysql-connector-java-5.1.26-bin.jar'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
+		}
+		else {
+			$req= [File ["tungsten.ini"],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
+		}
+	}
 
-
-    file { "tungsten.ini":
-      path    => "/etc/tungsten/tungsten.ini",
-      owner => root,
-      group => root,
-      mode => 644,
-      content => template("continuent_install/tungsten.erb"),
-      require => File["/etc/tungsten"],
-    }
-
-
-
-    if  $::continuent_install::installMysql == true {
-      if  $::continuent_install::installMysqlj == true {
-          $req= [File ["tungsten.ini"],Class['mysql_install'],File['/opt/mysql/mysql-connector-java-5.1.26-bin.jar'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
-      }
-      else {
-          $req= [File ["tungsten.ini"],Class['mysql_install'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
-      }
-    }
-    else {
-      if  $::continuent_install::installMysqlj == true {
-          $req= [File ["tungsten.ini"],File['/opt/mysql/mysql-connector-java-5.1.26-bin.jar'],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
-      }
-      else {
-          $req= [File ["tungsten.ini"],Class['tungsten_config'],Class['tungsten_hosts'],Class['unix_user']]
-      }
-    }
-
-    package { 'continuent-tungsten':
-      ensure => present,
-      require => [$req]
-    }
-
-    
+	package { 'continuent-tungsten':
+		ensure => present,
+		require => [$req]
+	}
 }
