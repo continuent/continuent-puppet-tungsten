@@ -25,8 +25,9 @@ module Puppet::Parser::Functions
       raise Puppet::ParseError, 'No Ip Passed'
     end
 
-    serverId = ip.split('.').inject(0) {|total,value| (total << 8 ) + value.to_i}
-    serverId = serverId/100000
+    #serverId = ip.split('.').inject(0) {|total,value| (total << 8 ) + value.to_i}
+    serverId_a = ip.split('.')
+    serverId = serverId_a[0]+serverId_a[1]+serverId_a[2]+serverId_a[3]
     serverId
   end
 end
