@@ -166,7 +166,7 @@ class continuent_install (
 	if $installMysql == true {
 		#Generate ServerId based on IP
 		#$serverId=generateServerId($nodeIpAddress)
-        $serverId=fqdn_rand(5000)
+        $serverId=fqdn_rand(5000,$nodeIpAddress)
 		include mysql_install
 	}
 
