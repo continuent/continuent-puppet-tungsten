@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#    http://www.apache.org/licenses/LICENSE-2.0
+#		http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,21 +17,19 @@
 # limitations under the License.
 #
 class tungsten_hosts {
+	#Add the hosts for all of the nodes
+	define createHosts {
+		$servers = split($name, ',')
+		host { $servers[1]:
+			ip => $servers[0],
+		}
+	}
+	createHosts { $::continuent_install::hostsFile: }
 
-  #Add the hosts for all of the nodes
-  define createHosts {
-      $servers = split($name, ',')
-      host { $servers[1]:
-        ip => $servers[0],
-      }
-  }
-  createHosts { $::continuent_install::hostsFile: }
-
-  #Add the hosts for the repo if required
-  if  $::continuent_install::tungstenRepoIp  != ''   {
-    host { $::continuent_install::tungstenRepoHost:
-          ip => $::continuent_install::tungstenRepoIp,
-    }
-  }
-
+	#Add the hosts for the repo if required
+	if $::continuent_install::tungstenRepoIp	!= ''	 {
+		host { $::continuent_install::tungstenRepoHost:
+			ip => $::continuent_install::tungstenRepoIp,
+		}
+	}
 }

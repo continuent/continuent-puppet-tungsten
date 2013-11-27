@@ -24,12 +24,10 @@ symbolic-links=0
 default-storage-engine=innodb
 pid-file=/var/lib/mysql/mysql.pid
 
-log-bin
+log-bin=mysql-bin
 sync_binlog=1
 max_allowed_packet=52m
 open_files_limit=65535
 
-server-id=<%= scope['::continuent_install::serverId'] %>
-port=<%= scope['::continuent_install::mysqlPort'] %>
-
-
+server-id=<%= scope.lookupvar('::continuent_install::serverId') %>
+port=<%= scope.lookupvar('::continuent_install::mysqlPort') %>
