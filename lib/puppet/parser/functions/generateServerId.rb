@@ -26,7 +26,7 @@ module Puppet::Parser::Functions
     end
 
     serverId = ip.split('.').inject(0) {|total,value| (total << 8 ) + value.to_i}
-
+    serverId = serverId/100000
     serverId
   end
 end
