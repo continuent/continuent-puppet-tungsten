@@ -22,7 +22,7 @@ class sandbox_install {
 
 	exec { "download-sandbox":
 		cwd => "/tmp",
-		command => "/usr/bin/wget	https://launchpad.net/mysql-sandbox/mysql-sandbox-3/mysql-sandbox-3/+download/MySQL-Sandbox-${::continuent_install::sandboxVersion}.tar.gz",
+		command => "/usr/bin/wget https://launchpad.net/mysql-sandbox/mysql-sandbox-3/mysql-sandbox-3/+download/MySQL-Sandbox-${::continuent_install::sandboxVersion}.tar.gz",
 		creates => "/tmp/MySQL-Sandbox-${::continuent_install::sandboxVersion}.tar.gz",
 		require => Package['wget']
 	}
