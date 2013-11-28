@@ -52,30 +52,22 @@ class tungsten_config {
 	package {'sudo': ensure => present, }
 	package {'rsync': ensure => present, }
 
-	$port=$::continuent_install::mysqlPort
+    file { '/tmp/tungsten_config_mysql':
+      ensure => file,
+      owner => 'root',
+      mode => 700,
+      content => template('continuent_install/tungsten_config_mysql.erb'),
+    }
 
-	$sqlCheck="select * from mysql.user where user='$::continuent_install::int_replicationUser'"
-	$sqlExec="grant all on *.* to $::continuent_install::int_replicationUser identified by '$::continuent_install::int_replicationPassword' with grant option;"
+    if $::continuent_install::installMysql == true {
+          exec { "create-tungsten-user":
+              command => "/tmp/tungsten_config_mysql",
+              require => Exec['set-mysql-password'],
+          }
+    } else {
+          exec { "create-tungsten-user":
+              command => "/tmp/tungsten_config_mysql",
+          }
+    }
 
-	if $::continuent_install::installMysql == true {
-		exec { "create-tungsten-user":
-			onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l"],
-			command => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec\" ",
-			require => Exec['set-mysql-password'],
-		}
-	} else {
-		exec { "create-tungsten-user":
-			onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l"],
-			command => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec\" ",
-		}
-	}
-
-	$sqlCheck2="select * from mysql.user where user='$::continuent_install::int_appUser'"
-	$sqlExec2 ="grant all privileges on *.* to $::continuent_install::int_appUser identified by '$::continuent_install::int_appPassword';revoke super on *.* from $::continuent_install::int_appUser"
-
-	exec { "create-application-user":
-		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlCheck\"|wc -l"],
-		command => "/usr/bin/mysql -u $::continuent_install::masterUser -p$::continuent_install::masterPassword -P $port -Be \"$sqlExec2\"",
-		require => Exec['create-tungsten-user'],
-	}
 }
