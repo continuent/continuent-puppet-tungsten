@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#    http://www.apache.org/licenses/LICENSE-2.0
+#		http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,18 +16,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-[mysqld]
-datadir=/var/lib/mysql
-socket=/var/lib/mysql/mysql.sock
-user=mysql
-symbolic-links=0
-default-storage-engine=innodb
-pid-file=/var/lib/mysql/mysql.pid
-
-log-bin=mysql-bin
-sync_binlog=1
-max_allowed_packet=52m
-open_files_limit=65535
-
-server-id=<%= scope.lookupvar('::continuent_install::mysql::server::serverId') %>
-port=<%= scope.lookupvar('::continuent_install::mysql::server::port') %>
+class continuent_install::prereq::rvm (
+	$enabled = true
+) inherits continuent_install::prereq::unix_user {
+	if $enabled == true {
+		exec { "install-rvm":
+			cwd => "/tmp/",
+			command => "/usr/bin/curl curl -L https://get.rvm.io | bash -s stable",
+			creates => "/usr/local/rvm/bin/rvm",
+			require => Package[ruby],
+		}
+		
+		User["continuent_install::systemUser"] {
+			groups +> ["rvm"],
+			require +> [Exec["install-rvm"]]
+		}
+	}
+}

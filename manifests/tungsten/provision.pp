@@ -16,10 +16,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class rvm_install {
-	exec { "install-rvm":
-		cwd => "/tmp/",
-		command => "/usr/bin/curl curl -L https://get.rvm.io | bash -s stable",
-		creates => "/usr/local/rvm/bin/rvm",
+class continuent_install::tungsten::provision (
+	donor => undef,
+) inherits continuent_install::tungsten {
+	exec { "prov":
+		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/tungsten-replicator"],
+		environment => "HOME=/root",
+		logoutput => true,
+		command => "/opt/continuent/tungsten/tungsten-replicator/scripts/tungsten_provision_slave --source=$donor --restore-to-datadir",
+	}
+
+	exec { "start-services":
+		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/"],
+		command => "/opt/continuent/tungsten/cluster-home/bin/startall",
+		require => Exec['prov'],
 	}
 }

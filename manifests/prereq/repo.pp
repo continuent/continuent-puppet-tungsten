@@ -16,33 +16,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class ntp {
-	case $operatingsystem {
-		centos, redhat, Amazon: {
-			$service_name = 'ntpd'
-			$conf_file		= 'ntp.conf.el'
+class continuent_install::prereq::repo(
+	$replicatorRepo							= false,
+) {
+	if $replicatorRepo == "nightly" {
+		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.${architecture}.rpm"
+	} elsif $replicatorRepo == "stable" {
+		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.${architecture}.rpm"
+	} else {
+		$url = false
+	}
+	
+	if $url != false {
+		package { "replicator-release-$replicatorRepo":
+			provider => "rpm",
+			ensure => present,
+			source => $url,
 		}
-		debian, ubuntu: {
-			$service_name = 'ntp'
-			$conf_file		= 'ntp.conf.debian'
-		}
-	}
-
-	package { 'ntp':
-		ensure => installed,
-	}
-
-	service { 'ntp':
-		name			=> $service_name,
-		ensure		=> running,
-		enable		=> true,
-		subscribe => File['ntp.conf'],
-	}
-
-	file { 'ntp.conf':
-		path		=> '/etc/ntp.conf',
-		ensure	=> file,
-		require => Package['ntp'],
-		content => template("continuent_install/${conf_file}.erb"),
 	}
 }

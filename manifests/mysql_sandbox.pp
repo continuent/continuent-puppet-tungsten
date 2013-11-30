@@ -16,28 +16,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class sandbox_install {
-	package {'make': ensure => present, }
-	package {'perl-ExtUtils-MakeMaker': ensure => present, }
-
+class continuent_install::mysql_sandbox(
+	$sandboxVersion	= $continuent_install::mysql_sandbox::params::sandboxVersion
+) inherits continuent_install::mysql_sandbox::params {
+	include continuent_install::prereq
+	
+	Class["continuent_install::prereq"] ->
+	package {'make': ensure => present, } ->
+	package {'perl-ExtUtils-MakeMaker': ensure => present, } ->
 	exec { "download-sandbox":
 		cwd => "/tmp",
-		command => "/usr/bin/wget	https://launchpad.net/mysql-sandbox/mysql-sandbox-3/mysql-sandbox-3/+download/MySQL-Sandbox-${::continuent_install::sandboxVersion}.tar.gz",
-		creates => "/tmp/MySQL-Sandbox-${::continuent_install::sandboxVersion}.tar.gz",
-		require => Package['wget']
-	}
-
+		command => "/usr/bin/wget https://launchpad.net/mysql-sandbox/mysql-sandbox-3/mysql-sandbox-3/+download/MySQL-Sandbox-${sandboxVersion}.tar.gz",
+		creates => "/tmp/MySQL-Sandbox-${sandboxVersion}.tar.gz",
+	} ->
 	exec { "unpack-sandbox":
 		cwd => "/tmp",
-		command => "/bin/tar xvzf /tmp/MySQL-Sandbox-${::continuent_install::sandboxVersion}.tar.gz",
-		creates => "/tmp/MySQL-Sandbox-${::continuent_install::sandboxVersion}",
-		require =>	Exec["download-sandbox"] ,
-	}
-
+		command => "/bin/tar xvzf /tmp/MySQL-Sandbox-${sandboxVersion}.tar.gz",
+		creates => "/tmp/MySQL-Sandbox-${sandboxVersion}",
+	} ->
 	exec { "install-sandbox":
-		cwd => "/tmp/MySQL-Sandbox-${::continuent_install::sandboxVersion}",
+		cwd => "/tmp/MySQL-Sandbox-${sandboxVersion}",
 		command => "/usr/bin/perl Makefile.PL ; /usr/bin/make ; /usr/bin/make install",
-		require =>	[Exec["download-sandbox"],Package['make'],Package['perl-ExtUtils-MakeMaker']],
 		creates => "/usr/local/bin/make_sandbox",
 	}
 }

@@ -1,10 +1,12 @@
 name 'continuent/continuent_install'
-version '0.0.2'
+version '0.0.5'
 
 author 'Continuent'
 license 'Apache 2.0'
 project_page 'https://github.com/continuent/continuent_install'
 source 'https://github.com/continuent/continuent_install'
 summary 'Module for installing Continuent Tungsten'
-description 'Configures Continuent clusters'
-
+description 'Configure servers for running Continuent Tungsten'
+dependency 'puppetlabs/stdlib', '>= 2.2.1'
+dependency 'puppetlabs/ntp', '>= 3.0.0'
+dependency 'puppetlabs/java', '>= 1.0.1'

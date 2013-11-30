@@ -16,18 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class provision_node {
-	exec { "prov":
-		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/tungsten-replicator"],
-		environment => "HOME=/root",
-		logoutput => true,
-		command => "/opt/continuent/tungsten/tungsten-replicator/scripts/tungsten_provision_slave --source=$::continuent_install::provisionDonor --restore-to-datadir",
-		require => Class['tungsten_install'],
+class continuent_install::prereq::hosts(
+	$hostsFile = [],
+) {
+	#Add the hosts for all of the nodes
+	define createHosts {
+		$servers = split($name, ' ')
+		host { $servers[1]:
+			ip => $servers[0],
+			require => [Exec["set-hostname"]]
+		}
 	}
-
-	exec { "start-services":
-		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/"],
-		command => "/opt/continuent/tungsten/cluster-home/bin/startall",
-		require => Exec['prov'],
-	}
+	createHosts { $hostsFile: }
 }

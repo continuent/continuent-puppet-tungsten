@@ -16,20 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class tungsten_hosts {
-	#Add the hosts for all of the nodes
-	define createHosts {
-		$servers = split($name, ',')
-		host { $servers[1]:
-			ip => $servers[0],
-		}
-	}
-	createHosts { $::continuent_install::hostsFile: }
-
-	#Add the hosts for the repo if required
-	if $::continuent_install::tungstenRepoIp	!= ''	 {
-		host { $::continuent_install::tungstenRepoHost:
-			ip => $::continuent_install::tungstenRepoIp,
-		}
+class continuent_install::tungsten::cluster (
+) inherits continuent_install::params {
+	include continuent_install::prereq
+	
+	Class["continuent_install::prereq"] ->
+	package { 'continuent-tungsten':
+		ensure => present,
 	}
 }

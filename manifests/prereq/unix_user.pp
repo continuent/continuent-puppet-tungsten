@@ -16,43 +16,91 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class unix_user {
+class continuent_install::prereq::unix_user(
+	$installSSHKeys								= false
+) inherits continuent_install::params {
 	group { "mysql":
 		ensure => "present",
 	}
 
-	user { "tungsten":
-		groups => 'mysql',
+	user { "continuent_install::systemUser":
+		name => $systemUserName,
+		groups => ['mysql'],
 		comment => 'This user was created by Puppet',
 		ensure => 'present',
 		password => '$6$OPePhx69$wRTMV.V6XnO78mjaGtC2kpjw.Pz6iDP5Ow4LFxtG3JK.CAhHApb4ifEuU5lLwPMDZOXe3v7I/xAiQDtWO3xpJ.',
 		uid => 6000,
 		home => '/home/tungsten',
-		require => Group['mysql'],
+		require => [Group['mysql']],
 	}
 
 	file { "/home/tungsten/":
 		ensure => directory,
-		owner	=> tungsten,
-		group	=> tungsten,
+		owner	=> $systemUserName,
+		group	=> $systemUserName,
 		mode => 750,
-		require => [ User[tungsten] ]
+		require => [ User["continuent_install::systemUser"] ]
+	}
+	
+	file {"/home/tungsten/.bash_profile":
+		ensure => file,
+		mode => 644,
+		owner => $systemUserName,
+		group => "root",
+		content => template('continuent_install/tungsten_bash_profile.erb'),
+		require => File['/home/tungsten'],
+	}
+	
+	file { "10_tungsten":
+		path		=> "/etc/sudoers.d/10_tungsten",
+		ensure	=> present,
+		owner	 => "root",
+		group	 => "root",
+		mode		=> 0440,
+		replace => true,
+		require => Package[sudo],
+		content => "$systemUserName ALL=(ALL) NOPASSWD: ALL";
+	}
+
+	exec { "remove-requiretty":
+		command => "/bin/sed -i	'/requiretty/s/^/#/'	/etc/sudoers",
+		require => Package[sudo],
+	}
+					
+	file { '/etc/security/limits.d/10tungsten.conf':
+		ensure => file,
+		content => template('continuent_install/security.limits.conf.erb'),
+	}
+	
+	file { "/opt/continuent":
+		ensure => "directory",
+		owner	=> $systemUserName,
+		group	=> $systemUserName,
+		mode	 => 750,
+		require => User["continuent_install::systemUser"]
+	}
+	
+	file { "/etc/tungsten":
+		ensure => "directory",
+		owner	=> $systemUserName,
+		group	=> $systemUserName,
+		mode	 => 750,
 	}
 
 	#Create tungsten .ssh dir
 	file { "/home/tungsten/.ssh":
 		ensure => 'directory',
 		require => File['/home/tungsten'],
-		owner => 'tungsten',
+		owner => $systemUserName,
 		mode => '700',
 	}
 
-	if	$::continuent_install::installSSHKeys {
+	if	$installSSHKeys == true {
 		file {"/home/tungsten/.ssh/authorized_keys":
 			ensure => file,
 			mode => 600,
-			owner => tungsten,
-			group => tungsten,
+			owner => $systemUserName,
+			group => "root",
 			content => template('continuent_install/tungsten-auth-keys.erb'),
 			require => File['/home/tungsten/.ssh'],
 		}
@@ -60,8 +108,8 @@ class unix_user {
 		file {"/home/tungsten/.ssh/id_rsa":
 			ensure => file,
 			mode => 600,
-			owner => tungsten,
-			group => tungsten,
+			owner => $systemUserName,
+			group => "root",
 			content => template('continuent_install/tungsten_id_rsa.erb'),
 			require => File['/home/tungsten/.ssh'],
 		}
@@ -69,19 +117,10 @@ class unix_user {
 		file {"/home/tungsten/.ssh/id_rsa.pub":
 			ensure => file,
 			mode => 600,
-			owner => tungsten,
-			group => tungsten,
+			owner => $systemUserName,
+			group => "root",
 			content => template('continuent_install/tungsten_id_rsa.pub.erb'),
 			require => File['/home/tungsten/.ssh'],
 		}
-	}
-
-	file {"/home/tungsten/.bash_profile":
-		ensure => file,
-		mode => 644,
-		owner => tungsten,
-		group => tungsten,
-		content => template('continuent_install/tungsten_bash_profile.erb'),
-		require => File['/home/tungsten/.ssh'],
 	}
 }

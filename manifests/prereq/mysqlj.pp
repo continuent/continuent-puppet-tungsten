@@ -16,18 +16,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class mysqlj_install {
-	file { "/opt/mysql":
-		ensure => "directory",
-		owner	=> "tungsten",
-		group	=> "tungsten",
-		mode	 => 750,
-		require => User['tungsten'],
-	}
+class continuent_install::prereq::mysqlj (
+	$enabled = true
+) {
+	if $enabled == true {
+		file { "/opt/mysql":
+			ensure => "directory",
+			owner	=> "tungsten",
+			group	=> "tungsten",
+			mode	 => 750,
+			require => User['tungsten'],
+		}
 
-	file { '/opt/mysql/mysql-connector-java-5.1.26-bin.jar':
-		ensure => file,
-		mode	 => 644,
-		source => 'puppet:///modules/continuent_install/connectorj/mysql-connector-java-5.1.26-bin.jar',
+		file { '/opt/mysql/mysql-connector-java-5.1.26-bin.jar':
+			ensure => file,
+			mode	 => 644,
+			owner	=> "tungsten",
+			group	=> "tungsten",
+			source => 'puppet:///modules/continuent_install/connectorj/mysql-connector-java-5.1.26-bin.jar',
+		}
 	}
 }

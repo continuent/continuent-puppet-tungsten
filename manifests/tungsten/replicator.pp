@@ -16,11 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class tungsten_repo {
-	file { 'tungsten.repo':
-		path		=> "/etc/yum.repos.d/tungsten.repo",
-		ensure => file,
-		mode	 => 644,
-		content => template("continuent_install/tungsten_repo.erb"),
+class continuent_install::tungsten::replicator (
+) inherits continuent_install::params {
+	include continuent_install::prereq
+	
+	Class["continuent_install::prereq"] ->
+	package { 'tungsten-replicator':
+		ensure => present,
 	}
 }
