@@ -20,9 +20,11 @@ class continuent_install::prereq::repo(
 	$replicatorRepo							= false,
 ) {
 	if $replicatorRepo == "nightly" {
-		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.${architecture}.rpm"
+		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.noarch.rpm"
 	} elsif $replicatorRepo == "stable" {
-		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.${architecture}.rpm"
+		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.noarch.rpm"
+	} elsif $replicatorRepo == true {
+		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.noarch.rpm"
 	} else {
 		$url = false
 	}
