@@ -1,25 +1,56 @@
 class continuent_install::tungsten (
-	$installClusterSoftware			= false,
 	$installReplicatorSoftware	= false,
+		$repUser						= tungsten,
+		$repPassword				= secret,
 	
-	$replicationUser						= "tungsten",
-	$replicationPassword				= "secret",
-	$applicationUser						= "app_user",
-	$applicationPassword				= "secret",
-	
-	$additionalConfiguration		= undef,
+	$installClusterSoftware			= false,
+		$clusterData									= false,
+		$compositeName								= false,
+		$appUser											= app_user,
+		$appPassword									= secret,
+		$applicationPort							= 3306,
+		
+	$tungstenIniContents		= false,
 	
 	$provision									= false,
-	$provisionDonor							= undef,
+	$provisionDonor							= false,
 ) inherits continuent_install::params {
 	include continuent_install::prereq
 	
-	Class["continuent_install::prereq"] ->
-	class{ "continuent_install::tungsten::ini": }
+	#See if the passed ini file contains any user or password details
+	$int_repUser=getReplicationUser($repUser,$tungstenIniContents)
+	$int_repPassword=getReplicationPassword($repPassword,$tungstenIniContents)
+
+	$int_appUser=getApplicationUser($appUser,$tungstenIniContents)
+	$int_appPassword=getApplicationPassword($appPassword,$tungstenIniContents)
 	
-	if $installClusterSoftware == true {
+	if $clusterData != false {
+		class{ "continuent_install::tungsten::ini": }->
+		anchor{ "continuent_install::tungsten::ini": }
+	} else {
+		anchor{ "continuent_install::tungsten::ini": }
+	}
+	
+	if defined(File["${::root_home}/.my.cnf"]) {
+		file { '/tmp/tungsten_create_users':
+      ensure => file,
+      owner => 'root',
+      mode => 700,
+      content => template('continuent_install/tungsten_create_users.erb'),
+			require => Anchor["continuent_install::tungsten::ini"]
+    } ->
+		exec { "tungsten_create_users":
+			command => "/tmp/tungsten_create_users",
+		} ->
+		anchor{ "continuent_install::tungsten::create-users": }
+	} else {
+		anchor{ "continuent_install::tungsten::create-users": }
+	}
+	
+	if $installClusterSoftware != false {
 		class{ "continuent_install::tungsten::cluster": 
-			require => Class["continuent_install::tungsten::ini"]
+			location => $installClusterSoftware,
+			require => Anchor["continuent_install::tungsten::create-users"]
 		} ->
 		anchor{ "continuent_install::tungsten::cluster": }
 	} else {
@@ -39,9 +70,10 @@ class continuent_install::tungsten (
 		class{ "continuent_install::tungsten::provision": 
 			donor => $provisionDonor,
 			require => Anchor["continuent_install::tungsten::replicator"]
-		} ->
-		anchor{ "continuent_install::tungsten::provision": }
-	} else {
-		anchor{ "continuent_install::tungsten::provision": }
+		}
+	}
+	
+	class{ "continuent_install::tungsten::update":
+		require => Anchor["continuent_install::tungsten::replicator"]
 	}
 }

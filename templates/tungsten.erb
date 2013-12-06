@@ -1,64 +1,48 @@
-# === Copyright
-#
-# Copyright 2013 Continuent Inc.
-#
-# === License
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
-<% if scope['::continuent_install::tungstenIniContents'] == '' %>
+<% if scope.lookupvar('::continuent_install::tungsten::tungstenIniContents') == false %>
 [defaults]
 user=tungsten
 home-directory=/opt/continuent
-mysql-connectorj-path=<%= scope['::continuent_install::mysqljLocation'] %>
-datasource-user=<%= scope['::continuent_install::int_replicationUser'] %>
-datasource-password=<%= scope['::continuent_install::int_replicationPassword'] %>
-datasource-port=<%= scope['::continuent_install::mysqlPort'] %>
-connector-listen-port=<%= scope['::continuent_install::connectorPort'] %>
-datasource-log-directory=/var/lib/mysql
-connector-user=<%= scope['::continuent_install::appUser'] %>
-connector-password=<%= scope['::continuent_install::appPassword'] %>
+  <% if scope.lookupvar('::continuent_install::prereq::mysqlj::mysqljLocation') != false %>
+mysql-connectorj-path=<%= scope.lookupvar('::continuent_install::prereq::mysqlj::mysqljLocation') %>
+  <% end %>
+datasource-user=<%= scope.lookupvar('::continuent_install::tungsten::repUser') %>
+datasource-password=<%= scope.lookupvar('::continuent_install::tungsten::repPassword') %>
+application-port=<%= scope.lookupvar('::continuent_install::tungsten::applicationPort') %>
+application-user=<%= scope.lookupvar('::continuent_install::tungsten::appUser') %>
+application-password=<%= scope.lookupvar('::continuent_install::tungsten::appPassword') %>
 skip-validation-check=MySQLPermissionsCheck
-<% if scope['::continuent_install::provisionNode']  %>
+  <% if scope.lookupvar('::continuent_install::tungsten::provision') == true %>
 start-and-report=false
-<% else %>
+  <% else %>
 start-and-report=true
-<% end %>
+  <% end %>
 
+  <% if scope.lookupvar('::continuent_install::tungsten::installReplicatorSoftware') != false %>
+    <% if scope.lookupvar('::continuent_install::tungsten::installClusterSoftware') != false %>
+[defaults.replicator]
+home-directory=/opt/replicator
+rmi-port=10002
+    <% end %>
+  <% end %>
 
-<% scope['::continuent_install::clusterData'].each_pair do |key, cluster| %>
+  <% scope.lookupvar('::continuent_install::tungsten::clusterData').each_pair do |key, cluster| %>
+    <% if (cluster.has_key?("topology") == false || cluster["topology"] == "clustered") %>
 [<%= key %>]
-members=<%= cluster['members'] %>
-connectors=<%= cluster['connectors'] %>
-master=<%= cluster['master'] %>
-<% if cluster['relay-source']  %>
-relay-source=<%= cluster['relay-source'] %>
-<% end %>
-<% end %>
-
-
-<% if scope['::continuent_install::compositeName'] != '' %>
-[<%= scope['::continuent_install::compositeName'] %>]
-composite-datasources=<%= scope['::continuent_install::compositeDS'] %>
-<% end %>
-
+      <% cluster.each_pair do |c_key, c_value| %>
+<%= c_key %>=<%= c_value %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% scope.lookupvar('::continuent_install::tungsten::clusterData').each_pair do |key, cluster| %>
+    <% if (cluster.has_key?("topology") == true && cluster["topology"] != "clustered") %>
+[<%= key %>]
+      <% cluster.each_pair do |c_key, c_value| %>
+<%= c_key %>=<%= c_value %>
+      <% end %>
+    <% end %>
+  <% end %>
 <% else %>
-
-    <% scope['::continuent_install::tungstenIniContents'].each do |iniLine| -%>
-        <%= iniLine %>
+    <% scope.lookupvar('::continuent_install::tungstenIniContents').each do |iniLine| -%>
+<%= iniLine %>
     <% end -%>
-
-
-
 <% end %>

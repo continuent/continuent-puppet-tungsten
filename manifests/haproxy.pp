@@ -25,7 +25,6 @@ class continuent_install::haproxy(
 	}
 	
 	if ($operatingsystem =~ /(?i:centos|redhat|oel)/) {
-		Anchor["continuent_install::tungsten"] ->
 		package { 'xinetd':
 			ensure => present,
 		} ->

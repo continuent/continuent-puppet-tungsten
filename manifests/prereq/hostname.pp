@@ -32,4 +32,9 @@ class continuent_install::prereq::hostname(
 		unless => "/usr/bin/test `hostname` = `/bin/cat /etc/hostname`",
 		require => File["/etc/hostname"],
 	}
+	
+	exec { "set-network-hostname":
+		command => "/bin/sed -i -e \"s/HOSTNAME=.*/HOSTNAME=$nodeHostName/\" /etc/sysconfig/network",
+		unless => "/usr/bin/test `grep HOSTNAME /etc/sysconfig/network` = 'HOSTNAME=$nodeHostName'",
+	}
 }

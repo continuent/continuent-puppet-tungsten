@@ -4,23 +4,29 @@ class continuent_install::prereq (
 	$nodeIpAddress								= $ipaddress,
 	$hostsFile										= [],
 	$installRVM										= false,
+	$installJava									= true,
+	$installNTP										= true,
+	$disableFirewall							= true,
 	
 	$replicatorRepo							= false,
 		
 	$installMysqlj								= true,
-		$mysqljLocation	= "/opt/mysql/mysql-connector-java-5.1.26-bin.jar",
 	
 	#Setting this to true should only be used to support testing as it's not secure
 	$installSSHKeys								 = false,
 ) inherits continuent_install::params {
-	include ntp
-	include java
-
 	package {'ruby': ensure => present, }
 	package {'wget': ensure => present, }
 	package {'sudo': ensure => present, }
 	package {'rsync': ensure => present, }
 	
+	if $disableFirewall == true {
+		class { "firewall":
+		  ensure => stopped
+		}
+	}
+	class { "continuent_install::prereq::selinux":
+	}
 	class { "continuent_install::prereq::unix_user":
 		installSSHKeys => $installSSHKeys
 	}
@@ -30,12 +36,8 @@ class continuent_install::prereq (
 	
 	anchor { "continuent_install::prereq::start": 
 		require => [
-			Class["ntp"],
-			Class["java"],
-			Package["ruby"],
 			Package["wget"],
 			Package["sudo"],
-			Package["rsync"],
 		]
 	} ->
 	class { "continuent_install::prereq::hostname": 
@@ -55,5 +57,23 @@ class continuent_install::prereq (
 			Class["continuent_install::prereq::unix_user"],
 			Class["continuent_install::prereq::rvm"],
 		]
+	}
+	
+	if $installNTP == true {
+		class { "ntp":
+			before => Anchor["continuent_install::prereq::start"]
+		}
+	}
+	
+	if $installJava == true {
+		if $operatingsystem == "Amazon" {
+			package { "java-1.6.0-openjdk": 
+				before => Anchor["continuent_install::prereq::start"]
+			}
+		} else {
+			class { "java":
+				before => Anchor["continuent_install::prereq::start"]
+			}
+		}
 	}
 }

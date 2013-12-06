@@ -29,7 +29,7 @@ module Puppet::Parser::Functions
       raise Puppet::ParseError, 'No userNames  passed'
     end
 
-    if tungstenIniContents == ''
+    if tungstenIniContents == '' || tungstenIniContents == false
       #No ini file exists so just use the replicationUser
       return replicationUser
     end

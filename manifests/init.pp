@@ -12,12 +12,6 @@
 #	 IP for the Host
 # [*installMysql*]
 #	 Install and configure MySQL TRUE|FALSE
-# [*mysqlPort*]
-#	 MySQL Port
-# [*mysqlServiceName*]
-#	 Name of the mysql service MYSQL or MYSQLD normally
-# [*serverId*]
-#	 Server Id
 # [*installHaproxy*]
 #	 Install and configure support for HAProxy TRUE|FALSE
 # [*haproxyUser*]
@@ -26,25 +20,19 @@
 #	 MySQL password for HAProxy
 # [*installMysqlj*]
 #	 Install MySQLJ Driver TRUE|FALSE
-# [*mysqljLocation*]
-#	 Location to download MySQL/J Driver to
 # [*provisionNode*]
 #	 Provision the node with data MySQL TRUE/FALSE
 # [*provisionDonor*]
 #	 Slave to use as the donor
-# [*installCluster*]
+# [*installClusterSoftware*]
 #	 Install and Configure Cluster TRUE|FALSE
-# [*masterUser*]
-#		 MySQL User for Cluster - will be created if it doesn't exist
-# [*masterPassword*]
-#	 MySQL password
 # [*appUser*]
 #		MySQL User for application - will be created if it doesn't exist
 # [*appPassword*]
 #	 MySQL password for HAProxy
 # [*clusterData*]
 #	 Configuration settings for the cluster
-# [*connectorPort*]
+# [*applicationPort*]
 #	 Port for Tungsten Connector
 #
 # Examples
@@ -96,6 +84,8 @@ class continuent_install (
 		$hostsFile											= [],
 		$installMysqlj									= true,
 		$installRVM											= false,
+		$installJava									= true,
+		$installNTP										= true,
 		$replicatorRepo									= false,
 		
 		#Setting this to true should only be used to support 
@@ -104,29 +94,28 @@ class continuent_install (
 		
 		$installMysql										= false,
 		$installSandbox									= false,
-		$installOracle									= false,
 		
-		# Not Working
+		$installReplicatorSoftware			= false,
+			$replicationUser							= tungsten,
+			$replicationPassword					= secret,
+		$installClusterSoftware					= false,
+			$clusterData									= false,
+			$compositeName								= false,
+			$appUser											= app_user,
+			$appPassword									= secret,
+			$applicationPort							= 3306,
+		$provisionNode									= false,
+			$provisionDonor								= false,
+		#This will override all the processing for the ini file as is should 
+		#contain an array of entires to create the ini file from
+		$tungstenIniContents						= false,
+		
 		$installHaproxy									= false,
 			$haproxyUser									= 'haproxy',
 			$haproxyPassword							= 'secret',
-
-		$installCluster									= false	,
-			$replicationUser							= 'tungsten',
-			$replicationPassword					= 'secret',
-			$appUser											= 'app_user',
-			$appPassword									= 'secret',
-			$clusterData									= '',
-			$connectorPort								= 3306,
-			$compositeName								= '',
-		$installReplicator							= false,
-		$provisionNode									= false,
-			$provisionDonor								= ''	,
-			
-		#This will override all the processing for the ini file as is should 
-		#contain an array of entires to create the ini file from
-		$tungstenIniContents						= '',
 ) {
+	anchor{ "continuent_install::dbms": }
+	
 	class{ "continuent_install::prereq":
 		nodeHostName => $nodeHostName,
 		nodeIpAddress => $nodeIpAddress,
@@ -135,29 +124,39 @@ class continuent_install (
 		installMysqlj => $installMysqlj,
 		installRVM => $installRVM,
 		installSSHKeys => $installSSHKeys,
+		installJava => $installJava,
+		installNTP => $installNTP,
 	}
 
 	if $installMysql == true {
-		include mysql
+		class{ "continuent_install::mysql": } ->
+		Anchor["continuent_install::dbms"]
 	}
 	
 	if $installSandbox == true {
-		include mysql_sandbox
+		class{ "continuent_install::mysql_sandbox": } ->
+		Anchor["continuent_install::dbms"]
 	}
 	
-	if $installOracle == true {
-		include oracle
-	}
-	
-	if $installCluster == true {
-	
-	}
-	
-	if $installReplicator == true {
-	
+	Anchor["continuent_install::dbms"] ->
+	class { "continuent_install::tungsten":
+		installReplicatorSoftware 			=> $installReplicatorSoftware,
+			repUser 											=> $replicationUser,
+			repPassword 									=> $replicationPassword,
+		installClusterSoftware 					=> $installClusterSoftware,
+			clusterData 									=> $clusterData,
+			compositeName 								=> $compositeName,
+			appUser 											=> $appUser,
+			appPassword 									=> $appPassword,
+			applicationPort 							=> $applicationPort,
+		tungstenIniContents 						=> $tungstenIniContents,
+		provision 											=> $provisionNode,
+			provisionDonor 								=> $provisionDonor,
 	}
 
 	if $installHaproxy == true {
-		include haproxy
+		class{"continuent_install::haproxy":
+			require => Class["continuent_install::tungsten"]
+		}
 	}
 }

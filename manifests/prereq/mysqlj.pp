@@ -35,5 +35,9 @@ class continuent_install::prereq::mysqlj (
 			group	=> "tungsten",
 			source => 'puppet:///modules/continuent_install/connectorj/mysql-connector-java-5.1.26-bin.jar',
 		}
+		
+		$mysqljLocation = "/opt/mysql/mysql-connector-java-5.1.26-bin.jar"
+	} else {
+		$mysqljLocation = false
 	}
 }

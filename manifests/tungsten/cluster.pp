@@ -17,11 +17,21 @@
 # limitations under the License.
 #
 class continuent_install::tungsten::cluster (
+	$location = true,
 ) inherits continuent_install::params {
 	include continuent_install::prereq
 	
-	Class["continuent_install::prereq"] ->
-	package { 'continuent-tungsten':
-		ensure => present,
+	if $location == true {
+		Class["continuent_install::prereq"] ->
+		package { 'continuent-tungsten':
+			ensure => present,
+		}
+	} elsif $location != false {
+		Class["continuent_install::prereq"] ->
+		package { "continuent-tungsten":
+			ensure => present,
+			provider => rpm,
+			source => $location,
+		}
 	}
 }

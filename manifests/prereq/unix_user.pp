@@ -80,6 +80,14 @@ class continuent_install::prereq::unix_user(
 		require => User["continuent_install::systemUser"]
 	}
 	
+	file { "/opt/replicator":
+		ensure => "directory",
+		owner	=> $systemUserName,
+		group	=> $systemUserName,
+		mode	 => 750,
+		require => User["continuent_install::systemUser"],
+	}
+	
 	file { "/etc/tungsten":
 		ensure => "directory",
 		owner	=> $systemUserName,

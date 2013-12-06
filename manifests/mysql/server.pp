@@ -6,7 +6,7 @@ class continuent_install::mysql::server (
 		warning 'The default master password is being used'
 	}
 	
-	$serverId	= generateServerId($continuent_install::prereq::nodeIpAddress)
+	$serverId	= fqdn_rand(5000,$::continuent_install::prereq::nodeIpAddress)
 	$sqlCheck	= "select * from mysql.user where user=''"
 	$sqlExec		= "delete from mysql.user where user='';flush privileges;"
 	
@@ -44,8 +44,13 @@ class continuent_install::mysql::server (
 		command => "mysqladmin -uroot password $masterPassword",
 		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u root"]
 	} ->
+	file { "${::root_home}/.my.cnf":
+	  content => template('continuent_install/my.cnf.pass.erb'),
+	  owner   => root,
+	  mode    => '0600',
+	} ->
 	exec { "remove-anon-users":
-		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u$masterUser -p$masterPassword -P$port -Be \"$sqlCheck\"|wc -l"],
-		command => "/usr/bin/mysql -u$masterUser -p$masterPassword -P$port -Be \"$sqlExec\"",
-	}
+		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheck\"|wc -l"],
+		command => "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlExec\"",
+	}	
 }
