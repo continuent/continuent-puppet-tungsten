@@ -27,6 +27,10 @@ class continuent_install::tungsten (
 	if $clusterData != false {
 		class{ "continuent_install::tungsten::ini": }->
 		anchor{ "continuent_install::tungsten::ini": }
+		
+		class{ "continuent_install::tungsten::update":
+			require => Anchor["continuent_install::tungsten::replicator"]
+		}
 	} else {
 		anchor{ "continuent_install::tungsten::ini": }
 	}
@@ -71,9 +75,5 @@ class continuent_install::tungsten (
 			donor => $provisionDonor,
 			require => Anchor["continuent_install::tungsten::replicator"]
 		}
-	}
-	
-	class{ "continuent_install::tungsten::update":
-		require => Anchor["continuent_install::tungsten::replicator"]
 	}
 }
