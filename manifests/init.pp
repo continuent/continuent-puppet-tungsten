@@ -84,8 +84,8 @@ class continuent_install (
 		$hostsFile											= [],
 		$installMysqlj									= true,
 		$installRVM											= false,
-		$installJava									= true,
-		$installNTP										= true,
+		$installJava										= true,
+		$installNTP											= $continuent_install::params::installNTP,
 		$replicatorRepo									= false,
 		
 		#Setting this to true should only be used to support 
@@ -113,7 +113,7 @@ class continuent_install (
 		$installHaproxy									= false,
 			$haproxyUser									= 'haproxy',
 			$haproxyPassword							= 'secret',
-) {
+) inherits continuent_install::params {
 	anchor{ "continuent_install::dbms": }
 	
 	class{ "continuent_install::prereq":

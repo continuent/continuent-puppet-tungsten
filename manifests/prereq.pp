@@ -5,7 +5,7 @@ class continuent_install::prereq (
 	$hostsFile										= [],
 	$installRVM										= false,
 	$installJava									= true,
-	$installNTP										= true,
+	$installNTP										= $continuent_install::params::installNTP,
 	$disableFirewall							= true,
 	
 	$replicatorRepo							= false,
