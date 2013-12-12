@@ -110,9 +110,6 @@ class continuent_install (
 		#contain an array of entires to create the ini file from
 		$tungstenIniContents						= false,
 		
-		$installHaproxy									= false,
-			$haproxyUser									= 'haproxy',
-			$haproxyPassword							= 'secret',
 ) inherits continuent_install::params {
 	anchor{ "continuent_install::dbms": }
 	
