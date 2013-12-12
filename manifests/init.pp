@@ -12,12 +12,6 @@
 #	 IP for the Host
 # [*installMysql*]
 #	 Install and configure MySQL TRUE|FALSE
-# [*installHaproxy*]
-#	 Install and configure support for HAProxy TRUE|FALSE
-# [*haproxyUser*]
-#	 MySQL User for HAProxy - will be created if it doesn't exist
-# [*haproxyPassword*]
-#	 MySQL password for HAProxy
 # [*installMysqlj*]
 #	 Install MySQLJ Driver TRUE|FALSE
 # [*provisionNode*]
