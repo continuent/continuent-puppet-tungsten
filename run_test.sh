@@ -9,6 +9,10 @@ fi
 mkdir -p /etc/puppet/modules/continuent_install/  > /dev/null
 cp -r /tmp/* /etc/puppet/modules/continuent_install/   > /dev/null
 
+
+
+
+
 cd /etc/puppet/modules/continuent_install/testing/classes
 puppet apply test_setup.pp
 
@@ -25,6 +29,11 @@ then
         puppet apply $module
    done
 fi
+
+puppet module install puppetlabs/stdlib
+puppet module install puppetlabs/ntp
+puppet module install puppetlabs/java
+puppet module install puppetlabs/firewall
 
 echo
 echo '----------------------------------------------------------'
