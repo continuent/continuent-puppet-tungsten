@@ -23,7 +23,7 @@
 # [*appUser*]
 #		MySQL User for application - will be created if it doesn't exist
 # [*appPassword*]
-#	 MySQL password for HAProxy
+#	 MySQL password for App User
 # [*clusterData*]
 #	 Configuration settings for the cluster
 # [*applicationPort*]
