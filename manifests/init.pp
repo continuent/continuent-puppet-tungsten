@@ -154,9 +154,4 @@ class continuent_install (
 			provisionDonor 								=> $provisionDonor,
 	}
 
-	if $installHaproxy == true {
-		class{"continuent_install::haproxy":
-			require => Class["continuent_install::tungsten"]
-		}
-	}
 }
