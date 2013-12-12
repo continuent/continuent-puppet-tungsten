@@ -12,12 +12,6 @@
 #	 IP for the Host
 # [*installMysql*]
 #	 Install and configure MySQL TRUE|FALSE
-# [*installHaproxy*]
-#	 Install and configure support for HAProxy TRUE|FALSE
-# [*haproxyUser*]
-#	 MySQL User for HAProxy - will be created if it doesn't exist
-# [*haproxyPassword*]
-#	 MySQL password for HAProxy
 # [*installMysqlj*]
 #	 Install MySQLJ Driver TRUE|FALSE
 # [*provisionNode*]
@@ -29,7 +23,7 @@
 # [*appUser*]
 #		MySQL User for application - will be created if it doesn't exist
 # [*appPassword*]
-#	 MySQL password for HAProxy
+#	 MySQL password for App User
 # [*clusterData*]
 #	 Configuration settings for the cluster
 # [*applicationPort*]
@@ -83,6 +77,7 @@ class continuent_install (
 		$nodeIpAddress									= $ipaddress,
 		$hostsFile											= [],
 		$installMysqlj									= true,
+          $mysqljLocation                               = false,
 		$installRVM											= false,
 		$installJava										= true,
 		$installNTP											= $continuent_install::params::installNTP,
@@ -110,9 +105,6 @@ class continuent_install (
 		#contain an array of entires to create the ini file from
 		$tungstenIniContents						= false,
 		
-		$installHaproxy									= false,
-			$haproxyUser									= 'haproxy',
-			$haproxyPassword							= 'secret',
 ) inherits continuent_install::params {
 	anchor{ "continuent_install::dbms": }
 	
@@ -122,6 +114,7 @@ class continuent_install (
 		hostsFile => $hostsFile,
 		replicatorRepo => $replicatorRepo,
 		installMysqlj => $installMysqlj,
+        mysqljLocation => $mysqljLocation,
 		installRVM => $installRVM,
 		installSSHKeys => $installSSHKeys,
 		installJava => $installJava,
@@ -154,9 +147,4 @@ class continuent_install (
 			provisionDonor 								=> $provisionDonor,
 	}
 
-	if $installHaproxy == true {
-		class{"continuent_install::haproxy":
-			require => Class["continuent_install::tungsten"]
-		}
-	}
 }

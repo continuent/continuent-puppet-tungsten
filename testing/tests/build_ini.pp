@@ -19,8 +19,9 @@
 class { 'continuent_install' :
       nodeHostName                => 'east-db1' ,
       nodeIpAddress               => "${::ipaddress}" ,
-      hostsFile                  => ["${::ipaddress},east-db1",'10.0.0.6,north-db1','10.0.0.7,north-db2','192.168.0.146,east-db2','192.168.0.147,west-db1','192.168.0.148,west-db2'],
-      installReplicator           => true   ,
+  hostsFile                  => ["${::ipaddress} east-db1",'10.0.0.6 north-db1','10.0.0.7 north-db2','192.168.0.146 east-db2','192.168.0.147 west-db1','192.168.0.148 west-db2'],
+
+  installReplicatorSoftware           => true   ,
       installMysqlj               => false ,
       installMysql                => true        ,
       tungstenIniContents => ['[fred]',
