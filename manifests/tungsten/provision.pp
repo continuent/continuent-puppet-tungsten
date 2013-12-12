@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 class continuent_install::tungsten::provision (
-	donor => undef,
+	$donor =  undef,
 ) inherits continuent_install::tungsten {
 	exec { "prov":
 		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/tungsten-replicator"],
