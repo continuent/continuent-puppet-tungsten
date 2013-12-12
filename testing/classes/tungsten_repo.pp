@@ -18,10 +18,14 @@
 #
 
 
-file {"/etc/yum.repos.d/tungsten.rep":
+file {"/etc/yum.repos.d/tungsten.repo":
   ensure => file,
   mode => 777,
   owner   => root,
   group   => root,
   source => '/etc/puppet/modules/continuent_install/testing/files/tungsten.repo',
+}
+
+host { 'yumtest.continuent.com':
+  ip => '23.21.169.95',
 }
