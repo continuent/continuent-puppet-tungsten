@@ -17,7 +17,8 @@
 # limitations under the License.
 #
 class continuent_install::prereq::mysqlj (
-	$enabled = true
+	$enabled = true ,
+    $location = false,
 ) {
 	if $enabled == true {
 		file { "/opt/mysql":
@@ -38,6 +39,6 @@ class continuent_install::prereq::mysqlj (
 		
 		$mysqljLocation = "/opt/mysql/mysql-connector-java-5.1.26-bin.jar"
 	} else {
-		$mysqljLocation = false
+		$mysqljLocation = $location
 	}
 }

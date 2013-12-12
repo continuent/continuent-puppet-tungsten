@@ -11,6 +11,7 @@ class continuent_install::prereq (
 	$replicatorRepo							= false,
 		
 	$installMysqlj								= true,
+    $mysqljLocation                         = false,
 	
 	#Setting this to true should only be used to support testing as it's not secure
 	$installSSHKeys								 = false,
@@ -50,7 +51,8 @@ class continuent_install::prereq (
 		replicatorRepo => $replicatorRepo,
 	} ->
 	class{ "continuent_install::prereq::mysqlj": 
-		enabled => $installMysqlj
+		enabled => $installMysqlj,
+        location => $mysqljLocation
 	} ->
 	anchor { "continuent_install::prereq::end": 
 		require => [
