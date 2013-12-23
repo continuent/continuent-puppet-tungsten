@@ -1,0 +1,14 @@
+{
+    "nodes": 6,
+    "description": "Install a sor cluster - MySQL pre installed",
+
+    "pre-reqs": [
+        "tungsten_repo.pp",
+        "install_mysql.pp"
+    ],
+
+    "checkResults": [
+        "clusterOk"
+
+    ]
+}

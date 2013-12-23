@@ -1,0 +1,10 @@
+{
+    "nodes": 1,
+    "description": "Install a Master Slave from an INI file",
+
+    "pre-reqs": [
+    ],
+
+    "checkResults": [
+    ]
+}

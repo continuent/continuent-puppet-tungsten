@@ -1,0 +1,10 @@
+{
+    "nodes": 1,
+    "description": "Install RVM",
+
+    "pre-reqs": [
+    ],
+
+    "checkResults": [
+    ]
+}

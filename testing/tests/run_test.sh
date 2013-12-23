@@ -6,15 +6,15 @@ then
     exit 1
 fi
 
-mkdir -p /etc/puppet/modules/continuent_install/  > /dev/null
-cp -r /tmp/* /etc/puppet/modules/continuent_install/   > /dev/null
+#mkdir -p /etc/puppet/modules/continuent_install/  > /dev/null
+#cp -r /tmp/* /etc/puppet/modules/continuent_install/   > /dev/null
 
 
 
 
 
-cd /etc/puppet/modules/continuent_install/testing/classes
-puppet apply test_setup.pp
+cd /vagrant/classes
+sudo puppet apply test_setup.pp
 
 #run any extra puppet classes to support testing
 if [ ! -z "$2" ]
@@ -26,21 +26,21 @@ then
         echo
         echo "   ------ Applying test module $module  -------"
         echo
-        puppet apply $module
+        sudo puppet apply $module
    done
 fi
 
-puppet module install puppetlabs/stdlib
-puppet module install puppetlabs/ntp
-puppet module install puppetlabs/java
-puppet module install puppetlabs/firewall
+sudo puppet module install puppetlabs/stdlib
+sudo puppet module install puppetlabs/ntp
+sudo puppet module install puppetlabs/java
+sudo puppet module install puppetlabs/firewall
 
 echo
 echo '----------------------------------------------------------'
 echo "--  RUNNING TEST $1                         "
 echo '----------------------------------------------------------'
 echo
-puppet apply /etc/puppet/modules/continuent_install/testing/tests/$1
+sudo puppet apply /vagrant/tests/$1
 
  
 

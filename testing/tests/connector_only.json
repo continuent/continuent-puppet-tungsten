@@ -1,0 +1,13 @@
+{
+    "nodes": 1,
+    "description": "Install a connector only machine",
+
+    "pre-reqs": [
+        "tungsten_repo.pp"
+    ],
+
+    "checkResults": [
+        "connectorOk"
+
+    ]
+}

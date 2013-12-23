@@ -16,19 +16,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class { 'continuent_install' :
-      nodeHostName                => 'east-db1' ,
-      nodeIpAddress               => "${::ipaddress}" ,
-  hostsFile                  => ["${::ipaddress} east-db1",'10.0.0.6 north-db1','10.0.0.7 north-db2','192.168.0.146 east-db2','192.168.0.147 west-db1','192.168.0.148 west-db2'],
 
-  installReplicatorSoftware           => true   ,
-      installMysqlj               => false ,
-      installMysql                => true        ,
-      tungstenIniContents => ['[fred]',
-                              'members=east-db1',
-                              'master=east-db1',
-                              'replication-password=password',
-                              'replication-user=repuser',
-                              'start=true',
-                              'topology=master-slave']
+class { 'continuent_install' :
+  hostsFile                  => ["192.168.11.101 db1.home"],
+
+  installReplicatorSoftware   => true,
+  replicatorRepo              => true,
+  installMysqlj               => false,
+  installMysql                => true,
+  tungstenIniContents => ['[master]',
+  'members=db1',
+  'master=db1',
+  'replication-password=password',
+  'replication-user=repuser',
+  'start=true',
+  'topology=master-slave']
+
 }
+
+

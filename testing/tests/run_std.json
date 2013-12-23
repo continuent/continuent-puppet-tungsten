@@ -1,0 +1,13 @@
+{
+    "nodes": 2,
+    "description": "Install a standard cluster",
+
+    "pre-reqs": [
+        "tungsten_repo.pp"
+    ],
+
+    "checkResults": [
+        "clusterOk"
+
+    ]
+}
