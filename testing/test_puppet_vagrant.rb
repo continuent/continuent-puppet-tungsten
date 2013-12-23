@@ -54,7 +54,7 @@ loop = 1
 
 #tests to run
 runTypes = Dir['tests/*.pp']
-runTypes = %w(run_std_no_mysqlj.pp)
+#runTypes = %w(run_std_no_mysqlj.pp)
 
 runTypes.sort!
 noOfTests=runTypes.count
