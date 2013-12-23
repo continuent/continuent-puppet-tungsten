@@ -52,7 +52,7 @@ loop = 1
 
 #tests to run
 runTypes = Dir['tests/*.pp']
-#runTypes = %w(run_std.pp)
+runTypes = %w(run_sor.pp)
 
 runTypes.sort!
 noOfTests=runTypes.count
@@ -107,12 +107,13 @@ puts "Test run consists of #{noOfTests} tests"
             system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runType} #{runDetails['pre-reqs'].join(',')}'"
           end
 
-          pp puppetOutput
           puppetError=false
           if puppetOutput.include?('Error:')
             puppetError=true
             puts '>>>>>>>>>>>>>>>> PUPPET ERROR <<<<<<<<<<<<<< '
             allTestsPassed=false
+          else
+            puts "     - Puppet Modules installed on db#{n} with no errors "
           end
         end
 
@@ -151,7 +152,7 @@ puts "Test run consists of #{noOfTests} tests"
         #end
 
 
-        #system ('vagrant destroy -f')
+        system ('vagrant destroy -f')
         testNumber=testNumber+1
     end
 
