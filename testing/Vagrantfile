@@ -1,6 +1,6 @@
 
 Vagrant.configure("2") do |vcfg|
-	(1..6).each{|i|
+	(1..1).each{|i|
 		name = "db#{i}".to_sym()
 		vcfg.vm.define name do |config|
 			# Change this to centos-64-x64 if you downloaded the 64-bit image
