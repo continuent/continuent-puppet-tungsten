@@ -52,7 +52,7 @@ loop = 1
 
 #tests to run
 runTypes = Dir['tests/*.pp']
-runTypes = %w(run_sor.pp)
+runTypes = %w(run_std_no_mysql.pp)
 
 runTypes.sort!
 noOfTests=runTypes.count
@@ -61,7 +61,7 @@ puts "Test run consists of #{noOfTests} tests"
 #Some test require MySQL to be installed on the hosts already - simulating a pre-installed customer config
 #putting the test in this array will trigger an extra test puppet class to be called to pre-install and config mysql
 #before running the test
-#requireMysql = %w(run_std_no_mysql.pp run_sor_no_mysql.pp run_no_install_no_mysql.pp)
+#requireMysql = %w(run_sor_no_mysql.pp run_no_install_no_mysql.pp)
 
 #Some test require MySQLJ to be installed on the hosts already - simulating a pre-installed customer config
 #putting the test in this array will trigger an extra test puppet class to be called to pre-install and config mysql

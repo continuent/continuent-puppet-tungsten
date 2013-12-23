@@ -1,0 +1,14 @@
+{
+    "nodes": 2,
+    "description": "Install a standard cluster - MySQL pre installed",
+
+    "pre-reqs": [
+        "tungsten_repo.pp",
+        "install_mysql.pp"
+    ],
+
+    "checkResults": [
+        "clusterOk"
+
+    ]
+}
