@@ -23,7 +23,7 @@ file {"/etc/yum.repos.d/tungsten.repo":
   mode => 777,
   owner   => root,
   group   => root,
-  source => '/etc/puppet/modules/continuent_install/testing/files/tungsten.repo',
+  source => '/vagrant/files/tungsten.repo',
 }
 
 host { 'yumtest.continuent.com':

@@ -17,28 +17,12 @@
 # limitations under the License.
 #
 
-file {"/etc/yum.repos.d/tungsten.repo":
-ensure => file,
-mode => 777,
-owner   => root,
-group   => root,
-content => '[tungsten]
-name=Centos local Repo
-baseurl=http://yumtest.continuent.com/
-enabled=1
-gpgcheck=0',
-}
-
-host { 'yumtest.continuent.com':
-ip => '23.21.169.95',
-}
-
 
 class { 'continuent_install' :
-  hostsFile                  => ["192.168.11.101 db1",'192.168.11.102 db2','192.168.11.103 db3','192.168.11.104 db4'],
+  hostsFile                  => ["192.168.11.101 db1",'192.168.11.102 db2'],
 
   clusterData                => {
-  east => { 'members' => 'db1,db2,db3,db4', 'connectors' => 'db1,db2', 'master' => 'db1' },
+  east => { 'members' => 'db1.home,db2,db3,db4', 'connectors' => 'db1.home,db2', 'master' => 'db1.home' },
   } ,
   installSSHKeys => true,
   installMysql => true        ,
