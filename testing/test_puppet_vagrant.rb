@@ -29,7 +29,7 @@ require 'tempfile'
 
 
 
-stopOnFailure=false
+stopOnFailure=true
 
 vagrantType='vb'
 #vagrantType'ec2'
@@ -100,15 +100,16 @@ runTypes.each do |runType|
       system ("vagrant ssh db#{n} -c 'sudo cp -r /vagrant/module/* /etc/puppet/modules/continuent_install'")
 
 
+      puppetOutput=nil
       if runDetails.has_key?('scriptsPerNode')
         puts "   - Node db#{n}, module #{runDetails['scriptsPerNode'][n-1]}"
         puppetOutput = capture_stdout do
-          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runDetails['scriptsPerNode'][n-1]} #{runDetails['pre-reqs'].join(',')}'"
+          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runDetails['scriptsPerNode'][n-1]} #{runDetails['pre-reqs'].join(',')} 2>&1'"
         end
       else
         puts "   - Node db#{n}, module #{runTypeShort}.pp"
         puppetOutput = capture_stdout do
-          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runTypeShort}.pp #{runDetails['pre-reqs'].join(',')}'"
+          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runTypeShort}.pp #{runDetails['pre-reqs'].join(',')} 2>&1'"
         end
       end
 
@@ -117,6 +118,7 @@ runTypes.each do |runType|
       if puppetOutput.include?('Error:')
         puppetError=true
         puts '>>>>>>>>>>>>>>>> PUPPET ERROR <<<<<<<<<<<<<< '
+        puts puppetOutput
         allTestsPassed=false
       else
         puts "     - Puppet Modules installed on db#{n} with no errors "
