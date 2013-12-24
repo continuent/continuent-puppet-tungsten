@@ -19,6 +19,9 @@
 #
 #
 
+#@TODO Catch puppet output on failed runs
+#@TODO Add checks to ensure clusters,connectors etc actaully launch
+
 require 'rubygems'
 require 'json'
 require 'pp'
@@ -53,7 +56,7 @@ end
 loop = 1
 
 #tests to run
-runTypes = Dir['tests/*.pp']
+runTypes = Dir['tests/*.json']
 #runTypes = %w(run_std_no_mysqlj.pp)
 
 runTypes.sort!
@@ -89,7 +92,7 @@ runTypes.each do |runType|
       system ("vagrant ssh db#{n} -c 'sudo cp -r /vagrant/module/* /etc/puppet/modules/continuent_install'")
 
      puppetOutput = capture_stdout do
-        system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runType} #{runDetails['pre-reqs'].join(',')}'"
+        system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runTypeShort}.pp #{runDetails['pre-reqs'].join(',')}'"
      end
 
       puppetError=false
