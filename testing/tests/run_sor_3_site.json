@@ -1,0 +1,13 @@
+{
+    "nodes": 6,
+    "description": "Install a sor cluster",
+
+    "pre-reqs": [
+        "tungsten_repo.pp"
+    ],
+
+    "checkResults": [
+        "clusterOk"
+
+    ]
+}
