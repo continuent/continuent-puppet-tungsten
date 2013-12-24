@@ -6,13 +6,6 @@ then
     exit 1
 fi
 
-#mkdir -p /etc/puppet/modules/continuent_install/  > /dev/null
-#cp -r /tmp/* /etc/puppet/modules/continuent_install/   > /dev/null
-
-
-
-
-
 cd /vagrant/classes
 sudo puppet apply test_setup.pp
 
@@ -40,7 +33,7 @@ echo '----------------------------------------------------------'
 echo "--  RUNNING TEST $1                         "
 echo '----------------------------------------------------------'
 echo
-sudo puppet apply /vagrant/tests/$1
+sudo puppet apply /vagrant/tests/scripts/$1
 
  
 
