@@ -1,0 +1,18 @@
+{
+    "nodes": 2,
+    "description": "Install a standard cluster with node2 provisioned from node1",
+
+    "pre-reqs": [
+        "tungsten_repo.pp"
+    ],
+
+    "checkResults": [
+        "clusterOk"
+
+    ],
+
+    "scriptsPerNode" : [
+         "prov_setup.pp",
+         "prov_run.pp"
+    ]
+}

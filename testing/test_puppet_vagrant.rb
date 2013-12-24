@@ -57,7 +57,7 @@ loop = 1
 
 #tests to run
 runTypes = Dir['tests/*.json']
-#runTypes = %w(run_std_no_mysqlj.pp)
+runTypes = %w(provision.json)
 
 runTypes.sort!
 noOfTests=runTypes.count
@@ -73,6 +73,14 @@ runTypes.each do |runType|
 
     runDetails=JSON.parse(File.read("tests/#{runTypeShort}.json"))
     pp runDetails
+
+    if runDetails.has_key?('scriptsPerNode')
+      if runDetails['scriptsPerNode'].count != runDetails['nodes']
+        puts "#{runDetails['nodes']} nodes have been specified for this run #{runTypeShort} but only"
+        puts "#{runDetails['scriptsPerNode'].count} scripts have been specifed"
+        exit 2
+      end
+    end
 
     puts "(#{testNumber}/#{noOfTests}) Running test #{runType} - #{runDetails['description']}  "
     puts '   - calling Vagrant to launch a clean node'
@@ -91,9 +99,19 @@ runTypes.each do |runType|
       system ("vagrant ssh db#{n} -c 'sudo mkdir /etc/puppet/modules/continuent_install'")
       system ("vagrant ssh db#{n} -c 'sudo cp -r /vagrant/module/* /etc/puppet/modules/continuent_install'")
 
-     puppetOutput = capture_stdout do
-        system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runTypeShort}.pp #{runDetails['pre-reqs'].join(',')}'"
-     end
+
+      if runDetails.has_key?('scriptsPerNode')
+        puts "   - Node db#{n}, module #{runDetails['scriptsPerNode'][n-1]}"
+        puppetOutput = capture_stdout do
+          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runDetails['scriptsPerNode'][n-1]} #{runDetails['pre-reqs'].join(',')}'"
+        end
+      else
+        puts "   - Node db#{n}, module #{runTypeShort}.pp"
+        puppetOutput = capture_stdout do
+          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runTypeShort}.pp #{runDetails['pre-reqs'].join(',')}'"
+        end
+      end
+
 
       puppetError=false
       if puppetOutput.include?('Error:')
