@@ -29,5 +29,5 @@ class { 'continuent_install' :
   installMysql => true        ,
   installClusterSoftware            => true ,
   provisionNode             => true,
-  provisionDonor           => 'db1'
+  provisionDonor           => 'db1.home'
 }
