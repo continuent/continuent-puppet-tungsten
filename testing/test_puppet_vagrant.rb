@@ -20,7 +20,7 @@
 #
 
 #@TODO Catch puppet output on failed runs
-#@TODO Add checks to ensure clusters,connectors etc actaully launch
+
 
 require 'rubygems'
 require 'json'
@@ -122,6 +122,19 @@ runTypes.each do |runType|
         allTestsPassed=false
       else
         puts "     - Puppet Modules installed on db#{n} with no errors "
+      end
+
+      if runDetails['checkResults'].include?('clusterOk')
+        output = capture_stdout do
+          system "vagrant ssh db#{n} -c 'sudo /opt/continuent/tungsten/cluster-home/bin/check_tungsten_online 2>&1'"
+        end
+
+        if !output.include?('OK')
+          puts '>>>>>>>>>>>>>>>> CLUSTER ERROR <<<<<<<<<<<<<< '
+          puts output
+          allTestsPassed=false
+        end
+
       end
     end
 
