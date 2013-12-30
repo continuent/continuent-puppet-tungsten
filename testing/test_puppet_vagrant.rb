@@ -20,6 +20,7 @@
 #
 
 #@TODO Catch puppet output on failed runs
+#@TODO Make rpm a parameter
 
 
 require 'rubygems'
@@ -38,10 +39,13 @@ vagrantType='vb'
 allTestsPassed=true
 
 
+rpmFile="/tmp/continuent-tungsten-2.0.1-798.noarch.rpm"
+rpmFileShort=File.basename(rpmFile)
 
 system ("rm -rf module")
 system ("mkdir module")
 system ("cp -r ../{files,lib,manifests,templates} module/")
+system ("cp #{rpmFile} .")
 def capture_stdout
   stdout = $stdout.dup
   Tempfile.open 'stdout-redirect' do |temp|
@@ -104,12 +108,12 @@ runTypes.each do |runType|
       if runDetails.has_key?('scriptsPerNode')
         puts "   - Node db#{n}, module #{runDetails['scriptsPerNode'][n-1]}"
         puppetOutput = capture_stdout do
-          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runDetails['scriptsPerNode'][n-1]} #{runDetails['pre-reqs'].join(',')} 2>&1'"
+          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runDetails['scriptsPerNode'][n-1]} #{rpmFileShort} #{runDetails['pre-reqs'].join(',')} 2>&1'"
         end
       else
         puts "   - Node db#{n}, module #{runTypeShort}.pp"
         puppetOutput = capture_stdout do
-          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runTypeShort}.pp #{runDetails['pre-reqs'].join(',')} 2>&1'"
+          system "vagrant ssh db#{n} -c 'cd /vagrant/tests; sh run_test.sh #{runTypeShort}.pp #{rpmFileShort} #{runDetails['pre-reqs'].join(',')} 2>&1'"
         end
       end
 

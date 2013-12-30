@@ -10,9 +10,9 @@ cd /vagrant/classes
 sudo puppet apply test_setup.pp
 
 #run any extra puppet classes to support testing
-if [ ! -z "$2" ]
+if [ ! -z "$3" ]
 then
-   IFS=', ' read -a array <<< "$2"
+   IFS=', ' read -a array <<< "$3"
    for module in "${array[@]}"
    do
         module=$(echo "$module" | sed "s/,//g")
@@ -22,6 +22,12 @@ then
         sudo puppet apply $module
    done
 fi
+
+if [ ! -z $2 ]
+then
+    mv /vagrant/$2 /vagrant/ct.rpm
+fi
+
 
 sudo puppet module install puppetlabs/stdlib
 sudo puppet module install puppetlabs/ntp
