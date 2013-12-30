@@ -3,7 +3,6 @@
     "description": "Install a standard cluster with node2 provisioned from node1",
 
     "pre-reqs": [
-        "tungsten_repo.pp"
     ],
 
     "checkResults": [

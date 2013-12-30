@@ -8,7 +8,6 @@ Each test is described in a json file. For basic tests where all the nodes are p
     	"description": "Install a standard cluster",
 
     	"pre-reqs": [
-        	"tungsten_repo.pp"
     	],
 
     	"checkResults": [
@@ -24,7 +23,6 @@ If each node needs a different script run on it add the 'scriptsPerNode' array e
     	"description": "Install a standard cluster",
 
     	"pre-reqs": [
-        	"tungsten_repo.pp"
     	],
 
     	"checkResults": [

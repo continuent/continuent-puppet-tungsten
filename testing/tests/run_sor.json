@@ -3,7 +3,6 @@
     "description": "Install a composite cluster",
 
     "pre-reqs": [
-        "tungsten_repo.pp"
     ],
 
     "checkResults": [

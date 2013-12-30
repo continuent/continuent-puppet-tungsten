@@ -57,7 +57,7 @@ loop = 1
 
 #tests to run
 runTypes = Dir['tests/*.json']
-runTypes = %w(provision.json)
+runTypes = %w(run_std.json)
 
 runTypes.sort!
 noOfTests=runTypes.count
