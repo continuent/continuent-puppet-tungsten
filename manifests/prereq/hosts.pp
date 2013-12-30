@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 class continuent_install::prereq::hosts(
-	$hostsFile = [],
+	$hostsFile = []
 ) {
 	#Add the hosts for all of the nodes
 	define createHosts {

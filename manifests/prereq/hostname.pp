@@ -19,7 +19,8 @@
 class continuent_install::prereq::hostname(
 	$nodeHostName									= $fqdn,
 ) {
-	file { "/etc/hostname":
+	file { "continuent-hostname":
+        path => '/etc/hostname',
 		ensure => present,
 		owner => root,
 		group => root,
@@ -30,7 +31,7 @@ class continuent_install::prereq::hostname(
 	exec { "set-hostname":
 		command => "/bin/hostname -F /etc/hostname",
 		unless => "/usr/bin/test `hostname` = `/bin/cat /etc/hostname`",
-		require => File["/etc/hostname"],
+		require => File["continuent-hostname"],
 	}
 	
 	exec { "set-network-hostname":
