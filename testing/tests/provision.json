@@ -1,5 +1,5 @@
 {
-    "nodes": 2,
+    "nodes": 3,
     "description": "Install a standard cluster with node2 provisioned from node1",
 
     "pre-reqs": [
@@ -11,6 +11,7 @@
     ],
 
     "scriptsPerNode" : [
+         "prov_setup.pp",
          "prov_setup.pp",
          "prov_run.pp"
     ]
