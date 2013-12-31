@@ -25,7 +25,7 @@ fi
 
 if [ ! -z $2 ]
 then
-    mv /vagrant/$2 /vagrant/ct.rpm
+    cp /vagrant/$2 /vagrant/ct.rpm
 fi
 
 
