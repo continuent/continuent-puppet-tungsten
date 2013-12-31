@@ -17,15 +17,15 @@
 # limitations under the License.
 #
 class { 'continuent_install' :
-       hostsFile                  => ["192.168.11.101 db1.home",'192.168.11.102 db2.home','192.168.11.103 db3.home',
-                '192.168.11.104 db4.home','192.168.11.105 db5.home','192.168.11.106 db6.home'],
+       hostsFile                  => ["192.168.11.101 db1.vagrant",'192.168.11.102 db2.vagrant','192.168.11.103 db3.vagrant',
+                '192.168.11.104 db4.vagrant','192.168.11.105 db5.vagrant','192.168.11.106 db6.vagrant'],
 
   clusterData                => {
-      east => { 'members' => 'db1.home,db2.home,db3.home', 'connectors' => 'db1.home,db2.home,db3.home', 'master' => 'db1.home' },
-      west => { 'members' => 'db4.home,db5.home,db6.home', 'connectors' => 'db4.home,db5.home,db6.home', 'master' => 'db4.home' ,'relay-source'=> 'east'},
+      east => { 'members' => 'db1.vagrant,db2.vagrant,db3.vagrant', 'connectors' => 'db1.vagrant,db2.vagrant,db3.vagrant', 'master' => 'db1.vagrant' },
+      west => { 'members' => 'db4.vagrant,db5.vagrant,db6.vagrant', 'connectors' => 'db4.vagrant,db5.vagrant,db6.vagrant', 'master' => 'db4.vagrant' ,'relay-source'=> 'east'},
       } ,
       compositeName              => 'world' ,
-      installClusterSoftware            => true,
+      installClusterSoftware            => "/vagrant/ct.rpm"   ,
       installMysql => true        ,
 
 }
