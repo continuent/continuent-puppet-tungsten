@@ -11,11 +11,7 @@ application-port=<%= scope.lookupvar('::continuent_install::tungsten::applicatio
 application-user=<%= scope.lookupvar('::continuent_install::tungsten::appUser') %>
 application-password=<%= scope.lookupvar('::continuent_install::tungsten::appPassword') %>
 skip-validation-check=MySQLPermissionsCheck
-  <% if scope.lookupvar('::continuent_install::tungsten::provision') == true %>
-start-and-report=false
-  <% else %>
 start-and-report=true
-  <% end %>
 
   <% if scope.lookupvar('::continuent_install::tungsten::installReplicatorSoftware') != false %>
     <% if scope.lookupvar('::continuent_install::tungsten::installClusterSoftware') != false %>

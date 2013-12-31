@@ -23,12 +23,7 @@ class continuent_install::tungsten::provision (
 		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/tungsten-replicator"],
 		environment => "HOME=/root",
 		logoutput => true,
-		command => "/opt/continuent/tungsten/tungsten-replicator/scripts/tungsten_provision_slave --source=$donor --restore-to-datadir",
+		command => "/opt/continuent/tungsten/tungsten-replicator/scripts/tungsten_provision_slave --source=$donor --restore-to-datadir ",
 	}
 
-	exec { "start-services":
-		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/"],
-		command => "/opt/continuent/tungsten/cluster-home/bin/startall",
-		require => Exec['prov'],
-	}
 }
