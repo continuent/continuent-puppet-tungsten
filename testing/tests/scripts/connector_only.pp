@@ -20,9 +20,9 @@ class { 'continuent_install' :
   hostsFile                  => ["192.168.11.101 db1",'192.168.11.102 db2'],
 
   clusterData                => {
-  east => { 'members' => 'db2.home,db3,db4', 'connectors' => 'db1.home,db2', 'master' => 'db2.home' },
+  east => { 'members' => 'db2.vagrant,db3.vagrant,db4.vagrant', 'connectors' => 'db1.vagrant,db2.vagrant', 'master' => 'db2.vagrant' },
   } ,
   installSSHKeys => true,
   installMysql => true        ,
-  installClusterSoftware            => true
+  installClusterSoftware            => "/vagrant/ct.rpm"
 }
