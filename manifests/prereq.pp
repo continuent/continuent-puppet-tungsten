@@ -15,6 +15,7 @@ class continuent_install::prereq (
 	
 	#Setting this to true should only be used to support testing as it's not secure
 	$installSSHKeys								 = false,
+    $skipHostConfig           = false,
 ) inherits continuent_install::params {
 	package {'ruby': ensure => present, }
 	package {'wget': ensure => present, }
@@ -26,6 +27,12 @@ class continuent_install::prereq (
 		  ensure => stopped
 		}
 	}
+
+    if $skipHostConfig == false {
+        class { "continuent_install::prereq::hostname":
+          nodeHostName => $nodeHostName
+        }
+    }
 	class { "continuent_install::prereq::selinux":
 	}
 	class { "continuent_install::prereq::unix_user":
@@ -41,10 +48,7 @@ class continuent_install::prereq (
 			Package["sudo"],
 		]
 	} ->
-	class { "continuent_install::prereq::hostname": 
-		nodeHostName => $nodeHostName
-	} ->
-	class { "continuent_install::prereq::hosts": 
+	class { "continuent_install::prereq::hosts":
 		hostsFile => $hostsFile,
 	} ->
 	class{ "continuent_install::prereq::repo": 
