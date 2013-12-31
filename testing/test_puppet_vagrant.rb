@@ -128,7 +128,13 @@ runTypes.each do |runType|
         puts "     - Puppet Modules installed on db#{n} with no errors "
       end
 
+
+    end
+
+    #Run Checks
+    for n in 1..runDetails['nodes']
       if runDetails['checkResults'].include?('clusterOk')
+        puts "     - running clusterOk check on node #{n} "
         output = capture_stdout do
           system "vagrant ssh db#{n} -c 'sudo /opt/continuent/tungsten/cluster-home/bin/check_tungsten_online 2>&1'"
         end
