@@ -41,6 +41,11 @@ rmi-port=10002
       <% end %>
     <% end %>
   <% end %>
+
+<% if scope.lookupvar('::continuent_install::tungsten::compositeName') != '' %>
+[<%= scope.lookupvar('::continuent_install::tungsten::compositeName') %>]
+composite-datasources=<%= scope.lookupvar('::continuent_install::tungsten::ini::compositeInfo') %>
+<% end %>
 <% else %>
     <% scope.lookupvar('::continuent_install::tungstenIniContents').each do |iniLine| -%>
 <%= iniLine %>
