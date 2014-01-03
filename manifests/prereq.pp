@@ -16,10 +16,14 @@ class continuent_install::prereq (
 	#Setting this to true should only be used to support testing as it's not secure
 	$installSSHKeys								 = false,
     $skipHostConfig           = false,
+    $skipSudo                 = false,
 ) inherits continuent_install::params {
 	package {'ruby': ensure => present, }
 	package {'wget': ensure => present, }
-	package {'sudo': ensure => present, }
+
+    if $skipSudo == false {
+	  package {'sudo': ensure => present, }
+    }
 	package {'rsync': ensure => present, }
 	
 	if $disableFirewall == true {

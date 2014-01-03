@@ -105,7 +105,8 @@ class continuent_install (
 		#contain an array of entires to create the ini file from
 		$tungstenIniContents						= false,
         #If this is set no setting of hostname will be done
-        $skipHostConfig                             = false
+        $skipHostConfig                             = false,
+        $skipSudo                                   = false
 		
 ) inherits continuent_install::params {
 	anchor{ "continuent_install::dbms": }
@@ -121,7 +122,8 @@ class continuent_install (
 		installSSHKeys => $installSSHKeys,
 		installJava => $installJava,
 		installNTP => $installNTP,
-        skipHostConfig => $skipHostConfig
+        skipHostConfig => $skipHostConfig,
+        skipSudo       => $skipSudo
 	}
 
 	if $installMysql == true {
