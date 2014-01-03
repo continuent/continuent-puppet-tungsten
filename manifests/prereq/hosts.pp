@@ -23,7 +23,6 @@ class continuent_install::prereq::hosts(
 	#Add the hosts for all of the nodes
       define createHosts  ($hostsFile=$title, $skipHostConfig) {
 		$servers = split($hostsFile, ' ')
-        warning $skipHostConfig
         if $skipHostConfig == false {
           host { $servers[1]:
             ip => $servers[0]
