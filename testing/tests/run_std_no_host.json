@@ -1,0 +1,13 @@
+{
+    "nodes": 3,
+    "description": "Install a standard cluster without hostname config",
+
+    "pre-reqs": [
+        "host.pp"
+    ],
+
+    "checkResults": [
+        "clusterOk"
+
+    ]
+}
