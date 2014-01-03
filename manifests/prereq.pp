@@ -50,6 +50,7 @@ class continuent_install::prereq (
 	} ->
 	class { "continuent_install::prereq::hosts":
 		hostsFile => $hostsFile,
+        skipHostConfig =>  $skipHostConfig,
 	} ->
 	class{ "continuent_install::prereq::repo": 
 		replicatorRepo => $replicatorRepo,

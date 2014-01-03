@@ -17,15 +17,26 @@
 # limitations under the License.
 #
 class continuent_install::prereq::hosts(
-	$hostsFile = []
+	$hostsFile = []  ,
+    $skipHostConfig = false
 ) {
 	#Add the hosts for all of the nodes
-	define createHosts {
-		$servers = split($name, ' ')
-		host { $servers[1]:
-			ip => $servers[0],
-			require => [Exec["set-hostname"]]
-		}
+      define createHosts  ($hostsFile=$title, $skipHostConfig) {
+		$servers = split($hostsFile, ' ')
+        warning $skipHostConfig
+        if $skipHostConfig == false {
+          host { $servers[1]:
+            ip => $servers[0]
+          }
+        }  else {
+          if $servers[1] != $fqdn {
+              host { $servers[1]:
+                ip => $servers[0]
+              }
+          }
+        }
+
 	}
-	createHosts { $hostsFile: }
+    createHosts { $hostsFile:
+          skipHostConfig => $skipHostConfig }
 }
