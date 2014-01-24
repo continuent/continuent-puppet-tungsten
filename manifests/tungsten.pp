@@ -54,7 +54,10 @@ class continuent_install::tungsten (
 	if $installClusterSoftware != false {
 		class{ "continuent_install::tungsten::cluster": 
 			location => $installClusterSoftware,
-			require => Anchor["continuent_install::tungsten::create-users"]
+			require => [
+				Anchor["continuent_install::tungsten::create-users"],
+				Anchor["continuent_install::tungsten::ini"],
+			]
 		} ->
 		anchor{ "continuent_install::tungsten::cluster": }
 	} else {
@@ -63,7 +66,10 @@ class continuent_install::tungsten (
 	
 	if $installReplicatorSoftware == true {
 		class{ "continuent_install::tungsten::replicator": 
-			require => Anchor["continuent_install::tungsten::cluster"]
+			require => [
+				Anchor["continuent_install::tungsten::cluster"],
+				Anchor["continuent_install::tungsten::ini"],
+			]
 		} ->
 		anchor{ "continuent_install::tungsten::replicator": }
 	} else {
