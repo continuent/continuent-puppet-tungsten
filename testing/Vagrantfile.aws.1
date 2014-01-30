@@ -1,0 +1,56 @@
+#AWS Access and Secret Key for the AWS Account
+ACCESS_KEY = "REPLACE_VALUE"
+SECRET_ACCESS_KEY = "AKIAJVRXW36NE6ZQPRHQ"
+
+#AWS Keypair name to use in the launched EC2 instance
+SSH_KEYPAIR = "lWHymBvZ7TtGpM8POSixtIV6wQtr6Jvul1uDi7Gs"
+
+#Name of the local private SSH key to use to connect to the EC2 Instances
+SSH_PRIVATE_KEY = "clouddev_aws"
+
+#Used to tag EC2 instances, use a unique name if sharing an AWS account
+GROUP = File.basename(Dir.getwd)
+
+Vagrant.configure("2") do |vcfg|
+	(1..1).each{|i|
+		name = "db#{i}".to_sym()
+		vcfg.vm.define name do |config|
+			config.vm.box = "dummy-aws"
+		
+			config.vm.provider :aws do |aws, override|
+				aws.access_key_id = ACCESS_KEY
+				aws.secret_access_key = SECRET_ACCESS_KEY
+				aws.keypair_name = SSH_KEYPAIR
+				
+				aws.tags = {
+					Name: "#{name.to_s()}.#{GROUP}",
+					VagrantGroup: GROUP,
+					Vagrant: 1,
+					CreatedAt: Time.now.strftime('%Y-%m-%dT%l:%M:%S')
+				}
+	
+				# Amazon Linux AMI in us-east-1	
+				aws.ami = "ami-83e4bcea"
+				# Disable the requiretty setting and install puppet
+				aws.user_data = "#!/bin/bash\nperl -pi -e 's/^Defaults[ ]*requiretty/#Defaults requiretty/' /etc/sudoers\nyum install -y puppet"
+				aws.instance_type = "m1.small"
+		
+				override.ssh.username = "ec2-user"
+				override.ssh.private_key_path = SSH_PRIVATE_KEY
+				
+				#config.vm.provision "puppet" do |puppet|
+				#	puppet.options = ""
+				#	puppet.module_path = "modules"
+				#	puppet.facter = {
+				#		"vagrant" => "1",
+				#		"fqdn" => name.to_s(),
+				#		"aws_access_key" => ACCESS_KEY,
+				#		"aws_secret_access_key" => SECRET_ACCESS_KEY,
+				#		"ec2_tag_group_key" => "VagrantGroup",
+				#		"ec2_tag_group_value" => GROUP
+				#	}
+				#end
+			end
+		end
+	}
+end
