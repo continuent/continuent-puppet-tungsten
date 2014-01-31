@@ -18,15 +18,15 @@
 #
 
 class { 'continuent_install' :
-  hostsFile                  => ["192.168.11.101 db1.home"],
+  hostsFile                  => ["192.168.11.101 db1.vagrant"],
 
   installReplicatorSoftware   => true,
   replicatorRepo              => true,
   installMysqlj               => false,
   installMysql                => true,
   tungstenIniContents => ['[master]',
-  'members=db1',
-  'master=db1',
+  'members=db1.vagrant',
+  'master=db1.vagrant',
   'replication-password=password',
   'replication-user=repuser',
   'start=true',

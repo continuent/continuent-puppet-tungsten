@@ -18,7 +18,7 @@
 #
 class { 'continuent_install' :
 
-  hostsFile                  => ["192.168.11.101 db1.home"],
+  hostsFile                  => ["192.168.11.101 db1.vagrant"],
 
   installReplicatorSoftware   => true,
   replicatorRepo              => 'nightly',

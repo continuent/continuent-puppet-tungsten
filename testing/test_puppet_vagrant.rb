@@ -32,8 +32,8 @@ require 'tempfile'
 
 stopOnFailure=true
 
-vagrantType='vb'
-#vagrantType'ec2'
+vagrantType='virtualbox'
+vagrantType='aws'
 
 
 allTestsPassed=true
@@ -61,7 +61,7 @@ loop = 1
 
 #tests to run
 runTypes = Dir['tests/*.json']
-runTypes = %w(run_std.json)
+runTypes = %w(sandbox.json)
 
 runTypes.sort!
 noOfTests=runTypes.count
@@ -94,7 +94,7 @@ runTypes.each do |runType|
     system('vagrant destroy -f')
 
     system("rm VagrantFile ; cp Vagrantfile.#{vagrantType}.#{runDetails['nodes']} VagrantFile")
-    system('vagrant up')
+    system("vagrant up --provider=#{vagrantType}")
 
     puts '   - Installing and running puppet modules on each node'
 
@@ -140,7 +140,21 @@ runTypes.each do |runType|
         end
 
         if !output.include?('OK')
-          puts '>>>>>>>>>>>>>>>> CLUSTER ERROR <<<<<<<<<<<<<< '
+          puts 'ERROR : Cluster Services are not ok'
+          puts output
+          allTestsPassed=false
+        end
+
+      end
+
+      if runDetails['checkResults'].include?('connectorOk')
+        puts "     - running clusterOk check on node #{n} "
+        output = capture_stdout do
+          system "vagrant ssh db#{n} -c 'sudo /opt/continuent/tungsten/tungsten-connector/bin/connector status 2>&1'"
+        end
+
+        if !output.include?('Tungsten Connector Service is running')
+          puts 'ERROR : Connector is not running'
           puts output
           allTestsPassed=false
         end

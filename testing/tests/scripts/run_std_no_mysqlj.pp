@@ -17,13 +17,13 @@
 # limitations under the License.
 #
 class { 'continuent_install' :
-  hostsFile                  => ["192.168.11.101 db1",'192.168.11.102 db2'],
+  hostsFile                  => ["192.168.11.101 db1.vagrant",'192.168.11.102 db2.vagrant','192.168.11.103 db3.vagrant'],
 
   clusterData                => {
-  east => { 'members' => 'db1.home,db2,db3,db4', 'connectors' => 'db1.home,db2', 'master' => 'db1.home' },
+  east => { 'members' => 'db1.vagrant,db2.vagrant,db3.vagrant', 'connectors' => 'db1.vagrant,db2.vagrant', 'master' => 'db1.vagrant' },
   } ,
   installSSHKeys => true,
   installMysql => true        ,
   installMysqlj => false,
-  installClusterSoftware            => true
+  installClusterSoftware            => "/vagrant/ct.rpm"
 }

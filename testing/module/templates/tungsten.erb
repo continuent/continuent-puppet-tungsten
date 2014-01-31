@@ -1,0 +1,49 @@
+<% if scope.lookupvar('::continuent_install::tungsten::tungstenIniContents') == false %>
+[defaults]
+user=tungsten
+home-directory=/opt/continuent
+  <% if scope.lookupvar('::continuent_install::prereq::mysqlj::mysqljLocation') != false %>
+mysql-connectorj-path=<%= scope.lookupvar('::continuent_install::prereq::mysqlj::mysqljLocation') %>
+  <% end %>
+datasource-user=<%= scope.lookupvar('::continuent_install::tungsten::repUser') %>
+datasource-password=<%= scope.lookupvar('::continuent_install::tungsten::repPassword') %>
+application-port=<%= scope.lookupvar('::continuent_install::tungsten::applicationPort') %>
+application-user=<%= scope.lookupvar('::continuent_install::tungsten::appUser') %>
+application-password=<%= scope.lookupvar('::continuent_install::tungsten::appPassword') %>
+skip-validation-check=MySQLPermissionsCheck
+start-and-report=true
+
+  <% if scope.lookupvar('::continuent_install::tungsten::installReplicatorSoftware') != false %>
+    <% if scope.lookupvar('::continuent_install::tungsten::installClusterSoftware') != false %>
+[defaults.replicator]
+home-directory=/opt/replicator
+rmi-port=10002
+    <% end %>
+  <% end %>
+
+  <% scope.lookupvar('::continuent_install::tungsten::clusterData').each_pair do |key, cluster| %>
+    <% if (cluster.has_key?("topology") == false || cluster["topology"] == "clustered") %>
+[<%= key %>]
+      <% cluster.each_pair do |c_key, c_value| %>
+<%= c_key %>=<%= c_value %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% scope.lookupvar('::continuent_install::tungsten::clusterData').each_pair do |key, cluster| %>
+    <% if (cluster.has_key?("topology") == true && cluster["topology"] != "clustered") %>
+[<%= key %>]
+      <% cluster.each_pair do |c_key, c_value| %>
+<%= c_key %>=<%= c_value %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+<% if scope.lookupvar('::continuent_install::tungsten::compositeName') != '' %>
+[<%= scope.lookupvar('::continuent_install::tungsten::compositeName') %>]
+composite-datasources=<%= scope.lookupvar('::continuent_install::tungsten::ini::compositeInfo') %>
+<% end %>
+<% else %>
+    <% scope.lookupvar('::continuent_install::tungstenIniContents').each do |iniLine| -%>
+<%= iniLine %>
+    <% end -%>
+<% end %>
