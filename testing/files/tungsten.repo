@@ -1,5 +1,0 @@
-[tungsten]
-name=Centos local Repo
-baseurl=http://yumtest.continuent.com/
-enabled=1
-gpgcheck=0

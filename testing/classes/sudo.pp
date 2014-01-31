@@ -1,1 +1,0 @@
-package { 'sudo': ensure => present }
