@@ -20,7 +20,7 @@ class continuent_install::prereq (
 	package {'ruby': ensure => present, }
 	package {'wget': ensure => present, }
 
-    package {'continuent-sudo': ensure => present, name=> 'sudo' }
+	package {'continuent-sudo': ensure => present, name=> 'sudo' }
 
 	package {'rsync': ensure => present, }
 	
@@ -30,11 +30,15 @@ class continuent_install::prereq (
 		}
 	}
 
-    if $skipHostConfig == false {
-        class { "continuent_install::prereq::hostname":
-          nodeHostName => $nodeHostName
-        }
-    }
+	if $skipHostConfig == false {
+		if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+			class { "continuent_install::prereq::hostname":
+				nodeHostName => $nodeHostName
+			}
+		} else {
+			warning("Skipping hostname configuration on unsupported system")
+		}
+	}
 	class { "continuent_install::prereq::selinux":
 	}
 	class { "continuent_install::prereq::unix_user":

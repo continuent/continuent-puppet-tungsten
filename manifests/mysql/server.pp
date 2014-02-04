@@ -10,25 +10,20 @@ class continuent_install::mysql::server (
 	$sqlCheck	= "select * from mysql.user where user=''"
 	$sqlExec		= "delete from mysql.user where user='';flush privileges;"
 	
-	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
-		Class["continuent_install::prereq"] ->
-		package { 'mysql-server': 
-			ensure => present, 
- 			before => [Package[percona-release]]
-		} ->
-		package { 'mysql': 
-			ensure => present,
-		} ->
-		anchor { "continuent_install::mysql::server::package": }
-	} else {
-		Class["continuent_install::prereq"] ->
-		anchor { "continuent_install::mysql::server::package": }
-	}
-	
+	Class["continuent_install::prereq"] ->
+	package { 'mysql-server': 
+		ensure => present,
+		name => $continuent_install::mysql::serverPackageName,
+	} ->
+	package { 'mysql': 
+		ensure => present,
+		name => $continuent_install::mysql::clientPackageName,
+	}	->
+	anchor { "continuent_install::mysql::server::package": }
 	
 	Anchor["continuent_install::mysql::server::package"] ->
 	file { "my.cnf":
-		path		=> "/etc/my.cnf",
+		path		=> $continuent_install::mysql::configFile,
 		owner	 => $serviceUser,
 		group	 => root,
 		mode		=> 644,
