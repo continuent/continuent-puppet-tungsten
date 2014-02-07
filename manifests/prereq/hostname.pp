@@ -34,8 +34,10 @@ class continuent_install::prereq::hostname(
 		require => File["continuent-hostname"],
 	}
 	
-	exec { "set-network-hostname":
-		command => "/bin/sed -i -e \"s/HOSTNAME=.*/HOSTNAME=$nodeHostName/\" /etc/sysconfig/network",
-		unless => "/usr/bin/test `grep HOSTNAME /etc/sysconfig/network` = 'HOSTNAME=$nodeHostName'",
+	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+		exec { "set-network-hostname":
+			command => "/bin/sed -i -e \"s/HOSTNAME=.*/HOSTNAME=$nodeHostName/\" /etc/sysconfig/network",
+			unless => "/usr/bin/test `grep HOSTNAME /etc/sysconfig/network` = 'HOSTNAME=$nodeHostName'",
+		}
 	}
 }

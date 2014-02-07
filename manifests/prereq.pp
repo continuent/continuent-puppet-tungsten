@@ -31,12 +31,8 @@ class continuent_install::prereq (
 	}
 
 	if $skipHostConfig == false {
-		if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
-			class { "continuent_install::prereq::hostname":
-				nodeHostName => $nodeHostName
-			}
-		} else {
-			warning("Skipping hostname configuration on unsupported system")
+		class { "continuent_install::prereq::hostname":
+			nodeHostName => $nodeHostName
 		}
 	}
 	class { "continuent_install::prereq::selinux":
