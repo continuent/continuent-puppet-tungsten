@@ -16,18 +16,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class continuent_install::mysql (
-	$masterUser			= $continuent_install::mysql::params::masterUser,
-	$masterPassword	= $continuent_install::mysql::params::masterPassword,
-	$port						= $continuent_install::mysql::params::port,
+class tungsten::mysql (
+	$masterUser			= $tungsten::mysql::params::masterUser,
+	$masterPassword	= $tungsten::mysql::params::masterPassword,
+	$port						= $tungsten::mysql::params::port,
 	
-	$serviceName		= $continuent_install::mysql::params::serviceName,
-	$serviceUser		= $continuent_install::mysql::params::serviceUser,
-	$serviceGroup		= $continuent_install::mysql::params::serviceGroup,
-) inherits continuent_install::mysql::params {
-	include continuent_install::prereq
-	
-	Class["continuent_install::prereq"] ->
-	class { "continuent_install::mysql::server": } ->
-	class { "continuent_install::mysql::xtrabackup": }
+	$serviceName		= $tungsten::mysql::params::serviceName,
+) inherits tungsten::mysql::params {
+  include tungsten::prereq
+  
+	class { "tungsten::mysql::server": } ->
+	Class["tungsten::prereq"]
 }

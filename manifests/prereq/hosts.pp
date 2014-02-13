@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class continuent_install::prereq::hosts(
+class tungsten::prereq::hosts(
 	$hostsFile = []  ,
     $skipHostConfig = false
 ) {

@@ -1,6 +1,6 @@
-class continuent_install::tungsten::update (
-) inherits continuent_install::params {
-	exec { "continuent_install::tungsten::update::opt_continuent":
+class tungsten::tungsten::update (
+) inherits tungsten::params {
+	exec { "tungsten::tungsten::update::opt_continuent":
 		path => ["/usr/bin"],
 		command => "sudo -i -u tungsten /opt/continuent/tungsten/tools/tpm update",
 		subscribe => File["/etc/tungsten/tungsten.ini"],
@@ -8,7 +8,7 @@ class continuent_install::tungsten::update (
 		refreshonly => true
 	}
 	
-	exec { "continuent_install::tungsten::update::opt_replicator":
+	exec { "tungsten::tungsten::update::opt_replicator":
 		path => ["/usr/bin"],
 		command => "sudo -i -u tungsten /opt/replicator/tungsten/tools/tpm update",
 		subscribe => File["/etc/tungsten/tungsten.ini"],

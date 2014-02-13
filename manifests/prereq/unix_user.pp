@@ -16,30 +16,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class continuent_install::prereq::unix_user(
+class tungsten::prereq::unix_user(
 	$installSSHKeys								= false
-) inherits continuent_install::params {
-	group { "mysql":
-		ensure => "present",
-	}
-
-	user { "continuent_install::systemUser":
+) inherits tungsten::params {
+	@user { "tungsten::systemUser":
 		name => $systemUserName,
-		groups => ['mysql'],
+		groups => [],
 		comment => 'This user was created by Puppet',
 		ensure => 'present',
-		password => '$6$OPePhx69$wRTMV.V6XnO78mjaGtC2kpjw.Pz6iDP5Ow4LFxtG3JK.CAhHApb4ifEuU5lLwPMDZOXe3v7I/xAiQDtWO3xpJ.',
 		uid => 6000,
 		home => '/home/tungsten',
-		require => [Group['mysql']],
+		managehome => true,
+		shell => "/bin/bash",
 	}
+	
+	User <| title == "tungsten::systemUser" |>
 
 	file { "/home/tungsten/":
 		ensure => directory,
 		owner	=> $systemUserName,
 		group	=> $systemUserName,
 		mode => 750,
-		require => [ User["continuent_install::systemUser"] ]
+		require => [ User["tungsten::systemUser"] ]
 	}
 	
 	file {"/home/tungsten/.bash_profile":
@@ -47,7 +45,7 @@ class continuent_install::prereq::unix_user(
 		mode => 644,
 		owner => $systemUserName,
 		group => "root",
-		content => template('continuent_install/tungsten_bash_profile.erb'),
+		content => template('tungsten/tungsten_bash_profile.erb'),
 		require => File['/home/tungsten'],
 	}
 	
@@ -69,7 +67,7 @@ class continuent_install::prereq::unix_user(
 					
 	file { '/etc/security/limits.d/10tungsten.conf':
 		ensure => file,
-		content => template('continuent_install/security.limits.conf.erb'),
+		content => template('tungsten/security.limits.conf.erb'),
 	}
 	
 	file { "/opt/continuent":
@@ -77,7 +75,7 @@ class continuent_install::prereq::unix_user(
 		owner	=> $systemUserName,
 		group	=> $systemUserName,
 		mode	 => 750,
-		require => User["continuent_install::systemUser"]
+		require => User["tungsten::systemUser"]
 	}
 	
 	file { "/opt/replicator":
@@ -85,7 +83,7 @@ class continuent_install::prereq::unix_user(
 		owner	=> $systemUserName,
 		group	=> $systemUserName,
 		mode	 => 750,
-		require => User["continuent_install::systemUser"],
+		require => User["tungsten::systemUser"],
 	}
 	
 	file { "/etc/tungsten":
@@ -109,7 +107,7 @@ class continuent_install::prereq::unix_user(
 			mode => 600,
 			owner => $systemUserName,
 			group => "root",
-			content => template('continuent_install/tungsten-auth-keys.erb'),
+			content => template('tungsten/tungsten-auth-keys.erb'),
 			require => File['/home/tungsten/.ssh'],
 		}
 
@@ -118,7 +116,7 @@ class continuent_install::prereq::unix_user(
 			mode => 600,
 			owner => $systemUserName,
 			group => "root",
-			content => template('continuent_install/tungsten_id_rsa.erb'),
+			content => template('tungsten/tungsten_id_rsa.erb'),
 			require => File['/home/tungsten/.ssh'],
 		}
 
@@ -127,7 +125,7 @@ class continuent_install::prereq::unix_user(
 			mode => 600,
 			owner => $systemUserName,
 			group => "root",
-			content => template('continuent_install/tungsten_id_rsa.pub.erb'),
+			content => template('tungsten/tungsten_id_rsa.pub.erb'),
 			require => File['/home/tungsten/.ssh'],
 		}
 	}

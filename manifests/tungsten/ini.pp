@@ -1,17 +1,17 @@
-class continuent_install::tungsten::ini (
-) inherits continuent_install::tungsten {
-	include continuent_install::prereq
+class tungsten::tungsten::ini (
+) inherits tungsten::tungsten {
+	include tungsten::prereq
 
-    if $continuent_install::tungsten::clusterData != false {
-      $compositeInfo = getCompositeDS($continuent_install::tungsten::clusterData)
+    if $tungsten::tungsten::clusterData != false {
+      $compositeInfo = getCompositeDS($tungsten::tungsten::clusterData)
     }
 
-	Class["continuent_install::prereq"] ->
+	Class["tungsten::prereq"] ->
 	file { "tungsten.ini":
 		path		=> "/etc/tungsten/tungsten.ini",
-		owner => $continuent_install::prereq::systemUserName,
+		owner => $tungsten::prereq::systemUserName,
 		group => "root",
 		mode => 644,
-		content => template("continuent_install/tungsten.erb"),
+		content => template("tungsten/tungsten.erb"),
 	}
 }

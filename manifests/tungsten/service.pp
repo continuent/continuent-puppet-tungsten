@@ -1,2 +1,2 @@
-define continuent_install::tungsten::service ($dataservice = $title) {
+define tungsten::tungsten::service ($dataservice = $title) {
 }

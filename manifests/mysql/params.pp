@@ -1,15 +1,12 @@
-class continuent_install::mysql::params (
+class tungsten::mysql::params (
 	$masterUser							= root,
 	$masterPassword					= secret,
 	$port										= 13306,
-) inherits continuent_install::params {
-	$serviceUser						= mysql
-	$serviceGroup						= mysql
-	
+) {
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
-		$serviceName							= "mysqld"
-		$serverPackageName				= "mysql-server"
-		$clientPackageName				= "mysql"
+		$serviceName							= "mysql"
+		$serverPackageName				= "Percona-Server-server-55"
+		$clientPackageName				= "Percona-Server-client-55"
 		$configFile								= "/etc/my.cnf"
 	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		$serviceName							= "mysql"

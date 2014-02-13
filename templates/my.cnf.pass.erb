@@ -1,5 +1,5 @@
 [client]
-user='<%= scope.lookupvar('continuent_install::mysql::masterUser') %>'
+user='<%= scope.lookupvar('tungsten::mysql::masterUser') %>'
 host=localhost
-password='<%= scope.lookupvar('continuent_install::mysql::masterPassword') %>'
-port=<%= scope.lookupvar('continuent_install::mysql::port') %>
+password='<%= scope.lookupvar('tungsten::mysql::masterPassword') %>'
+port=<%= scope.lookupvar('tungsten::mysql::port') %>

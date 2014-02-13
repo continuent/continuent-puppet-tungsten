@@ -16,9 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class continuent_install::tungsten::provision (
+class tungsten::tungsten::provision (
 	$donor =  undef,
-) inherits continuent_install::tungsten {
+) inherits tungsten::tungsten {
 	exec { "prov":
 		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/tungsten-replicator"],
 		environment => "HOME=/root",

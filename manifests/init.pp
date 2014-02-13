@@ -1,4 +1,4 @@
-# == Class: continuent_install
+# == Class: tungsten
 #
 # This is the main class to manage all the components of a Tungsten
 # infrastructure. This is the only class that needs to be declared.
@@ -32,7 +32,7 @@
 # Examples
 #
 # Install a node in a basic Cluster
-#		class { 'continuent_install' :
+#		class { 'tungsten' :
 #			nodeHostName								=> 'east-db1',
 #			nodeIpAddress							 => "${::ipaddress}",
 #			hostsFile									=> ["${::ipaddress}	east-db1",'192.168.0.146 east-db2''],
@@ -43,7 +43,7 @@
 #		}
 #
 # Install a node in a Multi-Site cluster where MySQL is already configured and running
-#		 class { 'continuent_install' :
+#		 class { 'tungsten' :
 #				nodeHostName								=> 'east-db1',
 #				nodeIpAddress							 => "${::ipaddress}",
 #				hostsFile									=> ["${::ipaddress}	east-db1",'192.168.0.146 east-db2','192.168.0.147 west-db1','192.168.0.148 west-db2'],
@@ -72,7 +72,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class continuent_install (
+class tungsten (
 		$nodeHostName										= $fqdn,
 		$nodeIpAddress									= $ipaddress,
 		$hostsFile											= [],
@@ -80,7 +80,7 @@ class continuent_install (
           $mysqljLocation                               = false,
 		$installRVM											= false,
 		$installJava										= true,
-		$installNTP											= $continuent_install::params::installNTP,
+		$installNTP											= $tungsten::params::installNTP,
 		$replicatorRepo									= false,
 		
 		#Setting this to true should only be used to support 
@@ -107,10 +107,8 @@ class continuent_install (
         #If this is set no setting of hostname will be done
         $skipHostConfig                             = false
 		
-) inherits continuent_install::params {
-	anchor{ "continuent_install::dbms": }
-	
-	class{ "continuent_install::prereq":
+) inherits tungsten::params {
+	class{ "tungsten::prereq":
 		nodeHostName => $nodeHostName,
 		nodeIpAddress => $nodeIpAddress,
 		hostsFile => $hostsFile,
@@ -125,17 +123,11 @@ class continuent_install (
 	}
 
 	if $installMysql == true {
-		class{ "continuent_install::mysql": } ->
-		Anchor["continuent_install::dbms"]
+		include mysql
 	}
 	
-	if $installSandbox == true {
-		class{ "continuent_install::mysql_sandbox": } ->
-		Anchor["continuent_install::dbms"]
-	}
-	
-	Anchor["continuent_install::dbms"] ->
-	class { "continuent_install::tungsten":
+	Class["tungsten::prereq"] ->
+	class { "tungsten::tungsten":
 		installReplicatorSoftware 			=> $installReplicatorSoftware,
 			repUser 											=> $replicationUser,
 			repPassword 									=> $replicationPassword,
@@ -149,5 +141,4 @@ class continuent_install (
 		provision 											=> $provisionNode,
 			provisionDonor 								=> $provisionDonor,
 	}
-
 }

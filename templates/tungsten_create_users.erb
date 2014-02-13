@@ -1,9 +1,9 @@
 #!/bin/bash
 
-replication_user=<%= scope.lookupvar('::continuent_install::tungsten::int_repUser') %>
-replication_password=<%= scope.lookupvar('::continuent_install::tungsten::int_repPassword') %>
-application_user=<%= scope.lookupvar('::continuent_install::tungsten::appUser') %>
-application_password=<%= scope.lookupvar('::continuent_install::tungsten::appPassword')  %>
+replication_user=<%= scope.lookupvar('::tungsten::tungsten::int_repUser') %>
+replication_password=<%= scope.lookupvar('::tungsten::tungsten::int_repPassword') %>
+application_user=<%= scope.lookupvar('::tungsten::tungsten::appUser') %>
+application_password=<%= scope.lookupvar('::tungsten::tungsten::appPassword')  %>
 root_home=<%= scope.lookupvar('::root_home') %>
 
 if [ -f $root_home/.my.cnf ]

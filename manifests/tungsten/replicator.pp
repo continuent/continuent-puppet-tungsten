@@ -16,18 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class continuent_install::tungsten::replicator (
+class tungsten::tungsten::replicator (
 	$location = true,
-) inherits continuent_install::params {
-	include continuent_install::prereq
+) inherits tungsten::params {
+	include tungsten::prereq
 	
 	if $location == true {
-		Class["continuent_install::prereq"] ->
+		Class["tungsten::prereq"] ->
 		package { 'tungsten-replicator':
 			ensure => present,
 		}
 	} elsif $location != false {
-		Class["continuent_install::prereq"] ->
+		Class["tungsten::prereq"] ->
 		package { "tungsten-replicator":
 			ensure => present,
 			provider => rpm,

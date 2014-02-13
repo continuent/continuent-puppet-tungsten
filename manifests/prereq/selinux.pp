@@ -1,4 +1,4 @@
-class continuent_install::prereq::selinux (
+class tungsten::prereq::selinux (
 ) {
 	file { "/selinux/enforcing":
 		owner => root,

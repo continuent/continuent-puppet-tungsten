@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class continuent_install::prereq::mysqlj (
+class tungsten::prereq::mysqlj (
 	$enabled = true ,
     $location = false,
 ) {
@@ -34,7 +34,7 @@ class continuent_install::prereq::mysqlj (
 			mode	 => 644,
 			owner	=> "tungsten",
 			group	=> "tungsten",
-			source => 'puppet:///modules/continuent_install/connectorj/mysql-connector-java-5.1.26-bin.jar',
+			source => 'puppet:///modules/tungsten/connectorj/mysql-connector-java-5.1.26-bin.jar',
 		}
 		
 		$mysqljLocation = "/opt/mysql/mysql-connector-java-5.1.26-bin.jar"

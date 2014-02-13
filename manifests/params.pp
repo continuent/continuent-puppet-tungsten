@@ -1,4 +1,4 @@
-class continuent_install::params {
+class tungsten::params {
 	$systemUserName								= "tungsten"
 	
 	if $::operatingsystem == "Amazon" {

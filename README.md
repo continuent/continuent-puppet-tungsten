@@ -1,4 +1,4 @@
-# continuent_install
+# continuent-tungsten
 
 ## About
 
@@ -21,12 +21,12 @@ It also installs the pre-requisties for the open source Tungsten Replicator (www
 
 ## Examples
 
-Install the module into /etc/puppet/modules/continuent_install (will be available in puppetforge soon)
+Install the module into /etc/puppet/modules/tungsten (will be available in puppetforge soon)
 
 To install the Contunuent Tungsten prereqs run the module with the required parameters.
 
  ```puppet
- class { 'continuent_install' :
+ class { 'tungsten' :
        nodeHostName                => 'east-db1' ,
        nodeIpAddress               => "${::ipaddress}" ,
        hostsFile                  => ["${::ipaddress},east-db1",'10.0.0.6,north-db1','10.0.0.7,north-db2','192.168.0.146,east-db2','192.168.0.147,west-db1','192.168.0.148,west-db2'],
@@ -37,7 +37,7 @@ To install the Contunuent Tungsten prereqs run the module with the required para
 
  To install a node with the Continuent Tungsten software (required 2.0.1 or greater of the software available in an available yum repo)
   ```puppet
- class { 'continuent_install' :
+ class { 'tungsten' :
        nodeHostName                => 'east-db1' ,
        nodeIpAddress               => "${::ipaddress}" ,
        hostsFile                  => ["${::ipaddress},east-db1",'192.168.0.216,east-db2'],

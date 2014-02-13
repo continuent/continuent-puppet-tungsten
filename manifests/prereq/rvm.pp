@@ -16,9 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-class continuent_install::prereq::rvm (
+class tungsten::prereq::rvm (
 	$enabled = true
-) inherits continuent_install::prereq::unix_user {
+) inherits tungsten::prereq::unix_user {
 	if $enabled == true {
 		exec { "install-rvm":
 			cwd => "/tmp/",
@@ -27,7 +27,7 @@ class continuent_install::prereq::rvm (
 			require => Package[ruby],
 		}
 		
-		User["continuent_install::systemUser"] {
+		User["tungsten::systemUser"] {
 			groups +> ["rvm"],
 			require +> [Exec["install-rvm"]]
 		}

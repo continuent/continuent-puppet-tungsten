@@ -1,11 +1,11 @@
-class continuent_install::prereq (
-	$systemUserName 				= $continuent_install::params::systemUserName,
+class tungsten::prereq (
+	$systemUserName 				= $tungsten::params::systemUserName,
 	$nodeHostName									= $fqdn,
 	$nodeIpAddress								= $ipaddress,
 	$hostsFile										= [],
 	$installRVM										= false,
 	$installJava									= true,
-	$installNTP										= $continuent_install::params::installNTP,
+	$installNTP										= $tungsten::params::installNTP,
 	$disableFirewall							= true,
 	
 	$replicatorRepo							= false,
@@ -16,7 +16,7 @@ class continuent_install::prereq (
 	#Setting this to true should only be used to support testing as it's not secure
 	$installSSHKeys								 = false,
     $skipHostConfig           = false,
-) inherits continuent_install::params {
+) inherits tungsten::params {
 	package {'ruby': ensure => present, }
 	package {'wget': ensure => present, }
 
@@ -31,66 +31,66 @@ class continuent_install::prereq (
 	}
 
 	if $skipHostConfig == false {
-		class { "continuent_install::prereq::hostname":
+		class { "tungsten::prereq::hostname":
 			nodeHostName => $nodeHostName
 		}
 	}
-	class { "continuent_install::prereq::selinux":
+	class { "tungsten::prereq::selinux":
 	}
-	class { "continuent_install::prereq::unix_user":
+	class { "tungsten::prereq::unix_user":
 		installSSHKeys => $installSSHKeys
 	}
-	class{ "continuent_install::prereq::rvm": 
+	class{ "tungsten::prereq::rvm": 
 		enabled => $installRVM
 	}
 	
-	anchor { "continuent_install::prereq::start": 
+	anchor { "tungsten::prereq::start": 
 		require => [
 			Package["wget"],
 			Package["sudo"],
 		]
 	} ->
-	class { "continuent_install::prereq::hosts":
+	class { "tungsten::prereq::hosts":
 		hostsFile => $hostsFile,
         skipHostConfig =>  $skipHostConfig,
 	} ->
-	class{ "continuent_install::prereq::repo": 
+	class{ "tungsten::prereq::repo": 
 		replicatorRepo => $replicatorRepo,
 	} ->
-	class{ "continuent_install::prereq::mysqlj": 
+	class{ "tungsten::prereq::mysqlj": 
 		enabled => $installMysqlj,
         location => $mysqljLocation
 	} ->
-	anchor { "continuent_install::prereq::end": 
+	anchor { "tungsten::prereq::end": 
 		require => [
-			Class["continuent_install::prereq::unix_user"],
-			Class["continuent_install::prereq::rvm"],
+			Class["tungsten::prereq::unix_user"],
+			Class["tungsten::prereq::rvm"],
 		]
 	}
 	
 	if $installNTP == true {
 		class { "ntp":
-			before => Anchor["continuent_install::prereq::start"]
+			before => Anchor["tungsten::prereq::start"]
 		}
 	}
 	
 	if $installJava == true {
 		if $operatingsystem == "Amazon" {
 			package { "java-1.6.0-openjdk": 
-				before => Anchor["continuent_install::prereq::start"]
+				before => Anchor["tungsten::prereq::start"]
 			}
 		} else {
 			class { "java":
-				before => Anchor["continuent_install::prereq::start"]
+				before => Anchor["tungsten::prereq::start"]
 			}
 		}
 	}
 	
 	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-	  exec { "continuent_install::prereq::apt-update":
+	  exec { "tungsten::prereq::apt-update":
         command => "/usr/bin/apt-get update"
     }
 
-    Exec["continuent_install::prereq::apt-update"] -> Package <| |>
+    Exec["tungsten::prereq::apt-update"] -> Package <| |>
   }
 }

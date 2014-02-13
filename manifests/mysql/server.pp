@@ -1,35 +1,32 @@
-class continuent_install::mysql::server (
-) inherits continuent_install::mysql {
-	include continuent_install::prereq
-	
+class tungsten::mysql::server (
+) inherits tungsten::mysql {
 	if $masterPassword == 'secret' {
 		warning 'The default master password is being used'
 	}
 	
-	$serverId	= fqdn_rand(5000,$::continuent_install::prereq::nodeIpAddress)
+	$serverId	= fqdn_rand(5000,$::tungsten::prereq::nodeIpAddress)
 	$sqlCheck	= "select * from mysql.user where user=''"
 	$sqlExec		= "delete from mysql.user where user='';flush privileges;"
 	
-	Class["continuent_install::prereq"] ->
+	class { "percona_repo" : }
+	
+	User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
+	
 	package { 'mysql-server': 
 		ensure => present,
-		name => $continuent_install::mysql::serverPackageName,
+		name => $serverPackageName,
 	} ->
 	package { 'mysql': 
 		ensure => present,
-		name => $continuent_install::mysql::clientPackageName,
+		name => $clientPackageName,
 	}	->
-	anchor { "continuent_install::mysql::server::package": }
-	
-	Anchor["continuent_install::mysql::server::package"] ->
+	User["tungsten::systemUser"] ->
 	file { "my.cnf":
-		path		=> $continuent_install::mysql::configFile,
-		owner	 => $serviceUser,
-		group	 => root,
-		mode		=> 644,
-		content => template("continuent_install/my.erb"),
-	} ->
-	service { "continuent_install::mysql::server" :
+  	path		=> $configFile,
+  	mode		=> 644,
+  	content => template("tungsten/my.erb"),
+  } ->
+	service { "tungsten::mysql::server" :
 		name => $serviceName,
 		enable => true,
 		ensure => running,
@@ -40,12 +37,15 @@ class continuent_install::mysql::server (
 		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql -u root"]
 	} ->
 	file { "${::root_home}/.my.cnf":
-	  content => template('continuent_install/my.cnf.pass.erb'),
+	  content => template('tungsten/my.cnf.pass.erb'),
 	  owner   => root,
 	  mode    => '0600',
 	} ->
 	exec { "remove-anon-users":
 		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheck\"|wc -l"],
 		command => "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlExec\"",
-	}	
+	} ->
+	package { "percona-xtrabackup" :
+		ensure => present
+	}
 }
