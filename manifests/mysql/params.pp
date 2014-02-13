@@ -11,12 +11,12 @@ class continuent_install::mysql::params (
 		$serverPackageName				= "mysql-server"
 		$clientPackageName				= "mysql"
 		$configFile								= "/etc/my.cnf"
-	} elsif ($operatingsystem =~ /(?i:ubuntu)/) {
+	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		$serviceName							= "mysql"
 		$serverPackageName				= "mysql-server"
 		$clientPackageName				= "mysql-client"
 		$configFile								= "/etc/mysql/my.cnf"
 	} else {
-		fail("The ${module_name} module is not supported on an ${::osfamily} based system.")
+		fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")
 	}
 }

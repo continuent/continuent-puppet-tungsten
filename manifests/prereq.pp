@@ -85,4 +85,12 @@ class continuent_install::prereq (
 			}
 		}
 	}
+	
+	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+	  exec { "continuent_install::prereq::apt-update":
+        command => "/usr/bin/apt-get update"
+    }
+
+    Exec["continuent_install::prereq::apt-update"] -> Package <| |>
+  }
 }
