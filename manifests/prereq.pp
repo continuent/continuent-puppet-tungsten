@@ -17,6 +17,8 @@ class tungsten::prereq (
 	$installSSHKeys								 = false,
     $skipHostConfig           = false,
 ) inherits tungsten::params {
+  include tungsten::apt
+  
 	package {'ruby': ensure => present, }
 	package {'wget': ensure => present, }
 
@@ -54,9 +56,6 @@ class tungsten::prereq (
 		hostsFile => $hostsFile,
         skipHostConfig =>  $skipHostConfig,
 	} ->
-	class{ "tungsten::prereq::repo": 
-		replicatorRepo => $replicatorRepo,
-	} ->
 	class{ "tungsten::prereq::mysqlj": 
 		enabled => $installMysqlj,
         location => $mysqljLocation
@@ -86,11 +85,7 @@ class tungsten::prereq (
 		}
 	}
 	
-	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-	  exec { "tungsten::prereq::apt-update":
-        command => "/usr/bin/apt-get update"
-    }
-
-    Exec["tungsten::prereq::apt-update"] -> Package <| |>
-  }
+	class{ "tungsten::prereq::repo": 
+		replicatorRepo => $replicatorRepo,
+	}
 }

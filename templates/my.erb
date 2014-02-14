@@ -17,17 +17,20 @@
 # limitations under the License.
 #
 [mysqld]
-datadir=/var/lib/mysql
-socket=/var/lib/mysql/mysql.sock
+datadir=<%= scope.lookupvar('::tungsten::mysql::server::datadir') %>
+socket=<%= scope.lookupvar('::tungsten::mysql::server::socket') %>
 user=mysql
 symbolic-links=0
 default-storage-engine=innodb
-pid-file=/var/lib/mysql/mysql.pid
+pid-file=<%= scope.lookupvar('::tungsten::mysql::server::pidfile') %>
 
 log-bin=mysql-bin
-sync_binlog=1
+sync_binlog=2
 max_allowed_packet=52m
 open_files_limit=65535
+max_connections=151
 
 server-id=<%= scope.lookupvar('::tungsten::mysql::server::serverId') %>
 port=<%= scope.lookupvar('::tungsten::mysql::server::port') %>
+
+!includedir /etc/mysql/conf.d/

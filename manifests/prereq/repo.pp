@@ -19,21 +19,51 @@
 class tungsten::prereq::repo(
 	$replicatorRepo							= false,
 ) {
-	if $replicatorRepo == "nightly" {
-		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.noarch.rpm"
-	} elsif $replicatorRepo == "stable" {
-		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.noarch.rpm"
-	} elsif $replicatorRepo == true {
-		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.noarch.rpm"
+  if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+		if $replicatorRepo == "nightly" {
+  		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.noarch.rpm"
+  	} elsif $replicatorRepo == "stable" {
+  		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.noarch.rpm"
+  	} elsif $replicatorRepo == true {
+  		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.noarch.rpm"
+  	} else {
+  		$url = false
+  	}
+
+  	if $url != false {
+  		package { "replicator-release-$replicatorRepo":
+  			provider => "rpm",
+  			ensure => present,
+  			source => $url,
+  		}
+  	}
+	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+		if $replicatorRepo == "nightly" {
+  		$url = "http://apt-nightly.tungsten-replicator.org/"
+  		$release = "nightly"
+  	} elsif $replicatorRepo == "stable" {
+  		$url = "http://apt.tungsten-replicator.org/"
+  		$release = "stable"
+  	} elsif $replicatorRepo == true {
+    		$url = "http://apt.tungsten-replicator.org/"
+    		$release = "stable"
+  	} else {
+  		$url = false
+  	}
+
+  	if $url != false {
+  		apt::source { 'continuent':
+    		ensure => present,
+    		include_src => false,
+    		location => $url,
+    		release => $release,
+    		repos => 'main',
+    		key => "7206C924",
+    	}
+  	}
 	} else {
-		$url = false
-	}
-	
-	if $url != false {
-		package { "replicator-release-$replicatorRepo":
-			provider => "rpm",
-			ensure => present,
-			source => $url,
+	  if $replicatorRepo != false {
+		  fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")
 		}
 	}
 }

@@ -9,7 +9,6 @@ class tungsten::mysql::server (
 	$sqlExec		= "delete from mysql.user where user='';flush privileges;"
 	
 	class { "percona_repo" : }
-	
 	User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
 	
 	package { 'mysql-server': 
@@ -21,11 +20,19 @@ class tungsten::mysql::server (
 		name => $clientPackageName,
 	}	->
 	User["tungsten::systemUser"] ->
+	file { "/etc/mysql":
+    ensure => directory,
+    mode => 755,
+  } ->
+  file { "/etc/mysql/conf.d":
+    ensure => directory,
+    mode => 755,
+  } ->
 	file { "my.cnf":
   	path		=> $configFile,
   	mode		=> 644,
   	content => template("tungsten/my.erb"),
-  } ->
+  } ~>
 	service { "tungsten::mysql::server" :
 		name => $serviceName,
 		enable => true,
