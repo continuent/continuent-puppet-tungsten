@@ -3,13 +3,13 @@
 ## About
 
 This module helps install [Continuent Tungsten](https://www.continuent.com) Database clustering software.
-It also installs the pre-requisties for the open source Tungsten Replicator (www.tungsten-replicator.org)
+It also installs the pre-requisites for the open source Tungsten Replicator (www.tungsten-replicator.org)
 
 
 ## Authors
 
 * Neil Armitage
-
+* Jeff Mace
 
 ## Requirements
 
@@ -17,37 +17,86 @@ It also installs the pre-requisties for the open source Tungsten Replicator (www
 
 ## Limitations
 
-* Currently only RedHat RHEL/ Centos / AWS Linux
+* Currently supports RedHat RHEL/ Centos / AWS Linux / Debian / Ubuntu
 
 ## Examples
 
-Install the module into /etc/puppet/modules/tungsten (will be available in puppetforge soon)
+### Install the module into your module directory
 
-To install the Contunuent Tungsten prereqs run the module with the required parameters.
+    puppet module install continuent/tungsten
+    
+### Install system prerequisites
 
- ```puppet
- class { 'tungsten' :
-       nodeHostName                => 'east-db1' ,
-       nodeIpAddress               => "${::ipaddress}" ,
-       hostsFile                  => ["${::ipaddress},east-db1",'10.0.0.6,north-db1','10.0.0.7,north-db2','192.168.0.146,east-db2','192.168.0.147,west-db1','192.168.0.148,west-db2'],
-       connectorJDownload         => 'http://yumtest.continuent.com/'
- }
+    class { 'tungsten': }
 
- ```
+### Install everything to allow installation
 
- To install a node with the Continuent Tungsten software (required 2.0.1 or greater of the software available in an available yum repo)
-  ```puppet
- class { 'tungsten' :
-       nodeHostName                => 'east-db1' ,
-       nodeIpAddress               => "${::ipaddress}" ,
-       hostsFile                  => ["${::ipaddress},east-db1",'192.168.0.216,east-db2'],
+    class { 'tungsten' :
+    	installSSHKeys => true,
+    	installMysql => true,
+    }
 
-       clusterData                => {
-       east => { 'members' => 'east-db1,east-db2', 'connectors' => 'east-db1,east-db2', 'master' => 'east-db1' },
-       } ,
-       connectorJDownload         => 'http://yumtest.continuent.com/'  ,
-       installSSHKeys => true,
-       installCluster => true
- }
+### With puppetlabs/mysql using stock MySQL
 
-  ```
+    # Remove unsafe users that can cause authentication errors
+    mysql_user {
+      [ "@${::fqdn}",
+        '@localhost',
+        '@%']:
+      ensure  => 'absent',
+      require => Anchor['mysql::server::end'],
+    }
+
+    class { 'mysql::server' :
+      root_password => "MyPassword",
+      override_options => {
+        "mysqld" => {
+          "bind_address" => "0.0.0.0",
+          "server_id" => fqdn_rand(5000,$ipaddress),
+          "pid-file" => "/var/lib/mysql/mysql.pid",
+          "log-bin" => "mysql-bin",
+          "port" => "13306",
+        },
+      },
+      restart => true,
+    } ->
+    class { 'tungsten' : }
+    
+    # Make sure the tungsten system user can read MySQL binary logs
+    User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
+
+### With puppetlabs/mysql using Percona MySQL
+
+    class { 'percona_repo' : }
+    
+    # Remove unsafe users that can cause authentication errors
+    mysql_user {
+      [ "@${::fqdn}",
+        '@localhost',
+        '@%']:
+      ensure  => 'absent',
+      require => Anchor['mysql::server::end'],
+    }
+
+    class { 'mysql::server' :
+      package_name => "Percona-Server-server-56",
+      service_name => "mysql",
+      root_password => "MyPassword",
+      override_options => {
+        "mysqld" => {
+          "bind_address" => "0.0.0.0",
+          "server_id" => fqdn_rand(5000,$ipaddress),
+          "pid-file" => "/var/lib/mysql/mysql.pid",
+          "log-bin" => "mysql-bin",
+          "port" => "13306",
+        },
+      },
+      restart => true,
+    } ->
+    class { 'mysql::client' :
+      package_name => "Percona-Server-client-56",
+    } ->
+    class { 'tungsten' : }
+    
+    # Make sure the tungsten system user can read MySQL binary logs
+    User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
