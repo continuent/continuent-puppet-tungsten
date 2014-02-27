@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 class tungsten::prereq::unix_user(
-	$installSSHKeys								= false
+	$installSSHKeys								= false,
+	$sshPublicKey                 = $tungsten::params::defaultSSHPublicKey,
+	$sshPrivateCert               = $tungsten::params::defaultSSHPrivateCert,
 ) inherits tungsten::params {
 	@user { "tungsten::systemUser":
 		name => $systemUserName,
@@ -102,31 +104,23 @@ class tungsten::prereq::unix_user(
 	}
 
 	if	$installSSHKeys == true {
-		file {"/home/tungsten/.ssh/authorized_keys":
-			ensure => file,
-			mode => 600,
-			owner => $systemUserName,
-			group => "root",
-			content => template('tungsten/tungsten-auth-keys.erb'),
-			require => File['/home/tungsten/.ssh'],
-		}
-
+	  File['/home/tungsten/.ssh'] ->
 		file {"/home/tungsten/.ssh/id_rsa":
 			ensure => file,
 			mode => 600,
 			owner => $systemUserName,
-			group => "root",
-			content => template('tungsten/tungsten_id_rsa.erb'),
-			require => File['/home/tungsten/.ssh'],
-		}
-
+			content => $sshPrivateCert,
+		} ->
 		file {"/home/tungsten/.ssh/id_rsa.pub":
 			ensure => file,
 			mode => 600,
 			owner => $systemUserName,
-			group => "root",
-			content => template('tungsten/tungsten_id_rsa.pub.erb'),
-			require => File['/home/tungsten/.ssh'],
+			content => $sshPublicKey,
+		} ->
+		ssh_authorized_key { "tungsten::prereq::unix_user":
+		  user => $systemUserName,
+		  type => rsa,
+		  key => $sshPublicKey,
 		}
 	}
 }
