@@ -115,7 +115,7 @@ class tungsten::prereq::unix_user(
 			ensure => file,
 			mode => 600,
 			owner => $systemUserName,
-			content => $sshPublicKey,
+			content => "ssh-rsa $sshPublicKey",
 		} ->
 		ssh_authorized_key { "tungsten::prereq::unix_user":
 		  user => $systemUserName,
