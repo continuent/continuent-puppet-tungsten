@@ -1,7 +1,7 @@
 #!/bin/bash
 
-replication_user=<%= scope.lookupvar('::tungsten::tungsten::int_repUser') %>
-replication_password=<%= scope.lookupvar('::tungsten::tungsten::int_repPassword') %>
+replication_user=<%= scope.lookupvar('::tungsten::tungsten::repUser') %>
+replication_password=<%= scope.lookupvar('::tungsten::tungsten::repPassword') %>
 application_user=<%= scope.lookupvar('::tungsten::tungsten::appUser') %>
 application_password=<%= scope.lookupvar('::tungsten::tungsten::appPassword')  %>
 root_home=<%= scope.lookupvar('::root_home') %>

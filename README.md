@@ -2,9 +2,7 @@
 
 ## About
 
-This module helps install [Continuent Tungsten](https://www.continuent.com) Database clustering software.
-It also installs the pre-requisites for the open source Tungsten Replicator (www.tungsten-replicator.org)
-
+This module helps install [Continuent Tungsten](https://www.continuent.com) Database clustering software. It also installs the pre-requisites for the open source [Tungsten Replicator](http://www.tungsten-replicator.org).
 
 ## Authors
 
@@ -100,3 +98,32 @@ It also installs the pre-requisites for the open source Tungsten Replicator (www
     
     # Make sure the tungsten system user can read MySQL binary logs
     User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
+    
+### Using a custom SSH key for the tungsten user
+
+Generate a new keypair if you don't already have one.
+
+    $> ssh-keygen -t rsa -f tu -N '' -C 'Tungsten University' > /dev/null; cat tu; cat tu.pub; rm tu; rm tu.pub
+    
+Add the public and private key to your Puppet manifest. Do not include "ssh-rsa" or the trailing comment in the text of the public key.
+
+    $sshPublicKey = "....."
+    $sshPrivateCert = "-----BEGIN RSA PRIVATE KEY-----
+    .....
+    -----END RSA PRIVATE KEY-----"
+    
+    class { 'tungsten' :
+      sshPublicKey => $sshPublicKey,
+      sshPrivateCert => $sshPrivateCert,
+    }
+
+### Adding your public key to the tungsten user
+
+Copy in the value of your SSH public key. Do not include "ssh-rsa" or the trailing comment in the text of the public key.
+
+    $myPublicKey = "....."
+    ssh_authorized_key { "my.tungsten.key":
+      user => tungsten,
+      type => rsa,
+      key => $myPublicKey,
+    }

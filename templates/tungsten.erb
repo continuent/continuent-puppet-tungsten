@@ -1,4 +1,3 @@
-<% if scope.lookupvar('::tungsten::tungsten::tungstenIniContents') == false -%>
 [defaults]
 user=tungsten
 home-directory=/opt/continuent
@@ -37,15 +36,5 @@ rmi-port=10002
 <% cluster.each_pair do |c_key, c_value| -%>
 <%= c_key -%>=<%= c_value %>
 <% end -%>
-<% end -%>
-<% end -%>
-<% if scope.lookupvar('::tungsten::tungsten::compositeName') != false -%>
-
-[<%= scope.lookupvar('::tungsten::tungsten::compositeName') -%>]
-composite-datasources=<%= scope.lookupvar('::tungsten::tungsten::ini::compositeInfo') -%>
-<% end -%>
-<% else -%>
-<% scope.lookupvar('::tungsten::tungstenIniContents').each do |iniLine| -%>
-<%= iniLine %>
 <% end -%>
 <% end -%>

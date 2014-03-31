@@ -1,5 +1,3 @@
-# == Class: tungsten::apt See README.md for documentation.
-#
 # Copyright (C) 2014 Continuent, Inc.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -14,11 +12,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-class tungsten::apt {
-  if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-    include apt
-	  include apt::update
-
-    Class["apt::update"] -> Package <| |>
-  }
-}
+module Puppet::Parser::Functions
+  newfunction(:getMySQLAutoIncrementIncrement, :type => :rvalue) do |args|
+    clusterHash = args[0]
+    offset = nil
+    
+    Puppet::Parser::Functions.autoloader.loadall
+    availableMasters = function_getTungstenAvailableMasters([clusterHash])
+    
+    return availableMasters.size()
+  end
+end

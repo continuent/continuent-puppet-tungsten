@@ -1,69 +1,80 @@
+# == Class: tungsten::prereq See README.md for documentation.
+#
+# Copyright (C) 2014 Continuent, Inc.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License.  You may obtain
+# a copy of the License at
+# 
+#         http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
 class tungsten::prereq (
-	$systemUserName 				= $tungsten::params::systemUserName,
-	$nodeHostName									= $fqdn,
-	$nodeIpAddress								= $ipaddress,
-	$hostsFile										= [],
-	$installRVM										= false,
-	$installJava									= true,
-	$installNTP										= $tungsten::params::installNTP,
-	$disableFirewall							= true,
+	$systemUserName 				        = $tungsten::params::systemUserName,
+	$nodeHostName									  = $fqdn,
+	$installJava									  = true,
+	$installNTP										  = $tungsten::params::installNTP,
+	$disableFirewall							  = true,
+	$disableSELinux                 = true,
 	
-	$replicatorRepo							= false,
+	$replicatorRepo							    = false,
 		
-	$installMysqlj								= true,
-    $mysqljLocation                         = false,
+	$installMysqlj								  = true,
+    $mysqljLocation               = false,
 	
-	#Setting this to true should only be used to support testing as it's not secure
-	$installSSHKeys								 = false,
-    $skipHostConfig           = false,
+	  #Setting this to true should only be used to support 
+		#testing as it's not secure unless you specify a custom private key
+	$installSSHKeys								  = false,
+	  $sshPublicKey                 = $tungsten::params::defaultSSHPublicKey,
+	  $sshPrivateCert               = $tungsten::params::defaultSSHPrivateCert,
+
+  $skipHostConfig                 = false,
 ) inherits tungsten::params {
   include tungsten::apt
   
-	package {'ruby': ensure => present, }
-	package {'wget': ensure => present, }
-
-	package {'continuent-sudo': ensure => present, name=> 'sudo' }
-
-	package {'rsync': ensure => present, }
+	package {'continuent-ruby': ensure => present, name => "ruby", }
+	package {'continuent-wget': ensure => present, name => "wget", }
+	package {'continuent-sudo': ensure => present, name => "sudo", }
+	package {'continuent-rsync': ensure => present, name => "rsync", }
 	
 	if $disableFirewall == true {
-		class { "firewall":
-		  ensure => stopped
-		}
+		class { "firewall": ensure    => stopped, }
 	}
 
 	if $skipHostConfig == false {
 		class { "tungsten::prereq::hostname":
-			nodeHostName => $nodeHostName
+			nodeHostName                => $nodeHostName,
 		}
 	}
-	class { "tungsten::prereq::selinux":
+	
+	if $disableSELinux == true {
+	  class { "tungsten::prereq::selinux": }
 	}
+	
 	class { "tungsten::prereq::unix_user":
-		installSSHKeys => $installSSHKeys
-	}
-	class{ "tungsten::prereq::rvm": 
-		enabled => $installRVM
+		installSSHKeys                => $installSSHKeys,
+		  sshPublicKey                => $sshPublicKey,
+		  sshPrivateCert              => $sshPrivateCert,
 	}
 	
 	anchor { "tungsten::prereq::start": 
 		require => [
-			Package["wget"],
-			Package["sudo"],
+			Package["continuent-wget"],
+			Package["continuent-sudo"],
 		]
-	} ->
-	class { "tungsten::prereq::hosts":
-		hostsFile => $hostsFile,
-        skipHostConfig =>  $skipHostConfig,
 	} ->
 	class{ "tungsten::prereq::mysqlj": 
 		enabled => $installMysqlj,
-        location => $mysqljLocation
+    location => $mysqljLocation
 	} ->
 	anchor { "tungsten::prereq::end": 
 		require => [
 			Class["tungsten::prereq::unix_user"],
-			Class["tungsten::prereq::rvm"],
 		]
 	}
 	
@@ -75,7 +86,7 @@ class tungsten::prereq (
 	
 	if $installJava == true {
 		if $operatingsystem == "Amazon" {
-			package { "java-1.6.0-openjdk": 
+			package { "java-1.7.0-openjdk": 
 				before => Anchor["tungsten::prereq::start"]
 			}
 		} else {
@@ -86,6 +97,6 @@ class tungsten::prereq (
 	}
 	
 	class{ "tungsten::prereq::repo": 
-		replicatorRepo => $replicatorRepo,
+		replicatorRepo                => $replicatorRepo,
 	}
 }

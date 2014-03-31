@@ -1,28 +1,34 @@
+# == Class: tungsten::tungsten See README.md for documentation.
+#
+# Copyright (C) 2014 Continuent, Inc.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License.  You may obtain
+# a copy of the License at
+# 
+#         http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
 class tungsten::tungsten (
-	$installReplicatorSoftware	= false,
-		$repUser						= tungsten,
-		$repPassword				= secret,
+	$installReplicatorSoftware	      = false,
+		$repUser						            = tungsten,
+		$repPassword				            = secret,
 	
-	$installClusterSoftware			= false,
-		$clusterData									= false,
-		$compositeName								= false,
-		$appUser											= app_user,
-		$appPassword									= secret,
-		$applicationPort							= 3306,
+	$installClusterSoftware			      = false,
+		$clusterData									  = false,
+		$appUser										  	= app_user,
+		$appPassword								  	= secret,
+		$applicationPort						  	= 3306,
 		
-	$tungstenIniContents		= false,
-	
-	$provision									= false,
-	$provisionDonor							= false,
+	$provision								      	= false,
+	  $provisionDonor						    	= false,
 ) inherits tungsten::params {
 	include tungsten::prereq
-	
-	#See if the passed ini file contains any user or password details
-	$int_repUser=getReplicationUser($repUser,$tungstenIniContents)
-	$int_repPassword=getReplicationPassword($repPassword,$tungstenIniContents)
-
-	$int_appUser=getApplicationUser($appUser,$tungstenIniContents)
-	$int_appPassword=getApplicationPassword($appPassword,$tungstenIniContents)
 	
 	if $clusterData != false {
 		class{ "tungsten::tungsten::ini": }->
@@ -35,6 +41,9 @@ class tungsten::tungsten (
 	}
 	
 	if defined(File["${::root_home}/.my.cnf"]) {
+  	$sqlCheckAnonUsers	= "select * from mysql.user where user=''"
+  	$sqlExecAnonUsers		= "delete from mysql.user where user='';flush privileges;"
+	
 	  Anchor["tungsten::tungsten::ini"] ->
 		file { '/tmp/tungsten_create_users':
       ensure => file,
@@ -45,8 +54,13 @@ class tungsten::tungsten (
 		exec { "tungsten_create_users":
 			command => "/tmp/tungsten_create_users",
 		} ->
+  	exec { "tungsten-tungsten-remove-anon-users":
+  		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheckAnonUsers\"|wc -l"],
+  		command => "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlExecAnonUsers\"",
+  	} ->
 		anchor{ "tungsten::tungsten::create-users": }
 	} else {
+	  Anchor["tungsten::tungsten::ini"] ->
 		anchor{ "tungsten::tungsten::create-users": }
 	}
 	
@@ -57,6 +71,7 @@ class tungsten::tungsten (
 		} ->
 		anchor{ "tungsten::tungsten::cluster": }
 	} else {
+	  Anchor["tungsten::tungsten::create-users"] ->
 		anchor{ "tungsten::tungsten::cluster": }
 	}
 	
@@ -65,6 +80,7 @@ class tungsten::tungsten (
 		class{ "tungsten::tungsten::replicator": } ->
 		anchor{ "tungsten::tungsten::replicator": }
 	} else {
+	  Anchor["tungsten::tungsten::cluster"] ->
 		anchor{ "tungsten::tungsten::replicator": }
 	}
 	
@@ -73,5 +89,9 @@ class tungsten::tungsten (
 		class{ "tungsten::tungsten::provision": 
 			donor => $provisionDonor,
 		}
+	}
+	
+	if defined(File["/etc/mysql/conf.d"]) {
+	  File["/etc/mysql/conf.d"] -> Class["tungsten::tungsten"]
 	}
 }
