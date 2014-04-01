@@ -20,6 +20,10 @@ module Puppet::Parser::Functions
     Puppet::Parser::Functions.autoloader.loadall
     availableMasters = function_getTungstenAvailableMasters([clusterHash])
     
-    return availableMasters.size()
+    if availableMasters.size() > 0
+      return availableMasters.size()
+    else
+      return 1
+    end
   end
 end
