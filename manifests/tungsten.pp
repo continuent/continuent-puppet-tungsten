@@ -15,18 +15,25 @@
 # under the License.
 
 class tungsten::tungsten (
+  # Set this to 'true' or the path of a tungsten-replicator package
+	# If set to 'true', the 'tungsten-replicator' will be installed from 
+	# configured repositories.
 	$installReplicatorSoftware	      = false,
 		$repUser						            = tungsten,
 		$repPassword				            = secret,
 	
+  # Set this to 'true' or the path of a continuent-tungsten package
+	# If set to 'true', the 'continuent-tungsten' will be installed from 
+	# configured repositories.
 	$installClusterSoftware			      = false,
 		$clusterData									  = false,
 		$appUser										  	= app_user,
 		$appPassword								  	= secret,
 		$applicationPort						  	= 3306,
 		
+	# Run the `tungsten_provision_slave` script after installing Tungsten
 	$provision								      	= false,
-	  $provisionDonor						    	= false,
+	  $provisionDonor						    	= "autodetect",
 ) inherits tungsten::params {
 	include tungsten::prereq
 	
@@ -40,10 +47,8 @@ class tungsten::tungsten (
 		anchor{ "tungsten::tungsten::ini": }
 	}
 	
-	if defined(File["${::root_home}/.my.cnf"]) {
-  	$sqlCheckAnonUsers	= "select * from mysql.user where user=''"
-  	$sqlExecAnonUsers		= "delete from mysql.user where user='';flush privileges;"
-	
+	# The /root/.my.cnf file is created by tungsten::mysql and mysql::server classes
+	if defined(File["${::root_home}/.my.cnf"]) {	
 	  Anchor["tungsten::tungsten::ini"] ->
 		file { '/tmp/tungsten_create_users':
       ensure => file,
@@ -54,11 +59,21 @@ class tungsten::tungsten (
 		exec { "tungsten_create_users":
 			command => "/tmp/tungsten_create_users",
 		} ->
-  	exec { "tungsten-tungsten-remove-anon-users":
-  		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheckAnonUsers\"|wc -l"],
-  		command => "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlExecAnonUsers\"",
-  	} ->
 		anchor{ "tungsten::tungsten::create-users": }
+		
+		# If tungsten::mysql isn't being used, the anonymous users need to
+		# be removed from the mysql.user table
+		if ! defined(Exec["tungsten-mysql-remove-anon-users"]) {
+    	$sqlCheckAnonUsers	= "select * from mysql.user where user=''"
+    	$sqlExecAnonUsers		= "delete from mysql.user where user='';flush privileges;"
+    	
+    	Exec["tungsten_create_users"] ->
+    	exec { "tungsten-tungsten-remove-anon-users":
+    		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheckAnonUsers\"|wc -l"],
+    		command => "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlExecAnonUsers\"",
+    	} ->
+  	  Anchor["tungsten::tungsten::create-users"]
+  	}
 	} else {
 	  Anchor["tungsten::tungsten::ini"] ->
 		anchor{ "tungsten::tungsten::create-users": }

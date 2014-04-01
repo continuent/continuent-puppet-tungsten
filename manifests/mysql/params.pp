@@ -15,9 +15,9 @@
 # under the License.
 
 class tungsten::mysql::params (
-	$masterUser							= root,
-	$masterPassword					= secret,
-	$port										= 13306,
+	$masterUser							    = root,
+	$masterPassword					    = secret,
+	$port										    = 13306,
 ) {
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
 		$serviceName							= "mysql"

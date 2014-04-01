@@ -15,12 +15,13 @@
 module Puppet::Parser::Functions
   newfunction(:getTungstenAvailableMasters, :type => :rvalue) do |args|
     clusterHash = args[0]
-    offset = nil
     
     availableMasters = []
     if clusterHash.is_a?(Array)
+      # We already have an array, so no further work is needed
       availableMasters = clusterHash
     elsif clusterHash.is_a?(Hash)
+      # Review each key-pair and pull out hostnames set for the possible settings
       clusterHash.each_pair do |currentClusterName, cluster|
         ["members", "dataservice-hosts", "master", "masters", "slaves"].each{
           |key|
@@ -34,8 +35,8 @@ module Puppet::Parser::Functions
       end
     end
     
+    # Dedup and sort the list so the offset values do not change from run to run
     availableMasters = availableMasters.uniq().sort()
-    Puppet.debug("The available masters are #{availableMasters.join(',')}")
     return availableMasters
   end
 end

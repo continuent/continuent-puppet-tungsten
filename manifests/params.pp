@@ -15,7 +15,7 @@
 # under the License.
 
 class tungsten::params {
-	$systemUserName								= "tungsten"
+	$systemUserName							      = "tungsten"
 	
 	if $::operatingsystem == "Amazon" {
 		$installNTP = false

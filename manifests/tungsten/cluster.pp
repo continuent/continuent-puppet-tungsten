@@ -20,11 +20,13 @@ class tungsten::tungsten::cluster (
 	include tungsten::prereq
 	
 	if $location == true {
+	  # Install the continuent-tungsten package using configured repositories
 		Class["tungsten::prereq"] ->
 		package { 'continuent-tungsten':
 			ensure => present,
 		}
 	} elsif $location != false {
+	  # Install the continuent-tungsten package from the provided location
 		Class["tungsten::prereq"] ->
 		package { "continuent-tungsten":
 			ensure => present,

@@ -22,6 +22,9 @@ class tungsten (
 		$installNTP											= $tungsten::params::installNTP,
 		$disableFirewall							  = true,
 		$disableSELinux                 = true,
+		
+		# This may be set to 'nightly', 'stable' or 'true
+		# If set to 'true', the stable repository will be used
 		$replicatorRepo									= false,
 		
 		#Setting this to true should only be used to support 
@@ -32,18 +35,27 @@ class tungsten (
 		
 		$installMysql										= false,
 		
+		# Set this to 'true' or the path of a tungsten-replicator package
+		# If set to 'true', the 'tungsten-replicator' will be installed from 
+		# configured repositories.
 		$installReplicatorSoftware			= false,
 			$replicationUser							= tungsten,
 			$replicationPassword					= secret,
+			
+		# Set this to 'true' or the path of a continuent-tungsten package
+		# If set to 'true', the 'continuent-tungsten' will be installed from 
+		# configured repositories.
 		$installClusterSoftware					= false,
 			$clusterData									= false,
 			$appUser											= app_user,
 			$appPassword									= secret,
 			$applicationPort							= 3306,
+			
+		# Run the `tungsten_provision_slave` script after installing Tungsten
 		$provisionNode									= false,
-			$provisionDonor								= false,
+			$provisionDonor								= "autodetect",
 		
-    #If this is set no setting of hostname will be done
+    #If this is set to true no setting of hostname will be done
     $skipHostConfig                 = false
 ) inherits tungsten::params {
 	class{ "tungsten::prereq":

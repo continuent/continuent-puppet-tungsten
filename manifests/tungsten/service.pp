@@ -15,4 +15,5 @@
 # under the License.
 
 define tungsten::tungsten::service ($dataservice = $title) {
+  # This defined-type has not been implemented yet
 }

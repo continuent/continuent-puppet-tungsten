@@ -25,7 +25,10 @@ class tungsten::mysql::server (
 	$sqlExec		= "delete from mysql.user where user='';flush privileges;"
 	
 	class { "percona_repo" : }
-	User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
+	
+	# Define this anchor so tungsten::prereq::unix_user can set the tungsten
+	# system user group memberships to include "mysql"
+	anchor { 'mysql::server::end': }
 	
 	package { 'mysql-server': 
 		ensure => present,
@@ -70,5 +73,6 @@ class tungsten::mysql::server (
 	} ->
 	package { "percona-xtrabackup" :
 		ensure => present
-	}
+	} ->
+	Anchor["mysql::server::end"]
 }

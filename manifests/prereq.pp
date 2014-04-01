@@ -22,17 +22,20 @@ class tungsten::prereq (
 	$disableFirewall							  = true,
 	$disableSELinux                 = true,
 	
+	# This may be set to 'nightly', 'stable' or 'true
+	# If set to 'true', the stable repository will be used
 	$replicatorRepo							    = false,
 		
 	$installMysqlj								  = true,
     $mysqljLocation               = false,
 	
-	  #Setting this to true should only be used to support 
-		#testing as it's not secure unless you specify a custom private key
+  #Setting this to true should only be used to support 
+	#testing as it's not secure unless you specify a custom private key
 	$installSSHKeys								  = false,
 	  $sshPublicKey                 = $tungsten::params::defaultSSHPublicKey,
 	  $sshPrivateCert               = $tungsten::params::defaultSSHPrivateCert,
 
+  #If this is set to true no setting of hostname will be done
   $skipHostConfig                 = false,
 ) inherits tungsten::params {
   include tungsten::apt
@@ -85,6 +88,8 @@ class tungsten::prereq (
 	}
 	
 	if $installJava == true {
+	  # If we are installing on Amazon, the java install is simple. Otherwise,
+	  # use the java class to choose the correct package name
 		if $operatingsystem == "Amazon" {
 			package { "java-1.7.0-openjdk": 
 				before => Anchor["tungsten::prereq::start"]

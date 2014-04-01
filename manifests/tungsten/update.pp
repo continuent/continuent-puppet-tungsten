@@ -16,6 +16,7 @@
 
 class tungsten::tungsten::update (
 ) inherits tungsten::params {
+  # Run /opt/continuent/tungsten/tools/tpm update if there is a change to tungsten.ini
 	exec { "tungsten::tungsten::update::opt_continuent":
 		path => ["/usr/bin"],
 		command => "sudo -i -u tungsten /opt/continuent/tungsten/tools/tpm update",
@@ -24,6 +25,7 @@ class tungsten::tungsten::update (
 		refreshonly => true
 	}
 	
+	# Run /opt/replicator/tungsten/tools/tpm update if there is a change to tungsten.ini
 	exec { "tungsten::tungsten::update::opt_replicator":
 		path => ["/usr/bin"],
 		command => "sudo -i -u tungsten /opt/replicator/tungsten/tools/tpm update",

@@ -16,7 +16,6 @@ module Puppet::Parser::Functions
   newfunction(:getMySQLAutoIncrementOffset, :type => :rvalue) do |args|
     clusterHash = args[0]
     hostname = args[1]
-    offset = nil
     
     Puppet::Parser::Functions.autoloader.loadall
     availableMasters = function_getTungstenAvailableMasters([clusterHash])

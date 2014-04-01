@@ -11,15 +11,14 @@ application-user=<%= scope.lookupvar('::tungsten::tungsten::appUser') %>
 application-password=<%= scope.lookupvar('::tungsten::tungsten::appPassword') %>
 skip-validation-check=MySQLPermissionsCheck
 start-and-report=true
-
 <% if scope.lookupvar('::tungsten::tungsten::installReplicatorSoftware') != false -%>
 <% if scope.lookupvar('::tungsten::tungsten::installClusterSoftware') != false -%>
+
 [defaults.replicator]
 home-directory=/opt/replicator
 rmi-port=10002
 <% end -%>
 <% end -%>
-
 <% scope.lookupvar('::tungsten::tungsten::clusterData').each_pair do |key, cluster| -%>
 <% if (cluster.has_key?("topology") == false || cluster["topology"] == "clustered") -%>
 

@@ -32,11 +32,7 @@ class tungsten::prereq::unix_user(
 	
 	User <| title == "tungsten::systemUser" |>
 	
-	if defined(Class["mysql::server"]) {
-	  User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
-	}
-	
-	if defined(Class["tungsten::mysql"]) {
+	if defined(Anchor["mysql::server::end"]) {
 	  User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
 	}
 
@@ -109,6 +105,8 @@ class tungsten::prereq::unix_user(
 		mode => '700',
 	}
 
+  # Only create the ~tungsten/.ssh files if we are asked to use the default
+  # certificate, or if a different certificate is provided.
   if $installSSHKeys == true {
     $setupSSHDirectory = true
   } elsif $sshPrivateCert != $tungsten::params::defaultSSHPrivateCert {
@@ -117,7 +115,7 @@ class tungsten::prereq::unix_user(
     $setupSSHDirectory = false
   }
   
-	if	$setupSSHDirectory == true {
+	if $setupSSHDirectory == true {
 	  File['/home/tungsten/.ssh'] ->
 		file {"/home/tungsten/.ssh/id_rsa":
 			ensure => file,

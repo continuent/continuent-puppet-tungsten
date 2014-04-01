@@ -20,11 +20,13 @@ class tungsten::tungsten::replicator (
 	include tungsten::prereq
 	
 	if $location == true {
+	  # Install the tungsten-replicator package using configured repositories
 		Class["tungsten::prereq"] ->
 		package { 'tungsten-replicator':
 			ensure => present,
 		}
 	} elsif $location != false {
+	  # Install the tungsten-replicator package from the provided location
 		Class["tungsten::prereq"] ->
 		package { "tungsten-replicator":
 			ensure => present,

@@ -15,13 +15,12 @@
 # under the License.
 
 class tungsten::tungsten::provision (
-	$donor =  undef,
+	$donor =  "autodetect",
 ) inherits tungsten::tungsten {
-	exec { "prov":
+	exec { "tungsten::tungsten::provision":
 		path => ["/bin", "/usr/bin", "/opt/continuent/tungsten/tungsten-replicator"],
 		environment => "HOME=/root",
 		logoutput => true,
 		command => "/opt/continuent/tungsten/tungsten-replicator/scripts/tungsten_provision_slave --source=$donor --restore-to-datadir ",
 	}
-
 }
