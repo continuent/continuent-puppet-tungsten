@@ -97,7 +97,7 @@ This will install the latest stable version of Tungsten Replicator with master-s
     class { 'percona_repo' : }
     
     class { 'mysql::server' :
-      package_name => "Percona-Server-server-56",
+      package_name => "Percona-Server-server-55",
       service_name => "mysql",
       root_password => "MyPassword",
       override_options => {
@@ -117,7 +117,7 @@ This will install the latest stable version of Tungsten Replicator with master-s
       restart => true,
     } ->
     class { 'mysql::client' :
-      package_name => "Percona-Server-client-56",
+      package_name => "Percona-Server-client-55",
     } ->
     class { 'tungsten' : }
     
