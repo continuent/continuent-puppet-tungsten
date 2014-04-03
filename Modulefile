@@ -1,5 +1,5 @@
 name 'continuent/tungsten'
-version '0.1.0'
+version '0.1.5'
 
 author 'Continuent'
 license 'Apache 2.0'
