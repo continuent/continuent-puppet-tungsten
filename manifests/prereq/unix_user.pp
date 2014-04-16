@@ -82,6 +82,22 @@ class tungsten::prereq::unix_user(
 		require => User["tungsten::systemUser"]
 	}
 	
+	file { "/opt/continuent/software":
+		ensure => "directory",
+		owner	=> $systemUserName,
+		group	=> $systemUserName,
+		mode	 => 750,
+		require => User["tungsten::systemUser"]
+	}
+	
+	file { "/opt/continuent/service_logs":
+		ensure => "directory",
+		owner	=> $systemUserName,
+		group	=> $systemUserName,
+		mode	 => 750,
+		require => User["tungsten::systemUser"]
+	}
+	
 	file { "/opt/replicator":
 		ensure => "directory",
 		owner	=> $systemUserName,

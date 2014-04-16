@@ -90,9 +90,11 @@ class tungsten::tungsten (
 		anchor{ "tungsten::tungsten::cluster": }
 	}
 	
-	if $installReplicatorSoftware == true {
+	if $installReplicatorSoftware != false {
 	  Anchor["tungsten::tungsten::cluster"] ->
-		class{ "tungsten::tungsten::replicator": } ->
+		class{ "tungsten::tungsten::replicator": 
+			location => $installReplicatorSoftware,
+		} ->
 		anchor{ "tungsten::tungsten::replicator": }
 	} else {
 	  Anchor["tungsten::tungsten::cluster"] ->
