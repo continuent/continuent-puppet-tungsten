@@ -55,9 +55,10 @@ class tungsten::tungsten (
       owner => 'root',
       mode => 700,
       content => template('tungsten/tungsten_create_users.erb'),
-    } ->
+    } ~>
 		exec { "tungsten_create_users":
 			command => "/tmp/tungsten_create_users",
+			refreshonly => true,
 		} ->
 		anchor{ "tungsten::tungsten::create-users": }
 		
@@ -69,7 +70,7 @@ class tungsten::tungsten (
     	
     	Exec["tungsten_create_users"] ->
     	exec { "tungsten-tungsten-remove-anon-users":
-    		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheckAnonUsers\"|wc -l"],
+    		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/test `/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheckAnonUsers\"|wc -l` -gt 0"],
     		command => "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlExecAnonUsers\"",
     	} ->
   	  Anchor["tungsten::tungsten::create-users"]

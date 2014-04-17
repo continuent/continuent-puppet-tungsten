@@ -19,21 +19,25 @@ home-directory=/opt/replicator
 rmi-port=10002
 <% end -%>
 <% end -%>
-<% scope.lookupvar('::tungsten::tungsten::clusterData').each_pair do |key, cluster| -%>
-<% if (cluster.has_key?("topology") == false || cluster["topology"] == "clustered") -%>
-
+<% clusterHash = scope.lookupvar('::tungsten::tungsten::clusterData') -%>
+<% scope.function_getTungstenINIDefaultsSections([clusterHash]).each do |key| -%>
+<% cluster = clusterHash[key] -%>
 [<%= key -%>]
-<% cluster.each_pair do |c_key, c_value| -%>
-<%= c_key -%>=<%= c_value %>
+<% cluster.keys.sort.each do |c_key| -%>
+<%= c_key -%>=<%= cluster[c_key] %>
 <% end -%>
 <% end -%>
-<% end -%>
-<% scope.lookupvar('::tungsten::tungsten::clusterData').each_pair do |key, cluster| -%>
-<% if (cluster.has_key?("topology") == true && cluster["topology"] != "clustered") -%>
-
+<% scope.function_getTungstenINIClusteredSections([clusterHash]).each do |key| -%>
+<% cluster = clusterHash[key] -%>
 [<%= key -%>]
-<% cluster.each_pair do |c_key, c_value| -%>
-<%= c_key -%>=<%= c_value %>
+<% cluster.keys.sort.each do |c_key| -%>
+<%= c_key -%>=<%= cluster[c_key] %>
 <% end -%>
+<% end -%>
+<% scope.function_getTungstenININonClusteredSections([clusterHash]).each do |key| -%>
+<% cluster = clusterHash[key] -%>
+[<%= key -%>]
+<% cluster.keys.sort.each do |c_key| -%>
+<%= c_key -%>=<%= cluster[c_key] %>
 <% end -%>
 <% end -%>

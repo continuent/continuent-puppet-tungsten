@@ -1,6 +1,6 @@
 # === Copyright
 #
-# Copyright 2013 Continuent Inc.
+# Copyright 2014 Continuent Inc.
 #
 # === License
 #
@@ -17,12 +17,6 @@
 # limitations under the License.
 #
 <% systemUser = scope.lookupvar('::tungsten::prereq::systemUserName') -%>
-<%= systemUser -%>	soft	nofile	65535
-<%= systemUser -%>	hard	nofile	65535
-<%= systemUser -%>	soft	nproc	8096
-<%= systemUser -%>	hard	nproc	8096
-mysql	soft	nofile	65535
-mysql	hard	nofile	65535
-mysql	soft	nproc	8096
-mysql	hard	nproc	8096
-# End of file
+Defaults:<%= systemUser -%> !requiretty
+Defaults:<%= systemUser -%> !visiblepw
+<%= systemUser -%> ALL=(ALL) NOPASSWD: ALL
