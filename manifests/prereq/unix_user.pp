@@ -53,7 +53,13 @@ class tungsten::prereq::unix_user(
 		require => File['/home/tungsten'],
 	}
 	
-	file { "10_tungsten":
+	exec { "tungsten::prereq::remove-requiretty":
+  		command => "/bin/sed -i	'/requiretty/s/^Defaults/#Defaults/'	/etc/sudoers",
+  		onlyif => "/bin/grep requiretty /etc/sudoers | /bin/egrep -v \"^#\"",
+  		require => Package[sudo],
+  	}
+	
+	file { "tungsten::prereq::sudo":
 		path		=> "/etc/sudoers.d/10_tungsten",
 		ensure	=> present,
 		owner	 => "root",
@@ -61,12 +67,7 @@ class tungsten::prereq::unix_user(
 		mode		=> 0440,
 		replace => true,
 		require => Package[sudo],
-		content => "$systemUserName ALL=(ALL) NOPASSWD: ALL";
-	}
-
-	exec { "remove-requiretty":
-		command => "/bin/sed -i	'/requiretty/s/^/#/'	/etc/sudoers",
-		require => Package[sudo],
+		content => template('tungsten/tungsten.sudo.erb'),
 	}
 					
 	file { '/etc/security/limits.d/10tungsten.conf':

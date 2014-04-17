@@ -68,7 +68,7 @@ class tungsten::mysql::server (
 	  mode    => '0600',
 	} ->
 	exec { "tungsten-mysql-remove-anon-users":
-		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheck\"|wc -l"],
+		onlyif	=> ["/usr/bin/test -f /usr/bin/mysql", "/usr/bin/test `/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlCheck\"|wc -l` -gt 0"],
 		command => "/usr/bin/mysql --defaults-file=${::root_home}/.my.cnf -Be \"$sqlExec\"",
 	} ->
 	package { "percona-xtrabackup" :
