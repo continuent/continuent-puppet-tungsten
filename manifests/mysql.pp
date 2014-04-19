@@ -25,4 +25,6 @@ class tungsten::mysql (
   
 	class { "tungsten::mysql::server": } ->
 	Class["tungsten::prereq"]
+	
+	User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
 }
