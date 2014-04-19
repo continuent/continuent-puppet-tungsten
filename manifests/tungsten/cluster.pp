@@ -57,8 +57,7 @@ class tungsten::tungsten::cluster (
     		} ~>
     		exec { "install-continuent-tungsten":
     		  path => ["/bin", "/usr/bin"],
-    		  command => "/opt/continuent/software/$basename/tools/tpm update --tty --log=/opt/continuent/service_logs/tungsten-configure.log > /opt/continuent/service_logs/rpm.output 2>&1",
-    		  user => $tungsten::prereq::systemUserName,
+    		  command => "sudo -i -u $tungsten::prereq::systemUserName /opt/continuent/software/$basename/tools/tpm update --tty --log=/opt/continuent/service_logs/tungsten-configure.log > /opt/continuent/service_logs/rpm.output 2>&1",
     		  onlyif => "test -f /etc/tungsten/tungsten.ini",
       		refreshonly => true,
       		returns => [0, 1],
