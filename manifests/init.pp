@@ -72,10 +72,6 @@ class tungsten (
 		disableSELinux                  => $disableSELinux,
     skipHostConfig                  => $skipHostConfig
 	}
-
-	if $installMysql == true {
-		include mysql
-	}
 	
 	Class["tungsten::prereq"] ->
 	class { "tungsten::tungsten":
@@ -89,5 +85,11 @@ class tungsten (
 			applicationPort 							=> $applicationPort,
 		provision 											=> $provisionNode,
 			provisionDonor 								=> $provisionDonor,
+	}
+
+  # Include the tungsten::mysql module after everything else so it can use
+  # settings invoked in other tungsten submodules
+	if $installMysql == true {
+		include mysql
 	}
 }
