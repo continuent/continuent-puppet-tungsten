@@ -73,6 +73,11 @@ class tungsten (
     skipHostConfig                  => $skipHostConfig
 	}
 	
+	# The tungsten::mysql module must be define before tungsten::tungsten
+	if $installMysql == true {
+		include mysql
+	}
+	
 	Class["tungsten::prereq"] ->
 	class { "tungsten::tungsten":
 		installReplicatorSoftware 			=> $installReplicatorSoftware,
@@ -85,11 +90,5 @@ class tungsten (
 			applicationPort 							=> $applicationPort,
 		provision 											=> $provisionNode,
 			provisionDonor 								=> $provisionDonor,
-	}
-
-  # Include the tungsten::mysql module after everything else so it can use
-  # settings invoked in other tungsten submodules
-	if $installMysql == true {
-		include mysql
 	}
 }
