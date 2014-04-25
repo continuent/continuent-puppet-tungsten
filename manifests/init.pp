@@ -72,7 +72,8 @@ class tungsten (
 		disableSELinux                  => $disableSELinux,
     skipHostConfig                  => $skipHostConfig
 	}
-
+	
+	# The tungsten::mysql module must be define before tungsten::tungsten
 	if $installMysql == true {
 		include mysql
 	}

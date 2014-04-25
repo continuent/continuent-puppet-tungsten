@@ -11,33 +11,43 @@ application-user=<%= scope.lookupvar('::tungsten::tungsten::appUser') %>
 application-password=<%= scope.lookupvar('::tungsten::tungsten::appPassword') %>
 skip-validation-check=MySQLPermissionsCheck
 start-and-report=true
-<% if scope.lookupvar('::tungsten::tungsten::installReplicatorSoftware') != false -%>
-<% if scope.lookupvar('::tungsten::tungsten::installClusterSoftware') != false -%>
 
+<% if scope.lookupvar('::tungsten::tungsten::installReplicatorSoftware') != false -%>
+  <%- if scope.lookupvar('::tungsten::tungsten::installClusterSoftware') != false -%>
 [defaults.replicator]
 home-directory=/opt/replicator
 rmi-port=10002
+
+  <%- end -%>
 <% end -%>
-<% end -%>
-<% clusterHash = scope.lookupvar('::tungsten::tungsten::clusterData') -%>
-<% scope.function_getTungstenINIDefaultsSections([clusterHash]).each do |key| -%>
-<% cluster = clusterHash[key] -%>
+<%
+clusterHash = scope.lookupvar('::tungsten::tungsten::clusterData')
+
+# All sections that start with "defaults"
+scope.function_getTungstenINIDefaultsSections([clusterHash]).each do |key| -%>
+  <%- cluster = clusterHash[key] -%>
 [<%= key -%>]
-<% cluster.keys.sort.each do |c_key| -%>
+  <%- cluster.keys.sort.each do |c_key| -%>
 <%= c_key -%>=<%= cluster[c_key] %>
+  <%- end -%>
+
 <% end -%>
-<% end -%>
-<% scope.function_getTungstenINIClusteredSections([clusterHash]).each do |key| -%>
-<% cluster = clusterHash[key] -%>
+<%
+# All sections that do not have a topology, or have topology = "clustered"
+scope.function_getTungstenINIClusteredSections([clusterHash]).each do |key| -%>
+  <%- cluster = clusterHash[key] -%>
 [<%= key -%>]
-<% cluster.keys.sort.each do |c_key| -%>
+  <%- cluster.keys.sort.each do |c_key| -%>
 <%= c_key -%>=<%= cluster[c_key] %>
+  <%- end -%>
+
 <% end -%>
-<% end -%>
-<% scope.function_getTungstenININonClusteredSections([clusterHash]).each do |key| -%>
-<% cluster = clusterHash[key] -%>
+<%
+# All remaining sections
+scope.function_getTungstenININonClusteredSections([clusterHash]).each do |key| -%>
+  <%- cluster = clusterHash[key] -%>
 [<%= key -%>]
-<% cluster.keys.sort.each do |c_key| -%>
+  <%- cluster.keys.sort.each do |c_key| -%>
 <%= c_key -%>=<%= cluster[c_key] %>
-<% end -%>
+  <%- end -%>
 <% end -%>
