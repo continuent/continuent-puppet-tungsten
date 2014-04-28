@@ -112,4 +112,8 @@ class tungsten::tungsten (
 	if defined(File["/etc/mysql/conf.d"]) {
 	  File["/etc/mysql/conf.d"] -> Class["tungsten::tungsten"]
 	}
+
+	if defined(Anchor["mysql::server::end"]) {
+    Anchor["mysql::server::end"] -> Class["tungsten::tungsten"]
+  }
 }
