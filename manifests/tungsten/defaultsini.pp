@@ -1,3 +1,5 @@
+# == Class: tungsten::tungsten::ini See README.md for documentation.
+#
 # Copyright (C) 2014 Continuent, Inc.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -12,28 +14,16 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-module Puppet::Parser::Functions
-  newfunction(:getTungstenININonClusteredSections, :type => :rvalue) do |args|
-    clusterHash = args[0]
-    sections = []
+class tungsten::tungsten::defaultsini (
+) inherits tungsten::tungsten {
+	include tungsten::prereq
 
-    if clusterHash == false
-      return sections
-    end
-    
-    clusterHash.each{
-      |key, value|
-      if key =~ /^defaults/
-        next
-      end
-      
-      if value.has_key?("topology") != true || value["topology"] == "clustered"
-        next
-      else
-        sections << key
-      end
-    }
-    
-    return sections.sort()
-  end
-end
+	Class["tungsten::prereq"] ->
+	file { "defaults.tungsten.ini":
+		path		=> "/etc/tungsten/defaults.tungsten.ini",
+		owner => $tungsten::prereq::systemUserName,
+		group => "root",
+		mode => 644,
+		content => template("tungsten/tungsten.erb"),
+	}
+}

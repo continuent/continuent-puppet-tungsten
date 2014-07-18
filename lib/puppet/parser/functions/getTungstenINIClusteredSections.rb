@@ -16,6 +16,10 @@ module Puppet::Parser::Functions
   newfunction(:getTungstenINIClusteredSections, :type => :rvalue) do |args|
     clusterHash = args[0]
     sections = []
+
+    if clusterHash == false
+      return sections
+    end
     
     clusterHash.each{
       |key, value|

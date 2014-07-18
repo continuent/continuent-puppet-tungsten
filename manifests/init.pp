@@ -34,6 +34,11 @@ class tungsten (
   	  $sshPrivateCert               = $tungsten::params::defaultSSHPrivateCert,
 		
 		$installMysql										= false,
+
+		# Set this to true if you are not passing $clusterData
+	        # and want the /etc/tungsten/defaults.tungsten.ini file
+	        # to be created
+	        $writeTungstenDefaults                  = false,
 		
 		# Set this to 'true' or the path of a tungsten-replicator package
 		# If set to 'true', the 'tungsten-replicator' will be installed from 
@@ -80,6 +85,7 @@ class tungsten (
 	
 	Class["tungsten::prereq"] ->
 	class { "tungsten::tungsten":
+		writeTungstenDefaults				=> $writeTungstenDefaults,
 		installReplicatorSoftware 			=> $installReplicatorSoftware,
 			repUser 											=> $replicationUser,
 			repPassword 									=> $replicationPassword,

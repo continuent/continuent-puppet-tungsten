@@ -15,6 +15,11 @@
 # under the License.
 
 class tungsten::tungsten (
+	# Set this to true if you are not passing $clusterData
+	# and want the /etc/tungsten/defaults.tungsten.ini file
+	# to be created
+	$writeTungstenDefaults			= false,
+
   # Set this to 'true' or the path of a tungsten-replicator package
 	# If set to 'true', the 'tungsten-replicator' will be installed from 
 	# configured repositories.
@@ -43,6 +48,9 @@ class tungsten::tungsten (
 		
 		Anchor["tungsten::tungsten::replicator"] ->
 		class{ "tungsten::tungsten::update": }
+	} elsif $writeTungstenDefaults == true {
+		class{ "tungsten::tungsten::defaultsini": }->
+		anchor{ "tungsten::tungsten::ini": }
 	} else {
 		anchor{ "tungsten::tungsten::ini": }
 	}
