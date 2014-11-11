@@ -16,7 +16,7 @@
 
 class tungsten::prereq::selinux (
 ) {
-	file { "/selinux/enforcing":
+	file { "/selinux/enforce":
 		owner => root,
 		mode => 600,
 		content => "0"
