@@ -55,13 +55,7 @@ class tungsten::prereq (
 		}
 	}
 	
-	if $disableSELinux == true {
-    if $::osfamily == 'RedHat'{
-      class { 'selinux':
-      mode => 'permissive'
-      }
-    }
-	}
+
 	
 	class { "tungsten::prereq::unix_user":
 		installSSHKeys                => $installSSHKeys,

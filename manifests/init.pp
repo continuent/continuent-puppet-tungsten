@@ -79,6 +79,13 @@ class tungsten (
 	}
 	
 	# The tungsten::mysql module must be define before tungsten::tungsten
+  if $disableSELinux == true {
+      if $::osfamily == 'RedHat'{
+        class { 'selinux':
+        mode => 'permissive'
+      }
+  }
+  } ->
 	if $installMysql == true {
 		include mysql
 	}
