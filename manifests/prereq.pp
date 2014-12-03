@@ -56,7 +56,11 @@ class tungsten::prereq (
 	}
 	
 	if $disableSELinux == true {
-	  class { "tungsten::prereq::selinux": }
+    if $::osfamily == 'RedHat'{
+      class { 'selinux':
+      mode => 'permissive'
+      }
+    }
 	}
 	
 	class { "tungsten::prereq::unix_user":
