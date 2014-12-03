@@ -87,7 +87,7 @@ class tungsten (
   }
   } ->
 	if $installMysql == true {
-		include mysql
+		include tungstenmysql
 	}
 	
 	Class["tungsten::prereq"] ->

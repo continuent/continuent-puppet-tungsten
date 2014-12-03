@@ -1,4 +1,4 @@
-# == Class: tungsten::mysql::params See README.md for documentation.
+# == Class: tungsten::tungstenmysql::params See README.md for documentation.
 #
 # Copyright (C) 2014 Continuent, Inc.
 # 
@@ -14,7 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-class tungsten::mysql::params (
+class tungsten::tungstenmysql::params (
 	$masterUser							    = root,
 	$masterPassword					    = secret,
 	$port										    = 13306,
