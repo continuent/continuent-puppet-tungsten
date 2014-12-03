@@ -82,13 +82,17 @@ class tungsten (
   if $disableSELinux == true {
       if $::osfamily == 'RedHat'{
         class { 'selinux':
-        mode => 'permissive'
+          mode => 'permissive'
+        }
       }
+      if $installMysql == true {
+        include tungstenmysql
+      }
+  } else {
+    if $installMysql == true {
+      include tungstenmysql
+    }
   }
-  } ->
-	if $installMysql == true {
-		include tungstenmysql
-	}
 	
 	Class["tungsten::prereq"] ->
 	class { "tungsten::tungsten":
