@@ -83,26 +83,23 @@ class tungsten (
     skipHostConfig                  => $skipHostConfig
 	}
 
-  if $disableSELinux == true {
-      if $::osfamily == 'RedHat'{
-        class { 'selinux':
-          mode => 'permissive'
-        }
-        anchor { 'tungsten::selinux::end': }
-      } else {   anchor { 'tungsten::selinux::end': }    }
+      class {"tungsten::tungstenselinux":
+          disableSELinux => $disableSELinux
+      }
 
-  }   else {  anchor { 'tungsten::selinux::end': } }
+
 
 
   if $installMysql == true {
 
-      Anchor["tungsten::selinux::end"] -> class {"tungsten::tungstenmysql":
+      class {"tungsten::tungstenmysql":
           overrideOptionsMysqld => $overrideOptionsMysqld,
           overrideOptionsClient => $overrideOptionsClient,
           overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
           serverPackageName => $serverPackageName,
           clientPackageName => $clientPackageName,
-        }
+          require => Class["tungsten::tungstenselinux"]
+      }
 
   }
 
