@@ -82,8 +82,8 @@ class tungsten (
 		disableSELinux                  => $disableSELinux,
     skipHostConfig                  => $skipHostConfig
 	}
-	
-	# The tungsten::mysql module must be define before tungsten::tungsten
+
+  anchor { 'tungsten::selinux::end': }
   if $disableSELinux == true {
       if $::osfamily == 'RedHat'{
         class { 'selinux':
@@ -91,14 +91,17 @@ class tungsten (
         }
       }
   }
+  anchor { 'tungsten::selinux::end': }
 
   if $installMysql == true {
-      class {"tungsten::tungstenmysql":
+      if defined(Anchor["tungsten::selinux::end"]) {
+        class {"tungsten::tungstenmysql":
           overrideOptionsMysqld => $overrideOptionsMysqld,
           overrideOptionsClient => $overrideOptionsClient,
           overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
           serverPackageName => $serverPackageName,
           clientPackageName => $clientPackageName,
+        }
       }
   }
 
