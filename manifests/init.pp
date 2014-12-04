@@ -93,15 +93,15 @@ class tungsten (
   anchor { 'tungsten::selinux::end': }
 
   if $installMysql == true {
-      if defined(Anchor["tungsten::selinux::end"]) {
-        class {"tungsten::tungstenmysql":
+
+      Anchor["tungsten::selinux::end"] -> class {"tungsten::tungstenmysql":
           overrideOptionsMysqld => $overrideOptionsMysqld,
           overrideOptionsClient => $overrideOptionsClient,
           overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
           serverPackageName => $serverPackageName,
           clientPackageName => $clientPackageName,
         }
-      }
+
   }
 
 	
