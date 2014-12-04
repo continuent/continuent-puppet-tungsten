@@ -47,7 +47,7 @@ class tungsten::tungstenmysql (
   class { 'percona_repo' : } ->
   class { 'mysql::server' :
     package_name => $fullServerPackageName,
-    service_name => $fullClientPackageName,
+    service_name => $tungsten::tungstenmysql::params::serviceName,
     root_password => $tungsten::tungstenmysql::params::masterPassword,
     override_options => {
           'mysqld'       =>  $fullOverrideOptionsMysqld,
