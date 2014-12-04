@@ -20,7 +20,7 @@ class tungsten::tungstenmysql::params (
 	$port										    = 13306,
 ) {
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
-      $base_override_options => {
+      $base_override_options = {
           'mysqld' => {
           'bind_address' => '0.0.0.0',
           'server_id' => fqdn_rand(1073741824),
@@ -44,7 +44,7 @@ class tungsten::tungstenmysql::params (
 		$pidfile                  = "/var/lib/mysql/mysqld.pid"
 		$socket                   = "/var/lib/mysql/mysql.sock"
 	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-        $base_override_options => {
+        $base_override_options = {
             'mysqld' => {
             'bind_address' => '0.0.0.0',
             'server_id' => fqdn_rand(1073741824),
