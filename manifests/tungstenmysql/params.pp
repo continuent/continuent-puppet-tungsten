@@ -17,11 +17,10 @@
 class tungsten::tungstenmysql::params (
 	$masterUser							    = root,
 	$masterPassword					    = secret,
-	$port										    = 13306,
-  $mysqlOverrideOptions = {},
+	$port										    = 13306,,
 ) {
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
-      $base_override_options = merge( {
+      $base_override_options =  {
           'bind_address' => '0.0.0.0',
           'server_id' => fqdn_rand(1073741824),
           'pid-file' => '/var/lib/mysql/mysql.pid',
@@ -34,7 +33,7 @@ class tungsten::tungstenmysql::params (
           'auto_increment_increment' => 1,
           'auto_increment_offset' => 1,
           'innodb_file_per_table' => true,
-          },$mysqlOverrideOptions)
+          }
 
 		$serviceName							= "mysql"
 		$serverPackageName				= "Percona-Server-server-55"

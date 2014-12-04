@@ -21,17 +21,17 @@ class tungsten::tungstenmysql (
 	
 	$serviceName		= $tungsten::tungstenmysql::params::serviceName,
   $mysqlOverrideOptions = {},
-) inherits tungsten::tungstenmysql::params ($mysqlOverrideOptions) {
+) inherits tungsten::tungstenmysql::params  {
   include tungsten::prereq
 
-  #$fullOverrideOptions=merge($tungsten::tungstenmysql::params::base_override_options,$mysqlOverrideOptions)
+  $fullOverrideOptions=merge($tungsten::tungstenmysql::params::base_override_options,$mysqlOverrideOptions)
 class { 'percona_repo' : } ->
 class { 'mysql::server' :
     package_name => $tungsten::tungstenmysql::params::serverPackageName,
     service_name => $tungsten::tungstenmysql::params::serviceName,
     root_password => $tungsten::tungstenmysql::params::masterPassword,
     override_options => {
-          'mysqld' => { $tungsten::tungstenmysql::params::base_override_options},
+          'mysqld' =>  $fullOverrideOptions},
     restart => true,
   } ->
 	Class["tungsten::prereq"]
