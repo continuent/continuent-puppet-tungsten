@@ -34,7 +34,9 @@ class tungsten (
   	  $sshPrivateCert               = $tungsten::params::defaultSSHPrivateCert,
 		
 		$installMysql										= false,
-      $mysqlOverrideOptions         = {},
+      $overrideOptionsMysqld         = {},
+      $overrideOptionsClient         = {},
+      $overrideOptionsMysqldSafe     = {},
 
 		# Set this to true if you are not passing $clusterData
 	        # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -86,19 +88,16 @@ class tungsten (
           mode => 'permissive'
         }
       }
-      if $installMysql == true {
-        class {"tungsten::tungstenmysql":
-          mysqlOverrideOptions => $mysqlOverrideOptions,
-        }
-      }
-  } else {
-    if $installMysql == true {
-      class {"tungsten::tungstenmysql":
-          mysqlOverrideOptions => $mysqlOverrideOptions,
-      }
-
-    }
   }
+
+  if $installMysql == true {
+      class {"tungsten::tungstenmysql":
+          overrideOptionsMysqld => $overrideOptionsMysqld,
+          overrideOptionsClient => $overrideOptionsClient,
+          overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
+      }
+  }
+
 	
 	Class["tungsten::prereq"] ->
 	class { "tungsten::tungsten":

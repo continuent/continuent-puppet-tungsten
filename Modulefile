@@ -1,5 +1,5 @@
 name 'continuent/tungsten'
-version '0.3.0'
+version '0.4.0'
 
 author 'Continuent'
 license 'Apache 2.0'
@@ -13,3 +13,5 @@ dependency 'puppetlabs/java', '>= 1.0.1'
 dependency 'puppetlabs/firewall', '>= 0.4.0'
 dependency 'puppetlabs/apt', '>= 1.4.0'
 dependency 'continuent/percona_repo', '>= 0.1.0'
+dependency 'spiette/selinux','>=0.5.4'
+dependency 'puppetlabs/mysql', '>= 3.0.0'
