@@ -97,8 +97,7 @@ class tungsten (
           overrideOptionsClient => $overrideOptionsClient,
           overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
           serverPackageName => $serverPackageName,
-          clientPackageName => $clientPackageName,
-          require => Class["tungsten::tungstenselinux"]
+          clientPackageName => $clientPackageName
       }
 
   }
