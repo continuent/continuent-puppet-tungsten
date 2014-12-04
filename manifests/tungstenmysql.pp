@@ -30,7 +30,7 @@ class tungsten::tungstenmysql (
 
   $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
   $fullOverrideOptionsClient=merge($tungsten::tungstenmysql::params::baseOverrideOptionsClient,$overrideOptionsClient)
-  $fullOverrideOptionsMysqldSage=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqldSafe,$overrideOptionsMysqldSafe)
+  $fullOverrideOptionsMysqldSafe=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqldSafe,$overrideOptionsMysqldSafe)
 
   if $serverPackageName == false {
     $fullServerPackageName =  $tungsten::tungstenmysql::params::baseServerPackageName
