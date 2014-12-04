@@ -19,51 +19,34 @@ class tungsten::tungstenmysql::params (
 	$masterPassword					    = secret,
 	$port										    = 13306,
 ) {
-	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
-    $baseOverrideOptionsMysqld =  {
-        'bind_address' => '0.0.0.0',
-        'server_id' => fqdn_rand(1073741824),
-        'pid-file' => '/var/lib/mysql/mysql.pid',
-        'log-bin' => 'mysql-bin',
-        'binlog-format' => 'MIXED',
-        'port' => '13306',
-        'open_files_limit' => '65535',
-        'sync_binlog' => '2',
-        'max_allowed_packet' => '64m',
-        'auto_increment_increment' => 1,
-        'auto_increment_offset' => 1,
-        'innodb_file_per_table' => true,
-        'datadir'=> '/var/lib/mysql'
-        }
-    $baseOverrideOptionsMysqldSafe =  {}
-    $baseOverrideOptionsClient =  {}
 
+  $baseOverrideOptionsMysqld =  {
+    'bind_address' => '0.0.0.0',
+    'server_id' => fqdn_rand(1073741824),
+    'pid-file' => '/var/lib/mysql/mysql.pid',
+    'log-bin' => 'mysql-bin',
+    'binlog-format' => 'MIXED',
+    'port' => '13306',
+    'open_files_limit' => '65535',
+    'sync_binlog' => '2',
+    'max_allowed_packet' => '64m',
+    'auto_increment_increment' => 1,
+    'auto_increment_offset' => 1,
+    'innodb_file_per_table' => true,
+    'datadir'=> '/var/lib/mysql'
+    }
+  $baseOverrideOptionsMysqldSafe =  {}
+  $baseOverrideOptionsClient =  {}
+
+	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
 		$serviceName							= "mysql"
-		$serverPackageName				= "Percona-Server-server-55"
-		$clientPackageName				= "Percona-Server-client-55"
+		$baseServerPackageName				= "Percona-Server-server-55"
+		$baseSlientPackageName				= "Percona-Server-client-55"
 
 	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-    $baseOverrideOptionsMysqld =   {
-        'bind_address' => '0.0.0.0',
-        'server_id' => fqdn_rand(1073741824),
-        'pid-file' => '/var/lib/mysql/mysql.pid',
-        'log-bin' => 'mysql-bin',
-        'binlog-format' => 'MIXED',
-        'port' => '13306',
-        'open_files_limit' => '65535',
-        'sync_binlog' => '2',
-        'max_allowed_packet' => '64m',
-        'auto_increment_increment' => 1,
-        'auto_increment_offset' => 1,
-        'innodb_file_per_table' => true,
-        'datadir'=> '/var/lib/mysql'
-    }
-
-    $baseOverrideOptionsMysqldSafe =  {}
-    $baseOverrideOptionsClient =  {}
 		$serviceName							= "mysql"
-		$serverPackageName				= "percona-server-server-5.5"
-		$clientPackageName				= "percona-server-client-5.5"
+		$baseServerPackageName				= "percona-server-server-5.5"
+		$baseClientPackageName				= "percona-server-client-5.5"
 
 	} else {
 		fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")

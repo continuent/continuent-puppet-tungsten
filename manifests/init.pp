@@ -37,6 +37,8 @@ class tungsten (
       $overrideOptionsMysqld         = {},
       $overrideOptionsClient         = {},
       $overrideOptionsMysqldSafe     = {},
+      $serverPackageName             = false,
+      $clientPackageName             = false,
 
 		# Set this to true if you are not passing $clusterData
 	        # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -95,6 +97,8 @@ class tungsten (
           overrideOptionsMysqld => $overrideOptionsMysqld,
           overrideOptionsClient => $overrideOptionsClient,
           overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
+          serverPackageName => $serverPackageName,
+          clientPackageName => $clientPackageName,
       }
   }
 
