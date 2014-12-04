@@ -83,9 +83,7 @@ class tungsten (
     skipHostConfig                  => $skipHostConfig
 	}
 
-      class {"tungsten::tungstenselinux":
-          disableSELinux => $disableSELinux
-      }
+
 
 
 

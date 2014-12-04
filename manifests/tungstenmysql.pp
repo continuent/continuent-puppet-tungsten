@@ -44,6 +44,9 @@ class tungsten::tungstenmysql (
     $fullClientPackageName =  $clientPackageName
   }
 
+  class {"tungsten::tungstenselinux":
+    disableSELinux => $disableSELinux
+  } ->
   class { 'percona_repo' : } ->
   class { 'mysql::server' :
     package_name => $fullServerPackageName,
@@ -54,7 +57,6 @@ class tungsten::tungstenmysql (
           'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
           'client'       =>  $fullOverrideOptionsClient},
     restart => true,
-    require => Class["tungsten::tungstenselinux"]
   } ->
 	Class["tungsten::prereq"]
 	
