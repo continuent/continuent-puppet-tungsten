@@ -34,6 +34,7 @@ class tungsten (
   	  $sshPrivateCert               = $tungsten::params::defaultSSHPrivateCert,
 		
 		$installMysql										= false,
+      $mysqlOverrideOptions         = nil,
 
 		# Set this to true if you are not passing $clusterData
 	        # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -90,7 +91,10 @@ class tungsten (
       }
   } else {
     if $installMysql == true {
-      include tungstenmysql
+      class {"tungsten::tungstenmysql":
+          mysqlOverrideOptions => $mysqlOverrideOptions,
+      }
+
     }
   }
 	
