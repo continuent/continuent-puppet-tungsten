@@ -17,7 +17,7 @@
 class tungsten::tungstenmysql::params (
 	$masterUser							    = root,
 	$masterPassword					    = secret,
-	$port										    = 13306,,
+	$port										    = 13306,
 ) {
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
       $base_override_options =  {
