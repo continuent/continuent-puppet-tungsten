@@ -89,7 +89,7 @@ class tungsten (
           mode => 'permissive'
         }
         anchor { 'tungsten::selinux::end': }
-      } else {   anchor { 'tungsten::selinux::end': }
+      } else {   anchor { 'tungsten::selinux::end': }    }
 
   }   else {  anchor { 'tungsten::selinux::end': } }
 
