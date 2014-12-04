@@ -20,7 +20,7 @@ class tungsten::tungstenmysql (
 	$port						= $tungsten::tungstenmysql::params::port,
 	
 	$serviceName		= $tungsten::tungstenmysql::params::serviceName,
-  $mysqlOverrideOptions = nil,
+  $mysqlOverrideOptions = {},
 ) inherits tungsten::tungstenmysql::params {
   include tungsten::prereq
 
