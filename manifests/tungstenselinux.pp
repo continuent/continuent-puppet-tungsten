@@ -6,6 +6,7 @@ class tungsten::tungstenselinux(
     if $::osfamily == 'RedHat'{
       class { 'selinux':
       mode => 'permissive'
+      }
     }
-  }
+   }
 }
