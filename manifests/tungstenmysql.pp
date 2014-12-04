@@ -25,25 +25,10 @@ class tungsten::tungstenmysql (
 
 class { 'percona_repo' : } ->
 class { 'mysql::server' :
-    package_name => 'Percona-Server-server-55',
-    service_name => 'mysql',
-    root_password => 'MyPassword',
-    override_options => {
-    'mysqld' => {
-    'bind_address' => '0.0.0.0',
-    'server_id' => fqdn_rand(1073741824),
-    'pid-file' => '/var/lib/mysql/mysql.pid',
-    'log-bin' => 'mysql-bin',
-    'binlog-format' => 'MIXED',
-    'port' => '13306',
-    'open_files_limit' => '65535',
-    'sync_binlog' => '2',
-    'max_allowed_packet' => '64m',
-    'auto_increment_increment' => 1,
-    'auto_increment_offset' => 1,
-    'innodb_file_per_table' => true,
-    },
-    },
+    package_name => $tungsten::tungstenmysql::params::serverPackageName,
+    service_name => $tungsten::tungstenmysql::params::serviceName,
+    root_password => $tungsten::tungstenmysql::params::masterPassword,
+    override_options => $tungsten::tungstenmysql::params::base_override_options,
     restart => true,
   } ->
 	Class["tungsten::prereq"]

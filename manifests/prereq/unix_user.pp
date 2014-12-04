@@ -34,6 +34,15 @@ class tungsten::prereq::unix_user(
 	
 	if defined(Anchor["mysql::server::end"]) {
 	  User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
+    #Ensure the mysql group has access to the /var/lib/mysql
+    #This is not true in ubuntu
+    #@TODO ensure the directory matches the dir selected by the mysql server module
+    file {'/var/lib/mysql':
+      ensure => directory,
+      owner => 'mysql',
+      group => 'mysql',
+      mode => 750,
+    }
 	}
 
 	file { "/home/tungsten/":

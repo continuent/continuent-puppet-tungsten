@@ -20,6 +20,22 @@ class tungsten::tungstenmysql::params (
 	$port										    = 13306,
 ) {
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+      $base_override_options => {
+          'mysqld' => {
+          'bind_address' => '0.0.0.0',
+          'server_id' => fqdn_rand(1073741824),
+          'pid-file' => '/var/lib/mysql/mysql.pid',
+          'log-bin' => 'mysql-bin',
+          'binlog-format' => 'MIXED',
+          'port' => '13306',
+          'open_files_limit' => '65535',
+          'sync_binlog' => '2',
+          'max_allowed_packet' => '64m',
+          'auto_increment_increment' => 1,
+          'auto_increment_offset' => 1,
+          'innodb_file_per_table' => true,
+          }
+      }
 		$serviceName							= "mysql"
 		$serverPackageName				= "Percona-Server-server-55"
 		$clientPackageName				= "Percona-Server-client-55"
@@ -28,9 +44,25 @@ class tungsten::tungstenmysql::params (
 		$pidfile                  = "/var/lib/mysql/mysqld.pid"
 		$socket                   = "/var/lib/mysql/mysql.sock"
 	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+        $base_override_options => {
+            'mysqld' => {
+            'bind_address' => '0.0.0.0',
+            'server_id' => fqdn_rand(1073741824),
+            'pid-file' => '/var/lib/mysql/mysql.pid',
+            'log-bin' => 'mysql-bin',
+            'binlog-format' => 'MIXED',
+            'port' => '13306',
+            'open_files_limit' => '65535',
+            'sync_binlog' => '2',
+            'max_allowed_packet' => '64m',
+            'auto_increment_increment' => 1,
+            'auto_increment_offset' => 1,
+            'innodb_file_per_table' => true,
+            }
+        }
 		$serviceName							= "mysql"
-		$serverPackageName				= "Percona-Server-server-5.5"
-		$clientPackageName				= "Percona-Server-client-5.5"
+		$serverPackageName				= "percona-server-server-5.5"
+		$clientPackageName				= "percona-server-client-5.5"
 		$configFile								= "/etc/mysql/my.cnf"
 		$datadir                  = "/var/lib/mysql"
 		$pidfile                  = "/var/run/mysqld/mysqld.pid"
