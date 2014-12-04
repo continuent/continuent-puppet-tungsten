@@ -83,7 +83,6 @@ class tungsten (
     skipHostConfig                  => $skipHostConfig
 	}
 
-  anchor { 'tungsten::selinux::end': }
   if $disableSELinux == true {
       if $::osfamily == 'RedHat'{
         class { 'selinux':
