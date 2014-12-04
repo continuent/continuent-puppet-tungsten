@@ -88,9 +88,11 @@ class tungsten (
         class { 'selinux':
           mode => 'permissive'
         }
-      }
-  }
-  anchor { 'tungsten::selinux::end': }
+        anchor { 'tungsten::selinux::end': }
+      } else {   anchor { 'tungsten::selinux::end': }
+
+  }   else {  anchor { 'tungsten::selinux::end': } }
+
 
   if $installMysql == true {
 
