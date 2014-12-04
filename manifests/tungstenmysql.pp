@@ -29,15 +29,15 @@ class tungsten::tungstenmysql (
   $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
   $fullOverrideOptionsClient=merge($tungsten::tungstenmysql::params::baseOverrideOptionsClient,$overrideOptionsClient)
   $fullOverrideOptionsMysqldSage=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqldSafe,$overrideOptionsMysqldSafe)
-class { 'percona_repo' : } ->
-class { 'mysql::server' :
+  class { 'percona_repo' : } ->
+  class { 'mysql::server' :
     package_name => $tungsten::tungstenmysql::params::serverPackageName,
     service_name => $tungsten::tungstenmysql::params::serviceName,
     root_password => $tungsten::tungstenmysql::params::masterPassword,
     override_options => {
-          'mysqld' =>  $fullOverrideOptionsMysqld,
-          'mysqld_safe' =>  $fullOverrideOptionsMysqldSafe,
-          'client' =>  $fullOverrideOptionsClient},
+          'mysqld'       =>  $fullOverrideOptionsMysqld,
+          'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
+          'client'       =>  $fullOverrideOptionsClient},
     restart => true,
   } ->
 	Class["tungsten::prereq"]
