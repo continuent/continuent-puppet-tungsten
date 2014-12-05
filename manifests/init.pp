@@ -93,10 +93,7 @@ class tungsten (
       serverPackageName => $serverPackageName,
       clientPackageName => $clientPackageName,
       installMysql => $installMySQL
-  }
-
-
-	
+  }  ->
 	Class["tungsten::prereq"] ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,

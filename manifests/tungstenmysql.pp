@@ -25,6 +25,7 @@ class tungsten::tungstenmysql (
   $overrideOptionsMysqldSafe = {},
   $serverPackageName = false,
   $clientPackageName = false,
+  $installMysql = false,
 ) inherits tungsten::tungstenmysql::params  {
   include tungsten::prereq
 
