@@ -55,7 +55,7 @@ class tungsten::tungstenmysql (
           'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
           'client'       =>  $fullOverrideOptionsClient},
     restart => true,
-    require => Exec["setenforce permissive"],
+    require => Class["Selinux::Config"],
   } ->
 	Class["tungsten::prereq"]
 	
