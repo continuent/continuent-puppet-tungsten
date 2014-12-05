@@ -79,7 +79,7 @@ class tungsten (
       overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
       serverPackageName => $serverPackageName,
       clientPackageName => $clientPackageName,
-      installMysql => $installMySQL
+      installMysql => $installMysql
   }  ->
   class{ "tungsten::prereq":
     nodeHostName                    => $nodeHostName,
