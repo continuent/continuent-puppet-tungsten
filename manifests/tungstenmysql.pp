@@ -27,7 +27,7 @@ class tungsten::tungstenmysql (
   $clientPackageName = false,
   $installMysql = false,
 ) inherits tungsten::tungstenmysql::params  {
-  include tungsten::prereq
+
 
   if $installMysql == true {
     $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
@@ -58,8 +58,7 @@ class tungsten::tungstenmysql (
       'client'       =>  $fullOverrideOptionsClient},
       restart => true,
       require => Class["Selinux::Config"],
-    } ->
-    Class["tungsten::prereq"]
+    }
 
     User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
   }
