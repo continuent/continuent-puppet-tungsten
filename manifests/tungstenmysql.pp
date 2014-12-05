@@ -56,8 +56,7 @@ class tungsten::tungstenmysql (
       'mysqld'       =>  $fullOverrideOptionsMysqld,
       'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
       'client'       =>  $fullOverrideOptionsClient},
-      restart => true,
-      require => Class["Selinux::Config"],
+      restart => true
     }
 
     User <| title == "tungsten::systemUser" |> { groups +> "mysql" }

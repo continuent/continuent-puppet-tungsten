@@ -29,7 +29,8 @@ class tungsten::prereq::unix_user(
 		managehome => true,
 		shell => "/bin/bash",
 	}
-	
+
+  group {"mysql": ensure => 'present'} ->
 	User <| title == "tungsten::systemUser" |>
 	
 	if defined(Anchor["mysql::server::end"]) {
@@ -44,7 +45,7 @@ class tungsten::prereq::unix_user(
   #  ensure => directory,
   #  owner => 'mysql',
   #  group => 'mysql',
-  #  require => User['mysql'],
+  #  require => User['tungsten'],
   ##  mode => 750,
   #}
 
