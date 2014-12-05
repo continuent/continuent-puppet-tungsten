@@ -68,20 +68,7 @@ class tungsten (
     #If this is set to true no setting of hostname will be done
     $skipHostConfig                 = false
 ) inherits tungsten::params {
-	class{ "tungsten::prereq":
-		nodeHostName                    => $nodeHostName,
-		replicatorRepo                  => $replicatorRepo,
-		installMysqlj                   => $installMysqlj,
-      mysqljLocation                => $mysqljLocation,
-		installSSHKeys                  => $installSSHKeys,
-		  sshPublicKey                  => $sshPublicKey,
-		  sshPrivateCert                => $sshPrivateCert,
-		installJava                     => $installJava,
-		installNTP                      => $installNTP,
-		disableFirewall                 => $disableFirewall,
-		disableSELinux                  => $disableSELinux,
-    skipHostConfig                  => $skipHostConfig
-	}
+
 
   class {"tungsten::tungstenselinux":
     disableSELinux => $disableSELinux
@@ -94,7 +81,20 @@ class tungsten (
       clientPackageName => $clientPackageName,
       installMysql => $installMySQL
   }  ->
-	Class["tungsten::prereq"] ->
+  class{ "tungsten::prereq":
+    nodeHostName                    => $nodeHostName,
+    replicatorRepo                  => $replicatorRepo,
+    installMysqlj                   => $installMysqlj,
+    mysqljLocation                => $mysqljLocation,
+    installSSHKeys                  => $installSSHKeys,
+    sshPublicKey                  => $sshPublicKey,
+    sshPrivateCert                => $sshPrivateCert,
+    installJava                     => $installJava,
+    installNTP                      => $installNTP,
+    disableFirewall                 => $disableFirewall,
+    disableSELinux                  => $disableSELinux,
+    skipHostConfig                  => $skipHostConfig
+  } ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,
 		installReplicatorSoftware 			=> $installReplicatorSoftware,
