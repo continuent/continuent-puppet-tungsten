@@ -57,6 +57,7 @@ class tungsten::tungstenmysql (
           'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
           'client'       =>  $fullOverrideOptionsClient},
     restart => true,
+    require => Class['tungstenselinux'],
   } ->
 	Class["tungsten::prereq"]
 	
