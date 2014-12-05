@@ -85,22 +85,16 @@ class tungsten (
 
   class {"tungsten::tungstenselinux":
     disableSELinux => $disableSELinux
+  } ->
+  class {"tungsten::tungstenmysql":
+      overrideOptionsMysqld => $overrideOptionsMysqld,
+      overrideOptionsClient => $overrideOptionsClient,
+      overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
+      serverPackageName => $serverPackageName,
+      clientPackageName => $clientPackageName,
+      installMysql => $installMySQL
   }
 
-
-
-
-  if $installMysql == true {
-
-      class {"tungsten::tungstenmysql":
-          overrideOptionsMysqld => $overrideOptionsMysqld,
-          overrideOptionsClient => $overrideOptionsClient,
-          overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
-          serverPackageName => $serverPackageName,
-          clientPackageName => $clientPackageName
-      }
-
-  }
 
 	
 	Class["tungsten::prereq"] ->
