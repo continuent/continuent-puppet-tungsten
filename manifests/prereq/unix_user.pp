@@ -30,6 +30,7 @@ class tungsten::prereq::unix_user(
 		shell => "/bin/bash",
 	}
 
+  user {"mysql": ensure => 'present'}
   group {"mysql": ensure => 'present'} ->
 	User <| title == "tungsten::systemUser" |>
 	
