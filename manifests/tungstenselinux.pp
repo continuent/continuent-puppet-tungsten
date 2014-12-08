@@ -4,9 +4,15 @@ class tungsten::tungstenselinux(
 
   if $disableSELinux == true {
     if $::osfamily == 'RedHat'{
-    class { 'selinux':
-      mode => 'permissive'
-     }
+        if $operatingsystemmajrelease == 5 {
+            class { 'selinux':
+              mode => 'disabled'
+            }
+          } else {
+            class { 'selinux':
+              mode => 'permissive'
+            }
+          }
     }
   }
 
