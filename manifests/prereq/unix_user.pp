@@ -45,7 +45,7 @@ class tungsten::prereq::unix_user(
     ensure => directory,
     owner => 'mysql',
     group => 'mysql',
-    require => [User['tungsten'],User['mysql']]
+    require => [User['tungsten'],User['mysql']] ,
     mode => 750,
   }
 
