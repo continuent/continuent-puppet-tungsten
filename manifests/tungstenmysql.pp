@@ -46,6 +46,23 @@ class tungsten::tungstenmysql (
       $fullClientPackageName =  $clientPackageName
     }
 
+    if   $::osfamily = "RedHat" and  $::operatingsystemmajrelease >= 7 {
+        file { "/var/run/mariadb/":
+          ensure => directory,
+          owner	=> mysql,
+          group	=> mysql,
+          mode => 750,
+        }
+
+        file { "/var/log/mariadb/":
+          ensure => directory,
+          owner	=> mysql,
+          group	=> mysql,
+          mode => 750,
+        }
+
+    }
+
 
     class { 'percona_repo' : }->
     class { 'mysql::server' :
