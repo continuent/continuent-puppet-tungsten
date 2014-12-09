@@ -45,6 +45,17 @@ class tungsten::prereq (
 	package {'continuent-sudo': ensure => present, name => "sudo", }
 	package {'continuent-rsync': ensure => present, name => "rsync", }
 	
+	package {'continuent-rubygems': ensure => present, name => "rubygems",}
+
+  package { "json_pure": 
+     provider => "gem",
+  }
+
+  package { "continuent-monitors-nagios": 
+     provider => "gem",
+     ensure => latest,
+  }
+	
 	if $disableFirewall == true {
 		class { "firewall": ensure    => stopped, }
 	}
