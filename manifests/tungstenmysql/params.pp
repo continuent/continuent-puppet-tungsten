@@ -42,11 +42,13 @@ class tungsten::tungstenmysql::params (
 		$serviceName							= "mysql"
 		$baseServerPackageName				= "Percona-Server-server-55"
 		$baseSlientPackageName				= "Percona-Server-client-55"
+    $configFileName               = "/etc/my.cnf"
 
 	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		$serviceName							= "mysql"
 		$baseServerPackageName				= "percona-server-server-5.5"
 		$baseClientPackageName				= "percona-server-client-5.5"
+    $configFileName               = "/etc/mysql/my.cnf"
 
 	} else {
 		fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")

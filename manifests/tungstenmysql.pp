@@ -52,6 +52,7 @@ class tungsten::tungstenmysql (
       package_name => $fullServerPackageName,
       service_name => $tungsten::tungstenmysql::params::serviceName,
       root_password => $tungsten::tungstenmysql::params::masterPassword,
+      config_file => $tungsten::tungstenmysql::params::configFileName,
       override_options => {
       'mysqld'       =>  $fullOverrideOptionsMysqld,
       'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
