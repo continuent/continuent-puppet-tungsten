@@ -49,6 +49,14 @@ class tungsten::prereq (
     package {'continuent-rubygems': ensure => present, name => "rubygems",}
   }
 
+  if $osfamily == 'Debian' {
+      #Newer releases have it built in so this should go away in the end
+      if $operatingsystemrelease == '12.04' or
+         $operatingsystemrelease == '10.04'  {
+          package {'continuent-rubygems': ensure => present, name => "rubygems",}
+        }
+  }
+
   package { "json_pure": 
      provider => "gem",
   }
