@@ -4,10 +4,11 @@ class tungsten::tungstenselinux(
 
   if $disableSELinux == true {
     if $::osfamily == 'RedHat' and  $operatingsystemmajrelease > 5 {
-
-            class { 'selinux':
-              mode => 'permissive'
-            }
+        if $::operatingsystem != 'Amazon' {
+          class { 'selinux':
+          mode => 'permissive'
+          }
+        }
 
     }
   }
