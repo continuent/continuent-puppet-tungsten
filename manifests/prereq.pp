@@ -53,7 +53,8 @@ class tungsten::prereq (
       #Newer releases have it built in so this should go away in the end
       if $operatingsystemrelease == '12.04' or
          $operatingsystemrelease == '10.04' or
-         $lsbdistcodename == 'wheezy' {
+         $lsbdistcodename == 'wheezy' or
+         $lsbdistcodename == 'squeeze'{
           package {'continuent-rubygems': ensure => present, name => "rubygems",}
         }
   }
