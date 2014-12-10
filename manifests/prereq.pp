@@ -52,7 +52,8 @@ class tungsten::prereq (
   if $osfamily == 'Debian' {
       #Newer releases have it built in so this should go away in the end
       if $operatingsystemrelease == '12.04' or
-         $operatingsystemrelease == '10.04'  {
+         $operatingsystemrelease == '10.04' or
+         $lsbdistcodename == 'wheezy' {
           package {'continuent-rubygems': ensure => present, name => "rubygems",}
         }
   }
