@@ -39,9 +39,10 @@ class tungsten (
       $overrideOptionsMysqldSafe     = {},
       $serverPackageName             = false,
       $clientPackageName             = false,
-			$installPercona							   = true,
-			$installMariaDB   					   = false,
-			$installMySQL								   = false,
+			$installPerconaRepo					   = true,
+			$installMariaDBRepo 				   = false,
+			$installOracleRepo					   = false,
+			$mysqlPort										 = 13306,
 
 		# Set this to true if you are not passing $clusterData
 	        # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -83,9 +84,10 @@ class tungsten (
       serverPackageName => $serverPackageName,
       clientPackageName => $clientPackageName,
       installMysql => $installMysql,
-			installPercona => $installPercona,
-			installMySQL  => $installMySQL,
-			installMariaDB => $installMariaDB
+			installPerconaRepo => $installPerconaRepo,
+			installMySQLRepo  => $installMySQLRepo,
+			installMariaDBRepo => $installMariaDBRepo,
+			port => $mysqlPort,
   }  ->
   class{ "tungsten::prereq":
     nodeHostName                    => $nodeHostName,

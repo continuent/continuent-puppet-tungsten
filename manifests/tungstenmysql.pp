@@ -26,9 +26,9 @@ class tungsten::tungstenmysql (
   $serverPackageName = false,
   $clientPackageName = false,
   $installMysql = false,
-	$installPercona							    = false,
-	$installMariaDB   					    = false,
-	$installMySQL								    = false,
+	$installPerconaRepo							    = false,
+	$installMariaDBRepo   					    = false,
+	$installMySQLRepo								    = false,
 ) inherits tungsten::tungstenmysql::params  {
 
 
@@ -68,9 +68,9 @@ class tungsten::tungstenmysql (
 
 
     class { 'tungsten::tungstenmysql::tungstenrepo' :
-					installPercona => $installPercona,
-					installMySQL  => $installMySQL,
-					installMariaDB => $installMariaDB,
+					installPerconaRepo => $installPerconaRepo,
+					installMySQLRepo  => $installMySQLRepo,
+					installMariaDBRepo => $installMariaDBRepo,
 		}->
     class { 'mysql::server' :
       package_name => $fullServerPackageName,

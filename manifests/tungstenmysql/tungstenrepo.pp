@@ -15,13 +15,13 @@
 # under the License.
 
 class tungsten::tungstenmysql::tungstenrepo (
-  $installPercona							    = false,
-  $installMariaDB   					    = false,
-  $installMySQL								    = false,
+  $installPerconaRepo							    = false,
+  $installMariaDBRepo   					    = false,
+  $installMySQLRepo								    = false,
 ) {
 
 
-  if $installPercona == true {
+  if $installPerconaRepo == true {
     class { 'percona_repo' : }
   }
 }
