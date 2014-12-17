@@ -66,10 +66,6 @@ class tungsten::tungstenmysql (
 
     }
 
-
-		#class {"tungsten::tungstenselinux":
-		#	disableSELinux => $disableSELinux
-		#} ->
     class { 'tungsten::tungstenmysql::tungstenrepo' :
 					installPerconaRepo => $installPerconaRepo,
 					installMySQLRepo  => $installMySQLRepo,

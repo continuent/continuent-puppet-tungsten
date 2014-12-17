@@ -21,7 +21,9 @@ class tungsten (
 		$installJava										= true,
 		$installNTP											= $tungsten::params::installNTP,
 		$disableFirewall							  = true,
-		$disableSELinux                 = true,
+
+		#NOTE: Disable SELinux does not work
+		$disableSELinux                 = false,
 
 		# This may be set to 'nightly', 'stable' or 'true
 		# If set to 'true', the stable repository will be used
@@ -73,7 +75,9 @@ class tungsten (
     $skipHostConfig                 = false
 ) inherits tungsten::params {
 
-
+	if $disableSELinux == true {
+		warning 'The disableSELinux option does not currently work see README.md for more information'
+	}
 
   class {"tungsten::tungstenmysql":
       overrideOptionsMysqld => $overrideOptionsMysqld,
