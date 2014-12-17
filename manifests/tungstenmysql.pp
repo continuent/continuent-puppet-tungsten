@@ -67,7 +67,7 @@ class tungsten::tungstenmysql (
     }
 
 
-    class { 'tungsten::tungstenmysql::tungstenrepo :
+    class { 'tungsten::tungstenmysql::tungstenrepo' :
 					installPercona => $installPercona,
 					installMySQL  => $installMySQL,
 					installMariaDB => $installMariaDB,
