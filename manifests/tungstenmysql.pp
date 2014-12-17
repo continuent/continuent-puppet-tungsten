@@ -1,13 +1,13 @@
 # == Class: tungsten::mysql See README.md for documentation.
 #
 # Copyright (C) 2014 Continuent, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License.  You may obtain
 # a copy of the License at
-# 
+#
 #         http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -18,7 +18,7 @@ class tungsten::tungstenmysql (
 	$masterUser			= $tungsten::tungstenmysql::params::masterUser,
 	$masterPassword	= $tungsten::tungstenmysql::params::masterPassword,
 	$port						= $tungsten::tungstenmysql::params::port,
-	
+
 	$serviceName		= $tungsten::tungstenmysql::params::serviceName,
   $overrideOptionsMysqld = {},
   $overrideOptionsClient = {},
@@ -26,6 +26,9 @@ class tungsten::tungstenmysql (
   $serverPackageName = false,
   $clientPackageName = false,
   $installMysql = false,
+	$installPercona							    = false,
+	$installMariaDB   					    = false,
+	$installMySQL								    = false,
 ) inherits tungsten::tungstenmysql::params  {
 
 
@@ -64,7 +67,11 @@ class tungsten::tungstenmysql (
     }
 
 
-    class { 'percona_repo' : }->
+    class { 'tungsten::tungstenmysql::tungstenrepo :
+					installPercona => $installPercona,
+					installMySQL  => $installMySQL,
+					installMariaDB => $installMariaDB,
+		}->
     class { 'mysql::server' :
       package_name => $fullServerPackageName,
       service_name => $tungsten::tungstenmysql::params::serviceName,
