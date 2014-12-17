@@ -67,6 +67,9 @@ class tungsten::tungstenmysql (
     }
 
 
+		class {"tungsten::tungstenselinux":
+			disableSELinux => $disableSELinux
+		} ->
     class { 'tungsten::tungstenmysql::tungstenrepo' :
 					installPerconaRepo => $installPerconaRepo,
 					installMySQLRepo  => $installMySQLRepo,
@@ -81,7 +84,8 @@ class tungsten::tungstenmysql (
       'mysqld'       =>  $fullOverrideOptionsMysqld,
       'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
       'client'       =>  $fullOverrideOptionsClient},
-      restart => true
+      restart => true,
+			require => Anchor['tungsten::tungstenselinux:anchor']
     }
 
     User <| title == "tungsten::systemUser" |> { groups +> "mysql" }

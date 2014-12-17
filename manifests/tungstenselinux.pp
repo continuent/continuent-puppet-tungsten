@@ -22,10 +22,14 @@ class tungsten::tungstenselinux(
     if $::osfamily == 'RedHat' and  $operatingsystemmajrelease > 5 {
         if $::operatingsystem != 'Amazon' {
           class { 'selinux':
-          mode => 'permissive'
-          }
+              mode => 'permissive'
+          }->anchor{"tungsten::tungstenselinux:anchor":}
+        } else {
+          anchor{"tungsten::tungstenselinux:anchor":}
         }
 
+    } else{
+      anchor{"tungsten::tungstenselinux:anchor":}
     }
   }
 

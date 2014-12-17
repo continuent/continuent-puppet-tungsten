@@ -74,9 +74,7 @@ class tungsten (
 ) inherits tungsten::params {
 
 
-  class {"tungsten::tungstenselinux":
-    disableSELinux => $disableSELinux
-  } ->
+
   class {"tungsten::tungstenmysql":
       overrideOptionsMysqld => $overrideOptionsMysqld,
       overrideOptionsClient => $overrideOptionsClient,
