@@ -1,13 +1,13 @@
 # == Class: tungsten::prereq::unix_user See README.md for documentation.
 #
 # Copyright (C) 2014 Continuent, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License.  You may obtain
 # a copy of the License at
-# 
+#
 #         http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -33,7 +33,7 @@ class tungsten::prereq::unix_user(
   user {"mysql": ensure => 'present'}
   group {"mysql": ensure => 'present'} ->
 	User <| title == "tungsten::systemUser" |>
-	
+
 	if defined(Anchor["mysql::server::end"]) {
 	  User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
 
@@ -42,7 +42,8 @@ class tungsten::prereq::unix_user(
   #Ensure the mysql group has access to the /var/lib/mysql
   #This is not true in ubuntu
   #@TODO ensure the directory matches the dir selected by the mysql server module
-  file {'/var/lib/mysql':
+  file {'tungsten-var-lib-mysql':
+	  path   => '/var/lib/mysql'
     ensure => directory,
     owner => 'mysql',
     group => 'mysql',
@@ -57,7 +58,7 @@ class tungsten::prereq::unix_user(
 		mode => 750,
 		require => [ User["tungsten::systemUser"] ]
 	}
-	
+
 	file {"/home/tungsten/.bash_profile":
 		ensure => file,
 		mode => 644,
@@ -68,7 +69,7 @@ class tungsten::prereq::unix_user(
 	}
 
 
-	
+
 	exec { "tungsten::prereq::remove-requiretty":
   		command => "/bin/sed -i	'/requiretty/s/^Defaults/#Defaults/'	/etc/sudoers",
   		onlyif => "/bin/grep requiretty /etc/sudoers | /bin/egrep -v \"^#\"",
@@ -95,12 +96,12 @@ class tungsten::prereq::unix_user(
       }
   }
 
-					
+
 	file { '/etc/security/limits.d/10tungsten.conf':
 		ensure => file,
 		content => template('tungsten/security.limits.conf.erb'),
 	}
-	
+
 	file { "/opt/continuent":
 		ensure => "directory",
 		owner	=> $systemUserName,
@@ -108,7 +109,7 @@ class tungsten::prereq::unix_user(
 		mode	 => 750,
 		require => User["tungsten::systemUser"]
 	}
-	
+
 	file { "/opt/continuent/software":
 		ensure => "directory",
 		owner	=> $systemUserName,
@@ -116,7 +117,7 @@ class tungsten::prereq::unix_user(
 		mode	 => 750,
 		require => User["tungsten::systemUser"]
 	}
-	
+
 	file { "/opt/continuent/service_logs":
 		ensure => "directory",
 		owner	=> $systemUserName,
@@ -124,7 +125,7 @@ class tungsten::prereq::unix_user(
 		mode	 => 750,
 		require => User["tungsten::systemUser"]
 	}
-	
+
 	file { "/opt/replicator":
 		ensure => "directory",
 		owner	=> $systemUserName,
@@ -132,7 +133,7 @@ class tungsten::prereq::unix_user(
 		mode	 => 750,
 		require => User["tungsten::systemUser"],
 	}
-	
+
 	file { "/etc/tungsten":
 		ensure => "directory",
 		owner	=> $systemUserName,
@@ -157,7 +158,7 @@ class tungsten::prereq::unix_user(
   } else {
     $setupSSHDirectory = false
   }
-  
+
 	if $setupSSHDirectory == true {
 	  File['/home/tungsten/.ssh'] ->
 		file {"/home/tungsten/.ssh/id_rsa":
