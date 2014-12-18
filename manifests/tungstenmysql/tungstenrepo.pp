@@ -24,4 +24,8 @@ class tungsten::tungstenmysql::tungstenrepo (
   if $installPerconaRepo == true {
     class { 'percona_repo' : }
   }
+
+  if $installMariaDBRepo != false {
+    class { 'mariadb_repo' : version => $installMariaDBRepo }
+  }
 }

@@ -42,6 +42,7 @@ class tungsten (
       $serverPackageName             = false,
       $clientPackageName             = false,
 			$installPerconaRepo					   = true,
+			#For mariadb this needs to be a version either 5.5 or 10.0
 			$installMariaDBRepo 				   = false,
 			$installOracleRepo					   = false,
 			$mysqlPort										 = 13306,
