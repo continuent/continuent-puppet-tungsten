@@ -25,7 +25,12 @@ class tungsten::tungstenmysql::tungstenrepo (
     class { 'percona_repo' : }
   }
 
+  #This is not false because the version needs to be passed in
   if $installMariaDBRepo != false {
     class { 'mariadb_repo' : version => $installMariaDBRepo }
+  }
+
+  if $installMySQLRepo == true {
+    class { 'mysql_repo' }
   }
 }
