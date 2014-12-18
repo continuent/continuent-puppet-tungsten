@@ -44,7 +44,7 @@ class tungsten (
 			$installPerconaRepo					   = true,
 			#For mariadb this needs to be a version either 5.5 or 10.0
 			$installMariaDBRepo 				   = false,
-			$installOracleRepo					   = false,
+			$installMySQLRepo					     = false,
 			$mysqlPort										 = 13306,
 
 		# Set this to true if you are not passing $clusterData
@@ -88,7 +88,7 @@ class tungsten (
       clientPackageName => $clientPackageName,
       installMysql => $installMysql,
 			installPerconaRepo => $installPerconaRepo,
-			installMySQLRepo  => $installMySQLRepo,
+			installMySQLRepo   => $installMySQLRepo,
 			installMariaDBRepo => $installMariaDBRepo,
 			port => $mysqlPort,
   }  ->
