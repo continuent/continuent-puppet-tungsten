@@ -25,12 +25,46 @@ class tungsten::tungstenmysql::tungstenrepo (
     class { 'percona_repo' : }
   }
 
-  #This is not false because the version needs to be passed in
+ 
   if $installMariaDBRepo != false {
     class { 'mariadb_repo' : version => $installMariaDBRepo }
   }
 
   if $installMySQLRepo != false {
-    class { 'mysql_repo' : version => $installMySQLRepo }
+      if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+          if ($operatingsystem =~ /(?i:amazon)/) {
+            $url = "http://dev.mysql.com/get/mysql-community-release-el${epel_version}-5.noarch.rpm"
+            $package="mysql-community-release-el${epel_version}-5.noarch.rpm"
+          } else {
+
+            $url = "http://dev.mysql.com/get/mysql-community-release-el${operatingsystemmajrelease}-5.noarch.rpm"
+            $package="mysql-community-release-el${operatingsystemmajrelease}-5.noarch.rpm"
+          }
+
+          exec { 'download-repo-rpm':
+            command => "/usr/bin/wget  $url",
+            cwd => "/tmp",
+            logoutput => "on_failure",
+            creates => "/tmp/$package"
+          } ->
+          exec { 'install-repo-rpm':
+            command => "/bin/rpm -i /tmp/$package",
+            cwd => "/tmp",
+            logoutput => "on_failure",
+            creates => "/etc/yum.repos.d/mysql-community.repo"
+          }
+      } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+        include apt
+
+        apt::source { 'mysql':
+          ensure => present,
+          include_src => true,
+          location => 'http://repo.mysql.com/apt/ubuntu/',
+          release => $::lsbdistcodename,
+          repos => 'mysql-$version',
+        }
+      } else {
+        fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")
+      }
   }
 }
