@@ -24,7 +24,7 @@ class tungsten::tungstenmysql::params (
     'bind_address' => '0.0.0.0',
     'server_id' => fqdn_rand(1073741824),
     'pid-file' => '/var/lib/mysql/mysql.pid',
-    'log-bin' => 'mysql-bin',
+    'log-bin' => '/var/lib/mysql/mysql-bin',
     'binlog-format' => 'MIXED',
     'port' => $port,
     'open_files_limit' => '65535',
