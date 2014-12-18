@@ -30,7 +30,7 @@ class tungsten::tungstenmysql::tungstenrepo (
     class { 'mariadb_repo' : version => $installMariaDBRepo }
   }
 
-  if $installMySQLRepo == true {
-    class { 'mysql_repo' }
+  if $installMySQLRepo != false {
+    class { 'mysql_repo' : version => $installMySQLRepo }
   }
 }
