@@ -25,9 +25,36 @@ class tungsten::tungstenmysql::tungstenrepo (
     class { 'percona_repo' : }
   }
 
- 
+
   if $installMariaDBRepo != false {
-    class { 'mariadb_repo' : version => $installMariaDBRepo }
+    if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+      if ($operatingsystem =~ /(?i:amazon)/) {
+        $baseurl = "http://yum.mariadb.org/${version}/centos${epel_version}-amd64"
+      } else {
+        $baseurl = "http://yum.mariadb.org/${version}/centos${operatingsystemmajrelease}-amd64"
+      }
+
+      yumrepo { 'mariadb':
+        name => 'mariadb',
+        baseurl => $baseurl,
+        gpgkey => 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
+        enabled => 1,
+        gpgcheck => 1,
+      }
+    } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+      include apt
+
+      apt::source { 'maridb':
+        ensure => present,
+        include_src => true,
+        location => 'http://mirrors.coreix.net/mariadb/repo/$version/ubuntu',
+        release => $::lsbdistcodename,
+        repos => 'main',
+        key => "0xcbcb082a1bb943db",
+      }
+    } else {
+      fail("The mariaDB repo is not supported on an ${::operatingsystem} based system.")
+    }
   }
 
   if $installMySQLRepo != false {
@@ -64,7 +91,7 @@ class tungsten::tungstenmysql::tungstenrepo (
           repos => 'mysql-$version',
         }
       } else {
-        fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")
+        fail("The MySQL Repo module is not supported on an ${::operatingsystem} based system.")
       }
   }
 }
