@@ -92,7 +92,7 @@ class tungsten (
 			installMySQLRepo   => $installMySQLRepo,
 			installMariaDBRepo => $installMariaDBRepo,
 			port => $mysqlPort,
-			serviceName => $mySQLServiceName,
+			mySQLServiceName => $mySQLServiceName,
 			disableSELinux => $disableSELinux
 	}  ->
   class{ "tungsten::prereq":
