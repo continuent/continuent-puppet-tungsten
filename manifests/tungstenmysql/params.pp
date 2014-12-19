@@ -39,15 +39,11 @@ class tungsten::tungstenmysql::params (
   $baseOverrideOptionsClient =  {}
 
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
-		$baseServerPackageName				= "Percona-Server-server-55"
-		$baseSlientPackageName				= "Percona-Server-client-55"
     $configFileName               = "/etc/my.cnf"
     $logError                     = "/var/log/mysqld.log"
     $pidFile                      = '/var/run/mysqld/mysqld.pid'
 
 	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-		$baseServerPackageName				= "percona-server-server-5.5"
-		$baseClientPackageName				= "percona-server-client-5.5"
     $configFileName               = "/etc/mysql/my.cnf"
     $logError                     = "/var/log/mysqld.log"
     $pidFile                      = '/var/run/mysqld/mysqld.pid'

@@ -21,12 +21,9 @@ class tungsten::tungstenmysql (
   $overrideOptionsMysqld 							= {},
   $overrideOptionsClient 							= {},
   $overrideOptionsMysqldSafe 					= {},
-  $serverPackageName 									= false,
-  $clientPackageName 									= false,
   $installMysql 											= false,
 	$mySQLBuild											    = false,
 	$mySQLVersion				   					    = false,
-	$mySQLServiceName										= false,
 	$disableSELinux											= true,
 ) inherits tungsten::tungstenmysql::params  {
 
@@ -36,17 +33,6 @@ class tungsten::tungstenmysql (
     $fullOverrideOptionsClient=merge($tungsten::tungstenmysql::params::baseOverrideOptionsClient,$overrideOptionsClient)
     $fullOverrideOptionsMysqldSafe=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqldSafe,$overrideOptionsMysqldSafe)
 
-    if $serverPackageName == false {
-      $fullServerPackageName =  $tungsten::tungstenmysql::params::baseServerPackageName
-    } else {
-      $fullServerPackageName =  $serverPackageName
-    }
-
-    if $clientPackageName == false {
-      $fullClientPackageName =  $tungsten::tungstenmysql::params::baseClientPackageName
-    } else {
-      $fullClientPackageName =  $clientPackageName
-    }
 
     if $::osfamily == "RedHat" and  $::operatingsystemmajrelease >= 7 {
         file { "/var/run/mariadb/":
@@ -72,7 +58,7 @@ class tungsten::tungstenmysql (
 		}->
     class { 'mysql::server' :
       package_name => getMySQLPackageName('server',$mySQLBuild,$mySQLVersion),
-      service_name => $mySQLServiceName,
+      service_name => getMySQLServiceName($mySQLBuild,$mySQLVersion),
       root_password => $tungsten::tungstenmysql::params::masterPassword,
       config_file => $tungsten::tungstenmysql::params::configFileName,
       override_options => {

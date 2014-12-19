@@ -22,25 +22,6 @@ module Puppet::Parser::Functions
     packageClient = nil
 
 
-    # percona centos 51 55 56
-    # ubuntu 5.5 5.6
-    #
-    # maria centos no versions
-    #
-    # mysql no version
-
-    # if os =~ /(?i:centos|redhat|oel)/) {
-    #   osRelease   = lookupvar('operatingsystemmajrelease')
-    # }
-    #
-    # if os =~ /(?i:amazon)/) {
-    #   osRelease   = lookupvar('epel_version')
-    # }
-    #
-    # if os =~ /(?i:debian|ubuntu)/) {
-    #   osRelease   = lookupvar('operatingsystemrelease ')
-    # }
-
     if (os !~ /(?i:centos|redhat|oel|amazon|ubuntu|debian)/)
       raise Puppet::ParseError, "Unsupported Operating System"
     end
