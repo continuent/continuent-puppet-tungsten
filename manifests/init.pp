@@ -77,8 +77,6 @@ class tungsten (
       overrideOptionsMysqld 		=> $overrideOptionsMysqld,
       overrideOptionsClient 		=> $overrideOptionsClient,
       overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
-      serverPackageName 				=> $serverPackageName,
-      clientPackageName 				=> $clientPackageName,
       installMysql 							=> $installMysql,
 			mySQLBuild				 				=> $mySQLBuild,
 			mySQLVersion				   		=> $mySQLVersion,

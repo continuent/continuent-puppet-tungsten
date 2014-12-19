@@ -13,7 +13,7 @@
 # under the License.
 
 module Puppet::Parser::Functions
-  newfunction(:getMySQLSerivceName, :type => :rvalue) do |args|
+  newfunction(:getMySQLServiceName, :type => :rvalue) do |args|
     build         = args[0]
     version       = args[1]
     os            = lookupvar('operatingsystem')
