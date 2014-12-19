@@ -22,7 +22,34 @@ class tungsten::tungstenmysql::tungstenrepo (
 
 
   if $installPerconaRepo == true {
-    class { 'percona_repo' : }
+    if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+      if ($operatingsystem =~ /(?i:amazon)/) {
+        $baseurl = "http://repo.percona.com/centos/${epel_version}/os/\$basearch/"
+      } else {
+        $baseurl = 'http://repo.percona.com/centos/$releasever/os/$basearch/'
+      }
+
+      yumrepo { 'percona':
+        descr => 'CentOS $releasever - Percona',
+        baseurl => $baseurl,
+        gpgkey => 'http://www.percona.com/downloads/percona-release/RPM-GPG-KEY-percona',
+        enabled => 1,
+        gpgcheck => 1,
+      }
+    } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+      include apt
+
+      apt::source { 'percona':
+        ensure => present,
+        include_src => true,
+        location => 'http://repo.percona.com/apt',
+        release => $::lsbdistcodename,
+        repos => 'main',
+        key => "CD2EFD2A",
+      }
+    } else {
+      fail("The Percona Repo  is not supported on an ${::operatingsystem} based system.")
+    }
   }
 
 
