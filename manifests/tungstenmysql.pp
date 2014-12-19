@@ -29,6 +29,7 @@ class tungsten::tungstenmysql (
 	$installPerconaRepo							    = false,
 	$installMariaDBRepo   					    = false,
 	$installMySQLRepo								    = false,
+	$disableSELinux											= false,
 ) inherits tungsten::tungstenmysql::params  {
 
 
@@ -66,6 +67,7 @@ class tungsten::tungstenmysql (
 
     }
 
+		class { 'tungsten::tungstenselinux': disableSELinux=>$disableSELinux } ->
     class { 'tungsten::tungstenmysql::tungstenrepo' :
 					installPerconaRepo => $installPerconaRepo,
 					installMySQLRepo  => $installMySQLRepo,

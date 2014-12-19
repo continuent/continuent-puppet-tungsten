@@ -23,7 +23,7 @@ class tungsten (
 		$disableFirewall							  = true,
 
 		#NOTE: Disable SELinux does not work
-		$disableSELinux                 = false,
+		$disableSELinux                 = true,
 
 		# This may be set to 'nightly', 'stable' or 'true
 		# If set to 'true', the stable repository will be used
@@ -46,7 +46,7 @@ class tungsten (
 			$installMariaDBRepo 				   = false,
 			$installMySQLRepo					     = false,
 			$mysqlPort										 = 13306,
-			$mysqlServiceName							 = 'mysql'
+			$mysqlServiceName							 = 'mysql',
 
 		# Set this to true if you are not passing $clusterData
 	        # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -77,9 +77,9 @@ class tungsten (
     $skipHostConfig                 = false
 ) inherits tungsten::params {
 
-	if $disableSELinux == true {
-		warning 'The disableSELinux option does not currently work see README.md for more information'
-	}
+	#if $disableSELinux == true {
+	#	warning 'The disableSELinux option does not currently work see README.md for more information'
+	#}
 
   class {"tungsten::tungstenmysql":
       overrideOptionsMysqld => $overrideOptionsMysqld,
@@ -92,7 +92,8 @@ class tungsten (
 			installMySQLRepo   => $installMySQLRepo,
 			installMariaDBRepo => $installMariaDBRepo,
 			port => $mysqlPort,
-			serviceName => $mySQLServiceName
+			serviceName => $mySQLServiceName,
+			disableSELinux => $disableSELinux
 	}  ->
   class{ "tungsten::prereq":
     nodeHostName                    => $nodeHostName,
