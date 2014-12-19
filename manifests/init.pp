@@ -22,7 +22,6 @@ class tungsten (
 		$installNTP											= $tungsten::params::installNTP,
 		$disableFirewall							  = true,
 
-		#NOTE: Disable SELinux does not work
 		$disableSELinux                 = true,
 
 		# This may be set to 'nightly', 'stable' or 'true
@@ -41,17 +40,15 @@ class tungsten (
       $overrideOptionsMysqldSafe     = {},
       $serverPackageName             = false,
       $clientPackageName             = false,
-			$installPerconaRepo					   = true,
-			#For mariadb this needs to be a version either 5.5 or 10.0
-			$installMariaDBRepo 				   = false,
-			$installMySQLRepo					     = false,
+			$mySQLBuild									   = 'percona',
+			$mySQLVersion									 = '5.5',
 			$mysqlPort										 = 13306,
 			$mySQLServiceName							 = 'mysql',
 
 		# Set this to true if you are not passing $clusterData
-	        # and want the /etc/tungsten/defaults.tungsten.ini file
-	        # to be created
-	        $writeTungstenDefaults                  = false,
+	  # and want the /etc/tungsten/defaults.tungsten.ini file
+	  # to be created
+	  $writeTungstenDefaults                  = false,
 
 		# Set this to 'true' or the path of a tungsten-replicator package
 		# If set to 'true', the 'tungsten-replicator' will be installed from
@@ -77,49 +74,45 @@ class tungsten (
     $skipHostConfig                 = false
 ) inherits tungsten::params {
 
-	#if $disableSELinux == true {
-	#	warning 'The disableSELinux option does not currently work see README.md for more information'
-	#}
 
-  class {"tungsten::tungstenmysql":
-      overrideOptionsMysqld => $overrideOptionsMysqld,
-      overrideOptionsClient => $overrideOptionsClient,
+
+  class { "tungsten::tungstenmysql":
+      overrideOptionsMysqld 		=> $overrideOptionsMysqld,
+      overrideOptionsClient 		=> $overrideOptionsClient,
       overrideOptionsMysqldSafe => $overrideOptionsMysqldSafe,
-      serverPackageName => $serverPackageName,
-      clientPackageName => $clientPackageName,
-      installMysql => $installMysql,
-			installPerconaRepo => $installPerconaRepo,
-			installMySQLRepo   => $installMySQLRepo,
-			installMariaDBRepo => $installMariaDBRepo,
-			port => $mysqlPort,
-			mySQLServiceName => $mySQLServiceName,
-			disableSELinux => $disableSELinux
+      serverPackageName 				=> $serverPackageName,
+      clientPackageName 				=> $clientPackageName,
+      installMysql 							=> $installMysql,
+			mySQLBuild				 				=> $mySQLBuild,
+			mySQLVersion				   		=> $mySQLVersion,
+			port 									 		=> $mysqlPort,
+			mySQLServiceName			 		=> $mySQLServiceName,
+			disableSELinux						=> $disableSELinux
 	}  ->
   class{ "tungsten::prereq":
-    nodeHostName                    => $nodeHostName,
-    replicatorRepo                  => $replicatorRepo,
-    installMysqlj                   => $installMysqlj,
-    mysqljLocation                => $mysqljLocation,
-    installSSHKeys                  => $installSSHKeys,
-    sshPublicKey                  => $sshPublicKey,
-    sshPrivateCert                => $sshPrivateCert,
-    installJava                     => $installJava,
-    installNTP                      => $installNTP,
-    disableFirewall                 => $disableFirewall,
-    disableSELinux                  => $disableSELinux,
-    skipHostConfig                  => $skipHostConfig
+    nodeHostName                => $nodeHostName,
+    replicatorRepo              => $replicatorRepo,
+    installMysqlj               => $installMysqlj,
+    mysqljLocation              => $mysqljLocation,
+    installSSHKeys              => $installSSHKeys,
+    sshPublicKey                => $sshPublicKey,
+    sshPrivateCert              => $sshPrivateCert,
+    installJava                 => $installJava,
+    installNTP                  => $installNTP,
+    disableFirewall             => $disableFirewall,
+    skipHostConfig              => $skipHostConfig
   } ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,
-		installReplicatorSoftware 			=> $installReplicatorSoftware,
-			repUser 											=> $replicationUser,
-			repPassword 									=> $replicationPassword,
-		installClusterSoftware 					=> $installClusterSoftware,
-			clusterData 									=> $clusterData,
-			appUser 											=> $appUser,
-			appPassword 									=> $appPassword,
-			applicationPort 							=> $applicationPort,
-		provision 											=> $provisionNode,
-			provisionDonor 								=> $provisionDonor,
+		installReplicatorSoftware 	=> $installReplicatorSoftware,
+			repUser 									=> $replicationUser,
+			repPassword 							=> $replicationPassword,
+		installClusterSoftware 			=> $installClusterSoftware,
+			clusterData 							=> $clusterData,
+			appUser 									=> $appUser,
+			appPassword 							=> $appPassword,
+			applicationPort 					=> $applicationPort,
+		provision 									=> $provisionNode,
+			provisionDonor 						=> $provisionDonor,
 	}
 }

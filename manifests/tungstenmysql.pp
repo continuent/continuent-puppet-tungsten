@@ -15,20 +15,19 @@
 # under the License.
 
 class tungsten::tungstenmysql (
-	$masterUser			= $tungsten::tungstenmysql::params::masterUser,
-	$masterPassword	= $tungsten::tungstenmysql::params::masterPassword,
-	$port						= $tungsten::tungstenmysql::params::port,
-  $overrideOptionsMysqld = {},
-  $overrideOptionsClient = {},
-  $overrideOptionsMysqldSafe = {},
-  $serverPackageName = false,
-  $clientPackageName = false,
-  $installMysql = false,
-	$installPerconaRepo							    = false,
-	$installMariaDBRepo   					    = false,
-	$installMySQLRepo								    = false,
-	$disableSELinux											= false,
-	$mySQLServiceName										= false
+	$masterUser													= $tungsten::tungstenmysql::params::masterUser,
+	$masterPassword											= $tungsten::tungstenmysql::params::masterPassword,
+	$port																= $tungsten::tungstenmysql::params::port,
+  $overrideOptionsMysqld 							= {},
+  $overrideOptionsClient 							= {},
+  $overrideOptionsMysqldSafe 					= {},
+  $serverPackageName 									= false,
+  $clientPackageName 									= false,
+  $installMysql 											= false,
+	$mySQLBuild											    = false,
+	$mySQLVersion				   					    = false,
+	$mySQLServiceName										= false,
+	$disableSELinux											= true,
 ) inherits tungsten::tungstenmysql::params  {
 
 
@@ -68,12 +67,11 @@ class tungsten::tungstenmysql (
 
 		class { 'tungsten::tungstenselinux': disableSELinux=>$disableSELinux } ->
     class { 'tungsten::tungstenmysql::tungstenrepo' :
-					installPerconaRepo => $installPerconaRepo,
-					installMySQLRepo  => $installMySQLRepo,
-					installMariaDBRepo => $installMariaDBRepo,
+					mySQLBuild				 => $mySQLBuild,
+					mySQLVersion			 => $mySQLVersion
 		}->
     class { 'mysql::server' :
-      package_name => $fullServerPackageName,
+      package_name => getMySQLPackageName('server',$mySQLBuild,$mySQLVersion),
       service_name => $mySQLServiceName,
       root_password => $tungsten::tungstenmysql::params::masterPassword,
       config_file => $tungsten::tungstenmysql::params::configFileName,

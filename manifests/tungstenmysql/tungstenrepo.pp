@@ -15,13 +15,15 @@
 # under the License.
 
 class tungsten::tungstenmysql::tungstenrepo (
-  $installPerconaRepo							    = false,
-  $installMariaDBRepo   					    = false,
-  $installMySQLRepo								    = false,
+  $mySQLBuild 							    = false,
+  $mySQLVersion       			    = false
 ) {
 
+  if ($mySQLBuild !~ /(?i:percona|mariadb|mysql|native)/) {
+    fail("The $mySQLBuild is not supported by this module")
+  }
 
-  if $installPerconaRepo == true {
+  if ($mySQLBuild  =~ /(?i:percona)/) {
     if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
       if ($operatingsystem =~ /(?i:amazon)/) {
         $baseurl = "http://repo.percona.com/centos/${epel_version}/os/\$basearch/"
@@ -53,12 +55,12 @@ class tungsten::tungstenmysql::tungstenrepo (
   }
 
 
-  if $installMariaDBRepo != false {
+  if ($mySQLBuild  =~ /(?i:mariadb)/) {
     if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
       if ($operatingsystem =~ /(?i:amazon)/) {
-        $baseurl = "http://yum.mariadb.org/${version}/centos${epel_version}-amd64"
+        $baseurl = "http://yum.mariadb.org/${mySQLVersion}/centos${epel_version}-amd64"
       } else {
-        $baseurl = "http://yum.mariadb.org/${version}/centos${operatingsystemmajrelease}-amd64"
+        $baseurl = "http://yum.mariadb.org/${mySQLVersion}/centos${operatingsystemmajrelease}-amd64"
       }
 
       yumrepo { 'mariadb':
@@ -74,7 +76,7 @@ class tungsten::tungstenmysql::tungstenrepo (
       apt::source { 'maridb':
         ensure => present,
         include_src => true,
-        location => 'http://mirrors.coreix.net/mariadb/repo/$version/ubuntu',
+        location => 'http://mirrors.coreix.net/mariadb/repo/$mySQLVersion/ubuntu',
         release => $::lsbdistcodename,
         repos => 'main',
         key => "0xcbcb082a1bb943db",
@@ -84,7 +86,7 @@ class tungsten::tungstenmysql::tungstenrepo (
     }
   }
 
-  if $installMySQLRepo != false {
+  if ($mySQLBuild  =~ /(?i:mysql)/) {
       if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
           if ($operatingsystem =~ /(?i:amazon)/) {
             $url = "http://dev.mysql.com/get/mysql-community-release-el${epel_version}-5.noarch.rpm"
