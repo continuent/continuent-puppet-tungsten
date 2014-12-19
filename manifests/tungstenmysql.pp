@@ -30,6 +30,7 @@ class tungsten::tungstenmysql (
 	$installMariaDBRepo   					    = false,
 	$installMySQLRepo								    = false,
 	$disableSELinux											= false,
+	$mySQLServiceName										= false
 ) inherits tungsten::tungstenmysql::params  {
 
 
@@ -75,7 +76,7 @@ class tungsten::tungstenmysql (
 		}->
     class { 'mysql::server' :
       package_name => $fullServerPackageName,
-      service_name => $tungsten::tungstenmysql::params::serviceName,
+      service_name => $mySQLService,
       root_password => $tungsten::tungstenmysql::params::masterPassword,
       config_file => $tungsten::tungstenmysql::params::configFileName,
       override_options => {

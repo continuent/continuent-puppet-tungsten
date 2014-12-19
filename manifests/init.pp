@@ -46,7 +46,7 @@ class tungsten (
 			$installMariaDBRepo 				   = false,
 			$installMySQLRepo					     = false,
 			$mysqlPort										 = 13306,
-			$mysqlServiceName							 = 'mysql',
+			$mySQLServiceName							 = 'mysql',
 
 		# Set this to true if you are not passing $clusterData
 	        # and want the /etc/tungsten/defaults.tungsten.ini file
