@@ -76,7 +76,7 @@ class tungsten::tungstenmysql::tungstenrepo (
       apt::source { 'maridb':
         ensure => present,
         include_src => true,
-        location => 'http://mirrors.coreix.net/mariadb/repo/$mySQLVersion/ubuntu',
+        location => "http://mirrors.coreix.net/mariadb/repo/$mySQLVersion/ubuntu",
         release => $::lsbdistcodename,
         repos => 'main',
         key => "0xcbcb082a1bb943db",
