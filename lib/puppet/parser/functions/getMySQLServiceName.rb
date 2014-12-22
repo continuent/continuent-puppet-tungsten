@@ -32,7 +32,7 @@ module Puppet::Parser::Functions
     end
 
     if build == 'mysql'
-      if (os !~ /(?i:centos|redhat|oel|amazon)/)
+      if (os =~ /(?i:centos|redhat|oel|amazon)/)
         serviceName = 'mysqld'
       else
         serviceName = 'mysql'
