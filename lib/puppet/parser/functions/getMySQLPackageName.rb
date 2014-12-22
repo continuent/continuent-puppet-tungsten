@@ -18,6 +18,7 @@ module Puppet::Parser::Functions
     build         = args[1]
     version       = args[2]
     os            = lookupvar('operatingsystem')
+    osversion     = lookupvar('operatingsystemmajrelease')
     packageServer = nil
     packageClient = nil
 
@@ -38,15 +39,16 @@ module Puppet::Parser::Functions
         if (version !~ /(?i:5.5|5.6)/)
           raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
         end
-        packageServer="percona-server-server-#{$version}"
-        packageClient="percona-server-client-#{$version}"
+        packageServer="percona-server-server-#{version}"
+        packageClient="percona-server-client-#{version}"
       end
     end
 
     if build == 'mariadb'
       if (version !~ /(?i:5.5|10.0)/)
-        raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
+        raise Puppet::ParseError, "Unsupported Version for the Mariadb Repo on #{os}"
       end
+
       if (os =~ /(?i:centos|redhat|oel|amazon)/)
         packageServer="MariaDB-server"
         packageClient="MariaDB-client"
@@ -56,10 +58,16 @@ module Puppet::Parser::Functions
       end
     end
 
+    #5.7. is not supported my the puppetlab module as it regnerates old variables
     if build == 'mysql'
-      if (version !~ /(?i:5.5|5.6|5.7)/)
-        raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
+      if (version !~ /(?i:5.5|5.6)/)
+        raise Puppet::ParseError, "Unsupported Version for the MySQL Repo on #{os}"
       end
+
+      if (os =~ /(?i:centos|redhat|oel|amazon)/) and  osversion == 5
+        raise Puppet::ParseError, "MySQL repo is not supported on #{os}-5"
+      end
+
       packageServer="mysql-community-server"
       packageClient="mysql-community-client"
     end
