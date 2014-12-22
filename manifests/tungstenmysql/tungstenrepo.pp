@@ -116,7 +116,8 @@ class tungsten::tungstenmysql::tungstenrepo (
           include_src => true,
           location => 'http://repo.mysql.com/apt/ubuntu/',
           release => $::lsbdistcodename,
-          repos => 'mysql-$version',
+          repos => "mysql-$mySQLVersion",
+          key => '5072E1F5'
         }
       } else {
         fail("The MySQL Repo module is not supported on an ${::operatingsystem} based system.")

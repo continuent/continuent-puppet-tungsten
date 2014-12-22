@@ -68,6 +68,9 @@ module Puppet::Parser::Functions
         raise Puppet::ParseError, "MySQL repo is not supported on #{os}-5"
       end
 
+      if (os =~ /(?i:ubuntu|debian)/) and  (version !~ /(?i:5.6)/)
+        raise Puppet::ParseError, "Unsupported Version for the MySQL Repo on #{os}"
+      end
       packageServer="mysql-community-server"
       packageClient="mysql-community-client"
     end
