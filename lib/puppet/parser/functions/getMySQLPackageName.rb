@@ -29,14 +29,14 @@ module Puppet::Parser::Functions
     if build == 'percona'
       if (os =~ /(?i:centos|redhat|oel|amazon)/)
         if (version !~ /(?i:5.1|5.5|5.6)/)
-          raise Puppet::ParseError, "Unsupported Version for the Percona Repo on $os"
+          raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
         end
         version=version.gsub(".", "")
         packageServer="Percona-Server-server-#{version}"
         packageClient="Percona-Server-client-#{version}"
       else
         if (version !~ /(?i:5.5|5.6)/)
-          raise Puppet::ParseError, "Unsupported Version for the Percona Repo on $os"
+          raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
         end
         packageServer="percona-server-server-#{$version}"
         packageClient="percona-server-client-#{$version}"
@@ -44,6 +44,9 @@ module Puppet::Parser::Functions
     end
 
     if build == 'mariadb'
+      if (version !~ /(?i:5.5|10.0)/)
+        raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
+      end
       if (os =~ /(?i:centos|redhat|oel|amazon)/)
         packageServer="MariaDB-server"
         packageClient="MariaDB-client"
@@ -54,8 +57,11 @@ module Puppet::Parser::Functions
     end
 
     if build == 'mysql'
-        packageServer="mysql-community-server"
-        packageClient="mysql-community-client"
+      if (version !~ /(?i:5.5|5.6|5.7)/)
+        raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
+      end
+      packageServer="mysql-community-server"
+      packageClient="mysql-community-client"
     end
 
     if packageType=='server'

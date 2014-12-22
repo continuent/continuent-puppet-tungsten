@@ -89,25 +89,24 @@ class tungsten::tungstenmysql::tungstenrepo (
   if ($mySQLBuild  =~ /(?i:mysql)/) {
       if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
           if ($operatingsystem =~ /(?i:amazon)/) {
-            $url = "http://dev.mysql.com/get/mysql-community-release-el${epel_version}-5.noarch.rpm"
-            $package="mysql-community-release-el${epel_version}-5.noarch.rpm"
+            $baseurl ="http://repo.mysql.com/yum/mysql-${mySQLVersion}-community/el/${epel_version}/\$basearch/"
           } else {
-
-            $url = "http://dev.mysql.com/get/mysql-community-release-el${operatingsystemmajrelease}-5.noarch.rpm"
-            $package="mysql-community-release-el${operatingsystemmajrelease}-5.noarch.rpm"
+            $baseurl ="http://repo.mysql.com/yum/mysql-${mySQLVersion}-community/el/${operatingsystemmajrelease}/\$basearch/"
           }
 
-          exec { 'download-repo-rpm':
-            command => "/usr/bin/wget  $url",
-            cwd => "/tmp",
-            logoutput => "on_failure",
-            creates => "/tmp/$package"
-          } ->
-          exec { 'install-repo-rpm':
-            command => "/bin/rpm -i /tmp/$package",
-            cwd => "/tmp",
-            logoutput => "on_failure",
-            creates => "/etc/yum.repos.d/mysql-community.repo"
+          file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-mysql':
+            ensure => file,
+            mode	 => 644,
+            owner	=> "root",
+            group	=> "root",
+            source => 'puppet:///modules/tungsten/RPM-GPG-KEY-mysql',
+          }->
+          yumrepo { 'mysql-community':
+            name => 'mysql-community',
+            baseurl => $baseurl,
+            gpgkey => 'file:/etc/pki/rpm-gpg/RPM-GPG-KEY-mysql',
+            enabled => 1,
+            gpgcheck => 1,
           }
       } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
         include apt
