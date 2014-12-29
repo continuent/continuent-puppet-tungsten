@@ -111,10 +111,11 @@ class tungsten::tungstenmysql::tungstenrepo (
       } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
         include apt
 
+        tempos=downcase($operatingsystem)
         apt::source { 'mysql':
           ensure => present,
           include_src => true,
-          location => "http://repo.mysql.com/apt/$operatingsystem/",
+          location => "http://repo.mysql.com/apt/$tempos/",
           release => $::lsbdistcodename,
           repos => "mysql-$mySQLVersion",
           key => '5072E1F5'
