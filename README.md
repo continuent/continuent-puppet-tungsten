@@ -134,6 +134,44 @@ Copy in the value of your SSH public key. Do not include "ssh-rsa" or the traili
     overrideOptionsMysqld=>{'datadir'=>'/data','log-bin'=>'/logs/mysql-bin'}
   }
 
+## Changing MySQL Properties
+
+All values in my.cnf can be overridden by values in the following hashs
+
+* overrideOptionsMysqld ( [mysqld] section )
+* overrideOptionsMysqldSafe ( [mysqld_safe] section )
+* overrideOptionsMysqlClient ( [client] section)
+
+The module already has the following values for the mysqld section
+
+$baseOverrideOptionsMysqld =  {
+  'bind_address' => '0.0.0.0',
+  'server_id' => fqdn_rand(1073741824),
+  'pid-file' => '/var/lib/mysql/mysql.pid',
+  'log-bin' => '/var/lib/mysql/mysql-bin',
+  'binlog-format' => 'MIXED',
+  'port' => $port,
+  'open_files_limit' => '65535',
+  'sync_binlog' => '2',
+  'max_allowed_packet' => '64m',
+  'auto_increment_increment' => 1,
+  'auto_increment_offset' => 1,
+  'innodb_file_per_table' => true,
+  'datadir'=> '/var/lib/mysql'
+}
+
+The client and mysqld_safe sections have no default values. Any value passed in are merged with these default values
+
+e.g. to override the port
+
+class { 'tungsten' :
+  installSSHKeys => true,
+  installMysql => true,
+  mySQLBuild => 'mysql|percona|mariadb',
+  mySQLVersion => "5.5|5.6|10.0",
+  overrideOptionsMysqld=>{'port'=>'3306'}
+}
+
 
 ## Integration with custom MySQL classes
 
