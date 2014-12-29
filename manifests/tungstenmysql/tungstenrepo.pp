@@ -73,10 +73,11 @@ class tungsten::tungstenmysql::tungstenrepo (
     } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
       include apt
 
+      $tempos=downcase($operatingsystem)
       apt::source { 'mariadb':
         ensure => present,
         include_src => true,
-        location => "http://mirrors.coreix.net/mariadb/repo/$mySQLVersion/ubuntu",
+        location => "http://mirrors.coreix.net/mariadb/repo/$mySQLVersion/$tempos",
         release => $::lsbdistcodename,
         repos => 'main',
         key => "0xcbcb082a1bb943db",
