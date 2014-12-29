@@ -19,6 +19,7 @@ module Puppet::Parser::Functions
     version       = args[2]
     os            = lookupvar('operatingsystem')
     osversion     = lookupvar('operatingsystemmajrelease')
+    osreleasename = lookupvar('lsbdistcodename')
     packageServer = nil
     packageClient = nil
 
@@ -70,6 +71,9 @@ module Puppet::Parser::Functions
 
       if (os =~ /(?i:ubuntu|debian)/) and  (version !~ /(?i:5.6)/)
         raise Puppet::ParseError, "Unsupported Version for the MySQL Repo on #{os}"
+      end
+      if (os =~ /(?i:debian)/) and  (osreleasename =~ /(?i:squeeze)/)
+        raise Puppet::ParseError, "MySQL repo is not supported on Debian squeeze"
       end
       packageServer="mysql-community-server"
       packageClient="mysql-community-client"
