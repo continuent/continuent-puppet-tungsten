@@ -40,7 +40,6 @@ class tungsten (
       $overrideOptionsMysqldSafe     = {},
 			$mySQLBuild									   = 'percona',
 			$mySQLVersion									 = '5.5',
-			$mysqlPort										 = 13306,
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -80,7 +79,6 @@ class tungsten (
       installMysql 							=> $installMysql,
 			mySQLBuild				 				=> $mySQLBuild,
 			mySQLVersion				   		=> $mySQLVersion,
-			port 									 		=> $mysqlPort,
 			disableSELinux						=> $disableSELinux
 	}  ->
   class{ "tungsten::prereq":

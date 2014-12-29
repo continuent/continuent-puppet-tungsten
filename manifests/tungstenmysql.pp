@@ -17,7 +17,6 @@
 class tungsten::tungstenmysql (
 	$masterUser													= $tungsten::tungstenmysql::params::masterUser,
 	$masterPassword											= $tungsten::tungstenmysql::params::masterPassword,
-	$port																= $tungsten::tungstenmysql::params::port,
   $overrideOptionsMysqld 							= {},
   $overrideOptionsClient 							= {},
   $overrideOptionsMysqldSafe 					= {},
