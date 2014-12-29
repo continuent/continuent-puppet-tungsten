@@ -111,7 +111,7 @@ class tungsten::tungstenmysql::tungstenrepo (
       } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
         include apt
 
-        tempos=downcase($operatingsystem)
+        $tempos=downcase($operatingsystem)
         apt::source { 'mysql':
           ensure => present,
           include_src => true,
