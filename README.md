@@ -108,6 +108,8 @@ Copy in the value of your SSH public key. Do not include "ssh-rsa" or the traili
     }
 
 ## Changing the MySQL Data directory
+
+  ```
   class { 'tungsten' :
     installSSHKeys => true,
     installMysql => true,
@@ -115,8 +117,11 @@ Copy in the value of your SSH public key. Do not include "ssh-rsa" or the traili
     mySQLVersion => "5.5|5.6|10.0",
     overrideOptionsMysqld=>{'datadir'=>'/data'}
   }
+  ```
 
 ## Changing the MySQL Binary Log Directory
+
+```
   class { 'tungsten' :
     installSSHKeys => true,
     installMysql => true,
@@ -124,8 +129,10 @@ Copy in the value of your SSH public key. Do not include "ssh-rsa" or the traili
     mySQLVersion => "5.5|5.6|10.0",
     overrideOptionsMysqld=>{'log-bin'=>'/logs/mysql-bin'}
   }
+  ```
 
 ## Changing the MySQL Data directory and Binlog dir
+  ```
   class { 'tungsten' :
     installSSHKeys => true,
     installMysql => true,
@@ -133,6 +140,7 @@ Copy in the value of your SSH public key. Do not include "ssh-rsa" or the traili
     mySQLVersion => "5.5|5.6|10.0",
     overrideOptionsMysqld=>{'datadir'=>'/data','log-bin'=>'/logs/mysql-bin'}
   }
+  ```
 
 ## Changing MySQL Properties
 
@@ -144,34 +152,37 @@ All values in my.cnf can be overridden by values in the following hashs
 
 The module already has the following values for the mysqld section
 
-$baseOverrideOptionsMysqld =  {
-  'bind_address' => '0.0.0.0',
-  'server_id' => fqdn_rand(1073741824),
-  'pid-file' => '/var/lib/mysql/mysql.pid',
-  'log-bin' => '/var/lib/mysql/mysql-bin',
-  'binlog-format' => 'MIXED',
-  'port' => $port,
-  'open_files_limit' => '65535',
-  'sync_binlog' => '2',
-  'max_allowed_packet' => '64m',
-  'auto_increment_increment' => 1,
-  'auto_increment_offset' => 1,
-  'innodb_file_per_table' => true,
-  'datadir'=> '/var/lib/mysql'
-}
+```
+  $baseOverrideOptionsMysqld =  {
+    'bind_address' => '0.0.0.0',
+    'server_id' => fqdn_rand(1073741824),
+    'pid-file' => '/var/lib/mysql/mysql.pid',
+    'log-bin' => '/var/lib/mysql/mysql-bin',
+    'binlog-format' => 'MIXED',
+    'port' => $port,
+    'open_files_limit' => '65535',
+    'sync_binlog' => '2',
+    'max_allowed_packet' => '64m',
+    'auto_increment_increment' => 1,
+    'auto_increment_offset' => 1,
+    'innodb_file_per_table' => true,
+    'datadir'=> '/var/lib/mysql'
+  }
+```
 
 The client and mysqld_safe sections have no default values. Any value passed in are merged with these default values
 
 e.g. to override the port
 
-class { 'tungsten' :
-  installSSHKeys => true,
-  installMysql => true,
-  mySQLBuild => 'mysql|percona|mariadb',
-  mySQLVersion => "5.5|5.6|10.0",
-  overrideOptionsMysqld=>{'port'=>'3306'}
-}
-
+```
+  class { 'tungsten' :
+    installSSHKeys => true,
+    installMysql => true,
+    mySQLBuild => 'mysql|percona|mariadb',
+    mySQLVersion => "5.5|5.6|10.0",
+    overrideOptionsMysqld=>{'port'=>'3306'}
+  }
+  ```
 
 ## Integration with custom MySQL classes
 
@@ -224,9 +235,7 @@ If a valid value cannot be determined, the value 1 is returned.
     $possibleMasters = ["db1", "db2", "db3"]
     getMySQLAutoIncrementOffset($possibleMasters, $::fqdn)
 
-  ## Current Known Limitations
+## Current Known Limitations
 
-  * SELinux needs to be disbaled on Centos5 and 7 before running the module when using 13306 as the MySQL Port
-  * MySQL 5.7 does not install at the moment owing to issues with the puppetlabs-mysql module
-
-  
+* SELinux needs to be disbaled on Centos5 and 7 before running the module when using 13306 as the MySQL Port
+* MySQL 5.7 does not install at the moment owing to issues with the puppetlabs-mysql module
