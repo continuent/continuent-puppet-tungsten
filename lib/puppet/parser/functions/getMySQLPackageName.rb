@@ -65,8 +65,8 @@ module Puppet::Parser::Functions
         raise Puppet::ParseError, "Unsupported Version for the MySQL Repo on #{os}"
       end
 
-      if (os =~ /(?i:centos|redhat|oel|amazon)/) and  osversion == 5
-        raise Puppet::ParseError, "MySQL repo is Unsupported on #{os}-5"
+      if (os =~ /(?i:centos|redhat|oel|amazon)/) and  osversion == '5'
+        raise Puppet::ParseError, "MySQL repo is Unsupported on Centos5"
       end
 
       if (os =~ /(?i:ubuntu|debian)/) and  (version !~ /(?i:5.6)/)
