@@ -34,6 +34,7 @@ class tungsten::tungstenmysql (
 
 
     if $::osfamily == "RedHat" and  $::operatingsystemmajrelease >= 7 {
+				user {"mysql": ensure => 'present'}
         file { "/var/run/mariadb/":
           ensure => directory,
           owner	=> mysql,
