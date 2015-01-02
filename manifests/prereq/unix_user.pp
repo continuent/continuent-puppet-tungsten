@@ -30,8 +30,8 @@ class tungsten::prereq::unix_user(
 		shell => "/bin/bash",
 	}
 
-  user {"mysql": ensure => 'present'}
-  group {"mysql": ensure => 'present'} ->
+  #user {"mysql": ensure => 'present'}
+  # group {"mysql": ensure => 'present'} ->
 	User <| title == "tungsten::systemUser" |>
 
 	if defined(Anchor["mysql::server::end"]) {
