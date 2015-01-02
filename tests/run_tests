@@ -1,3 +1,5 @@
+
+docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi
 EXPORT WORKGIT="https://github.com/narmitag/continuent-puppet-tungsten.git"
 for os in centos5 ubuntu.12.04 wheezy centos6  squeeze ubuntu.10.04 ubuntu.14.04
 do
@@ -19,6 +21,12 @@ do
    rm $os/puppet.pp
    cp $f $os/puppet.pp
    echo " ... $f"
-   docker build --no-cache -t="continuent/$os" $os | grep Error: | grep -V Unsupported
+   docker build --no-cache -t="continuent/$os" $os | grep Error: | grep -v Unsupported
   done
+done
+
+for t in centos6-cluster u14.04-cluster
+do
+   docker build --no-cache -t="continuent/$t" $t | grep Error:
+   $t/launch
 done
