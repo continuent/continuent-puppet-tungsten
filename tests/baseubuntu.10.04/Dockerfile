@@ -13,4 +13,4 @@ RUN mkdir -p  /var/run/sshd
 RUN puppet module install continuent-tungsten
 RUN puppet module install puppetlabs-mysql
 RUN rm -rf /etc/puppet/modules/tungsten
-RUN git clone https://github.com/narmitag/continuent-puppet-tungsten.git /etc/puppet/modules/tungsten
+RUN git clone  $WORKGIT /etc/puppet/modules/tungsten
