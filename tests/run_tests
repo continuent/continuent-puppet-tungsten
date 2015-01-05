@@ -1,30 +1,40 @@
 
 docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi
 EXPORT WORKGIT="https://github.com/narmitag/continuent-puppet-tungsten.git"
-for os in centos5 ubuntu.12.04 wheezy centos6  squeeze ubuntu.10.04 ubuntu.14.04
+
+
+
+docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi
+set -x
+for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
 do
   echo "Operating System =  $os"
+  docker build --no-cache -t="cbase/$os" base$os | grep Error: 
   for f in puppet/*.pp
   do
-   rm $os/puppet.pp
-   cp $f $os/puppet.pp
    echo " ... $f"
-   docker build --no-cache -t="continuent/$os" $os | grep Error: | grep -v Unsupported
+   basedir=$(dirname $f)
+   pwd=$(pwd)
+   filename=$(basename $f)
+   docker run --rm=true -v $pwd/$basedir:/mnt cbase/$os puppet apply /mnt/$filename | grep Error: | grep -v Unsupported
+   #docker build  -t="continuent/$os" $os | grep Error: | grep -v Unsupported
   done
 done
-
+exit
 for os in  centos7
 do
   echo "Operating System =  $os"
+  docker build --no-cache -t="cbase/$os" base$os | grep Error:
   for f in puppet_centos7/*.pp
   do
    rm $os/puppet.pp
    cp $f $os/puppet.pp
    echo " ... $f"
-   docker build --no-cache -t="continuent/$os" $os | grep Error: | grep -v Unsupported
+   docker build  -t="continuent/$os" $os | grep Error: | grep -v Unsupported
   done
 done
 
+set -x
 for t in centos6-cluster u14.04-cluster
 do
    docker build --no-cache -t="continuent/$t" $t | grep Error:

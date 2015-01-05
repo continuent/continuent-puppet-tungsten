@@ -2,10 +2,9 @@ echo "Cleaning up old Containers"
 docker stop udb1 udb2 udb3 > /dev/null
 docker rm udb1 udb2 udb3 > /dev/null
 echo "Starting DB1"
-docker run  --name udb1  -i -t -h udb1 -d continuent/u14.04-cluster
+docker run --name udb1  -i -t -h udb1 -d continuent/u14.04-cluster 
 echo "Starting DB2"
-docker run  --name udb2  -i -t -h udb2 -d continuent/u14.04-cluster
+docker run --name udb2  -i -t -h udb2 -d continuent/u14.04-cluster 
 echo "Starting DB3"
-docker run --name udb3 --link udb1:udb1 --link udb2:udb2  -i -t -h udb3 -d continuent/u14.04-cluster
+docker run --name udb3 --link udb1:udb1 --link udb2:udb2 -i -t -h udb3 -d continuent/u14.04-cluster 
 
-exit
