@@ -8,7 +8,7 @@ RUN mkdir -p  /var/run/sshd
 RUN puppet module install continuent-tungsten
 RUN puppet module install puppetlabs-mysql
 RUN rm -rf /etc/puppet/modules/tungsten
-RUN git  $WORKGIT /etc/puppet/modules/tungsten
+ADD tungsten /etc/pupppet/modules/tungsten
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 ADD ./puppet.pp /root/puppet.pp
 RUN puppet apply /root/puppet.pp

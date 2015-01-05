@@ -1,11 +1,13 @@
 
 docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi
-EXPORT WORKGIT="https://github.com/narmitag/continuent-puppet-tungsten.git"
+WORKGIT="https://github.com/narmitag/continuent-puppet-tungsten.git"
 
-set -x
+
 for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
 do
   echo "Operating System =  $os"
+  rm -rf base$os/tungsten
+  git clone $WORKGIT base$os/tungsten
   docker build --no-cache -t="cbase/$os" base$os | grep Error:
   for f in puppet/*.pp
   do
@@ -33,6 +35,8 @@ done
 
 for t in centos6-cluster u14.04-cluster
 do
+   rm -rf $t/tungsten
+   git clone $WORKGIT $t/tungsten
    docker build --no-cache -t="continuent/$t" $t | grep Error:
    $t/launch
 done
