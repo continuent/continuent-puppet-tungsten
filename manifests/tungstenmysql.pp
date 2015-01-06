@@ -26,6 +26,7 @@ class tungsten::tungstenmysql (
 	$disableSELinux											= true,
 ) inherits tungsten::tungstenmysql::params  {
 
+	class { 'tungsten::tungstenselinux': disableSELinux=>$disableSELinux }
 
   if $installMysql == true {
     $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
@@ -51,10 +52,11 @@ class tungsten::tungstenmysql (
 
     }
 
-		class { 'tungsten::tungstenselinux': disableSELinux=>$disableSELinux } ->
+
     class { 'tungsten::tungstenmysql::tungstenrepo' :
 					mySQLBuild				 => $mySQLBuild,
-					mySQLVersion			 => $mySQLVersion
+					mySQLVersion			 => $mySQLVersion,
+					requires					=> Class['tungsten::tungstenselinux']
 		}->
     class { 'mysql::server' :
       package_name => getMySQLPackageName('server',$mySQLBuild,$mySQLVersion),
