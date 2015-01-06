@@ -19,7 +19,7 @@ class tungsten::tungstenmysql::tungstenrepo (
   $mySQLVersion       			    = false
 ) {
 
-  require tungsten::tungstenselinux
+  require tungsten::prereq::tungstenselinux
   if ($mySQLBuild !~ /(?i:percona|mariadb|mysql|native)/) {
     fail("The $mySQLBuild is not supported by this module")
   }

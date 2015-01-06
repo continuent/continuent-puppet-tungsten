@@ -71,6 +71,7 @@ class tungsten (
 ) inherits tungsten::params {
 
 
+  class { 'tungsten::prereq::tungstenselinux': disableSELinux=>$disableSELinux }
 
   class { "tungsten::tungstenmysql":
       overrideOptionsMysqld 		=> $overrideOptionsMysqld,
@@ -79,7 +80,6 @@ class tungsten (
       installMysql 							=> $installMysql,
 			mySQLBuild				 				=> $mySQLBuild,
 			mySQLVersion				   		=> $mySQLVersion,
-			disableSELinux						=> $disableSELinux
 	}  ->
   class{ "tungsten::prereq":
     nodeHostName                => $nodeHostName,

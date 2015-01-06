@@ -20,6 +20,7 @@ class tungsten::prereq (
 	$installJava									  = true,
 	$installNTP										  = $tungsten::params::installNTP,
 	$disableFirewall							  = true,
+	$disableSELinux									= true,
 
 	# This may be set to 'nightly', 'stable' or 'true
 	# If set to 'true', the stable repository will be used
@@ -76,7 +77,6 @@ class tungsten::prereq (
 			nodeHostName                => $nodeHostName,
 		}
 	}
-
 
 
 	class { "tungsten::prereq::unix_user":

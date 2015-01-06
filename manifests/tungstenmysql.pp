@@ -26,8 +26,6 @@ class tungsten::tungstenmysql (
 	$disableSELinux											= true,
 ) inherits tungsten::tungstenmysql::params  {
 
-	class { 'tungsten::tungstenselinux': disableSELinux=>$disableSELinux }
-
   if $installMysql == true {
     $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
     $fullOverrideOptionsClient=merge($tungsten::tungstenmysql::params::baseOverrideOptionsClient,$overrideOptionsClient)
