@@ -55,8 +55,7 @@ class tungsten::tungstenmysql (
 
     class { 'tungsten::tungstenmysql::tungstenrepo' :
 					mySQLBuild				 => $mySQLBuild,
-					mySQLVersion			 => $mySQLVersion,
-					requires					=> Class['tungsten::tungstenselinux']
+					mySQLVersion			 => $mySQLVersion
 		}->
     class { 'mysql::server' :
       package_name => getMySQLPackageName('server',$mySQLBuild,$mySQLVersion),
