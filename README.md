@@ -237,5 +237,5 @@ If a valid value cannot be determined, the value 1 is returned.
 
 ## Current Known Limitations
 
-* SELinux needs to be disbaled on Centos5 and 7 before running the module when using 13306 as the MySQL Port
+* SELinux needs to be disabled Centos5 and 7 before running the module.
 * MySQL 5.7 does not install at the moment owing to issues with the puppetlabs-mysql module
