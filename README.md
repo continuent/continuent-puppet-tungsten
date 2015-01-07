@@ -22,7 +22,7 @@ This module helps install [Continuent Tungsten](https://www.continuent.com) Data
 ### Install the module into your module directory
 
     puppet module install continuent/tungsten
-    
+
 ### Install system prerequisites
 
     class { 'tungsten': }
@@ -32,8 +32,10 @@ This module helps install [Continuent Tungsten](https://www.continuent.com) Data
     class { 'tungsten' :
     	installSSHKeys => true,
     	installMysql => true,
+      mySQLBuild => 'mysql|percona|mariadb',
+      mySQLVersion => "5.5|5.6|10.0"
     }
-    
+
 ### Installing Continuent Tungsten
 
     $clusterData = {
@@ -47,6 +49,8 @@ This module helps install [Continuent Tungsten](https://www.continuent.com) Data
     class { 'tungsten' :
     	installSSHKeys => true,
     	installMysql => true,
+      mySQLBuild => 'mysql|percona|mariadb',
+      mySQLVersion => "5.5|5.6|10.0"
     	clusterData => $clusterData,
     	installClusterSoftware => "/root/continuent-tungsten-2.0.1-1002.rpm",
     }
@@ -65,77 +69,28 @@ This will install the latest stable version of Tungsten Replicator with master-s
     class { 'tungsten' :
     	installSSHKeys => true,
     	installMysql => true,
+      mySQLBuild => 'mysql|percona|mariadb',
+      mySQLVersion => "5.5|5.6|10.0"
     	clusterData => $clusterData,
     	replicatorRepo => "stable",
     	installReplicatorSoftware => true,
     }
 
-### With puppetlabs/mysql using stock MySQL
 
-    class { 'mysql::server' :
-      root_password => "MyPassword",
-      override_options => {
-        "mysqld" => {
-          "bind_address" => "0.0.0.0",
-          "server_id" => fqdn_rand(5000,$ipaddress),
-          "pid-file" => "/var/lib/mysql/mysql.pid",
-          "log-bin" => "mysql-bin",
-          "port" => "13306",
-          "open_files_limit" => "65535",
-          "sync_binlog" => "2",
-          "max_allowed_packet" => "64m",
-          "auto_increment_increment" => getMySQLAutoIncrementIncrement($clusterData),
-          "auto_increment_offset" => getMySQLAutoIncrementOffset($clusterData, $::fqdn),
-          "innodb_file_per_table" => true,
-        },
-      },
-      restart => true,
-    } ->
-    class { 'tungsten' : }
 
-### With puppetlabs/mysql using Percona MySQL
-
-    class { 'percona_repo' : }
-    
-    class { 'mysql::server' :
-      package_name => "Percona-Server-server-55",
-      service_name => "mysql",
-      root_password => "MyPassword",
-      override_options => {
-        "mysqld" => {
-          "bind_address" => "0.0.0.0",
-          "server_id" => fqdn_rand(5000,$ipaddress),
-          "pid-file" => "/var/lib/mysql/mysql.pid",
-          "log-bin" => "mysql-bin",
-          "port" => "13306",
-          "open_files_limit" => "65535",
-          "sync_binlog" => "2",
-          "max_allowed_packet" => "64m",
-          "auto_increment_increment" => getMySQLAutoIncrementIncrement($clusterData),
-          "auto_increment_offset" => getMySQLAutoIncrementOffset($clusterData, $::fqdn),
-          "innodb_file_per_table" => true,
-        },
-      },
-      restart => true,
-    } ->
-    class { 'mysql::client' :
-      package_name => "Percona-Server-client-55",
-    } ->
-    class { 'tungsten' : }
-    
 ### Using a custom SSH key for the tungsten user
 
 Generate a new keypair if you don't already have one.
 
     $> ssh-keygen -t rsa -f tu -N '' -C 'Tungsten University' > /dev/null; cat tu; cat tu.pub; rm tu; rm tu.pub
-    
+
 Add the public and private key to your Puppet manifest. Do not include "ssh-rsa" or the trailing comment in the text of the public key.
 
     $sshPublicKey = "....."
     $sshPrivateCert = "-----BEGIN RSA PRIVATE KEY-----
     .....
     -----END RSA PRIVATE KEY-----"
-    
+
     class { 'tungsten' :
       sshPublicKey => $sshPublicKey,
       sshPrivateCert => $sshPrivateCert,
@@ -151,7 +106,84 @@ Copy in the value of your SSH public key. Do not include "ssh-rsa" or the traili
       type => rsa,
       key => $myPublicKey,
     }
-    
+
+## Changing the MySQL Data directory
+
+  ```
+  class { 'tungsten' :
+    installSSHKeys => true,
+    installMysql => true,
+    mySQLBuild => 'mysql|percona|mariadb',
+    mySQLVersion => "5.5|5.6|10.0",
+    overrideOptionsMysqld=>{'datadir'=>'/data'}
+  }
+  ```
+
+## Changing the MySQL Binary Log Directory
+
+```
+  class { 'tungsten' :
+    installSSHKeys => true,
+    installMysql => true,
+    mySQLBuild => 'mysql|percona|mariadb',
+    mySQLVersion => "5.5|5.6|10.0",
+    overrideOptionsMysqld=>{'log-bin'=>'/logs/mysql-bin'}
+  }
+  ```
+
+## Changing the MySQL Data directory and Binlog dir
+  ```
+  class { 'tungsten' :
+    installSSHKeys => true,
+    installMysql => true,
+    mySQLBuild => 'mysql|percona|mariadb',
+    mySQLVersion => "5.5|5.6|10.0",
+    overrideOptionsMysqld=>{'datadir'=>'/data','log-bin'=>'/logs/mysql-bin'}
+  }
+  ```
+
+## Changing MySQL Properties
+
+All values in my.cnf can be overridden by values in the following hashs
+
+* overrideOptionsMysqld ( [mysqld] section )
+* overrideOptionsMysqldSafe ( [mysqld_safe] section )
+* overrideOptionsMysqlClient ( [client] section)
+
+The module already has the following values for the mysqld section
+
+```
+  $baseOverrideOptionsMysqld =  {
+    'bind_address' => '0.0.0.0',
+    'server_id' => fqdn_rand(1073741824),
+    'pid-file' => '/var/lib/mysql/mysql.pid',
+    'log-bin' => '/var/lib/mysql/mysql-bin',
+    'binlog-format' => 'MIXED',
+    'port' => $port,
+    'open_files_limit' => '65535',
+    'sync_binlog' => '2',
+    'max_allowed_packet' => '64m',
+    'auto_increment_increment' => 1,
+    'auto_increment_offset' => 1,
+    'innodb_file_per_table' => true,
+    'datadir'=> '/var/lib/mysql'
+  }
+```
+
+The client and mysqld_safe sections have no default values. Any value passed in are merged with these default values
+
+e.g. to override the port
+
+```
+  class { 'tungsten' :
+    installSSHKeys => true,
+    installMysql => true,
+    mySQLBuild => 'mysql|percona|mariadb',
+    mySQLVersion => "5.5|5.6|10.0",
+    overrideOptionsMysqld=>{'port'=>'3306'}
+  }
+  ```
+
 ## Integration with custom MySQL classes
 
 The continuent/tungsten module is compatible with the puppetlabs/mysql module. See examples above on how to use it. If you have an existing method for configuring MySQL, it is simple to update it so the continuent/tungsten module recognizes it.
@@ -184,7 +216,7 @@ If a valid value cannot be determined, the value 1 is returned.
 
     $possibleMasters = ["db1", "db2", "db3"]
     getMySQLAutoIncrementIncrement($clusterData)
-   
+
 ### getMySQLAutoIncrementOffset
 
 Calculate the value for the MySQL auto\_increment\_offset setting. The function takes two arguments. The first is either a valid $clusterData hash or an array of hostnames that may be masters. The second is the hostname to search for to determine the offset. This function uses the getTungstenAvailableMasters function to get a valid list of possible masters.
@@ -202,3 +234,8 @@ If a valid value cannot be determined, the value 1 is returned.
 
     $possibleMasters = ["db1", "db2", "db3"]
     getMySQLAutoIncrementOffset($possibleMasters, $::fqdn)
+
+## Current Known Limitations
+
+* SELinux needs to be disabled Centos5 and 7 before running the module.
+* MySQL 5.7 does not install at the moment owing to issues with the puppetlabs-mysql module
