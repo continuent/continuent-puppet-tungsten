@@ -1,0 +1,15 @@
+echo "Cleaning up old Containers"
+docker stop cdb1 cdb2 cdb3 > /dev/null
+docker rm cdb1 cdb2 cdb3 > /dev/null
+echo "Starting DB1"
+docker run  --name cdb1  -i -t -h cdb1 -d continuent/centos6-cluster 
+echo "Starting DB2"
+docker run  --name cdb2  -i -t -h cdb2 -d continuent/centos6-cluster 
+echo "Starting DB3"
+docker run --name cdb3 --link cdb1:cdb1 --link cdb2:cdb2  -i -t -h cdb3 -d continuent/centos6-cluster 
+exit
+
+docker-enter cdb3 cat /etc/hosts > hosts.txt
+cat hosts.txt | docker-enter cdb1 bash -c 'cat > /etc/hosts'
+cat hosts.txt | docker-enter cdb2 bash -c 'cat > /etc/hosts'
+
