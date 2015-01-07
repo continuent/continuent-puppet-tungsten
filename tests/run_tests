@@ -1,9 +1,11 @@
 #!/bin/bash
 docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi &> /dev/null
 WORKGIT=$1
+BUILDDIR=$2
 mkdir logs > /dev/null
 
-for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+#for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+for os in centos5
 do
   echo "Operating System =  $os"
   rm -rf base$os/tungsten
@@ -15,7 +17,7 @@ do
    basedir=$(dirname $f)
    pwd=$(pwd)
    filename=$(basename $f)
-   docker run --rm=true -v $pwd/$basedir:/mnt cbase/$os puppet apply /mnt/$filename &> logs/$os.$filename.log
+   docker run --rm=true -v $BUILDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename &> logs/$os.$filename.log
    cat logs/$os.$filename.log|grep Error|grep -v Unsupported
   done
 done
