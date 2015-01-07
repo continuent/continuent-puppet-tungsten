@@ -55,7 +55,7 @@ for node in cdb1 udb1
 do
 
 
-   docker enter $node ps -ef > logs/$node.log
+   docker-enter $node ps -ef > logs/$node.log
    c=$(cat logs/$node.log|grep tungsten-manager|wc -l)
 
    if [ $c -eq 0 ]
