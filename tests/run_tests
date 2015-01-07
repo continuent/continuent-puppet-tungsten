@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+
 docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi &> /dev/null
 WORKGIT=$1
 BUILDDIR=$2
@@ -12,8 +12,8 @@ puppet module install puppetlabs-mysql  --modulepath=$BUILDDIR/puppet/modules/
 rm -rf $BUILDDIR/puppet/modules/tungsten
 git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
 
-#for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
-for os in centos5
+for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+
 do
   echo "Operating System =  $os"
   rm -rf base$os/tungsten
@@ -42,6 +42,7 @@ done
 #  done
 #done
 
+exit
 
 for t in centos6-cluster u14.04-cluster
 do
