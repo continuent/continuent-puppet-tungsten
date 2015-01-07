@@ -47,9 +47,7 @@ class tungsten::tungstenmysql (
           group	=> mysql,
           mode => 750,
         }
-
     }
-
 
     class { 'tungsten::tungstenmysql::tungstenrepo' :
 					mySQLBuild				 => $mySQLBuild,

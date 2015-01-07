@@ -1,7 +1,7 @@
-
-docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi
-WORKGIT="https://github.com/narmitag/continuent-puppet-tungsten.git"
-
+#!/bin/bash
+docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi &> /dev/null
+WORKGIT=$1
+mkdir logs > /dev/null
 
 for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
 do
@@ -15,7 +15,8 @@ do
    basedir=$(dirname $f)
    pwd=$(pwd)
    filename=$(basename $f)
-   docker run --rm=true -v $pwd/$basedir:/mnt cbase/$os puppet apply /mnt/$filename | grep Error: | grep -v Unsupported
+   docker run --rm=true -v $pwd/$basedir:/mnt cbase/$os puppet apply /mnt/$filename &> logs/$os.$filename.log
+   cat logs/$os.$filename.log|grep Error|grep -v Unsupported
   done
 done
 
@@ -39,4 +40,22 @@ do
    git clone $WORKGIT $t/tungsten
    docker build --no-cache -t="continuent/$t" $t | grep Error:
    $t/launch
+
+
+done
+
+#Wait for the containers to start and tungsten to install
+sleep 10m
+
+for node in cdb1 udb1
+do
+
+
+   docker enter $node ps -ef > logs/$node.log
+   c=$(cat logs/$node.log|grep tungsten-manager|wc -l)
+
+   if [ $c -eq 0 ]
+   then
+      echo "Error: Tungsten failed to launch on $node"
+  fi
 done
