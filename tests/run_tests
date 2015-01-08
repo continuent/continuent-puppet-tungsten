@@ -48,7 +48,7 @@ for t in centos6-cluster u14.04-cluster
 do
    rm -rf $t/tungsten
    git clone $WORKGIT $t/tungsten
-   docker build --no-cache -t="continuent/$t" $t | grep Error:
+   docker build  -t="continuent/$t" $t | grep Error:
    $t/launch $BUILDDIR/$basedir
 
 
