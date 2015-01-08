@@ -42,14 +42,14 @@ done
 #  done
 #done
 
-exit
+ 
 
 for t in centos6-cluster u14.04-cluster
 do
    rm -rf $t/tungsten
    git clone $WORKGIT $t/tungsten
    docker build --no-cache -t="continuent/$t" $t | grep Error:
-   $t/launch
+   $t/launch $BUILDDIR/$basedir
 
 
 done

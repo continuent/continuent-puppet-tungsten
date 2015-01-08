@@ -1,3 +1,4 @@
+puppet apply /mnt/base.pp --modulepath=/mnt/modules
 service ssh start
 service mysql start
 hc=$(cat /etc/hosts | grep 172 | grep -v `hostname`|wc -l)
