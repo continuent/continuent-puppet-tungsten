@@ -52,6 +52,7 @@ class tungsten (
 		$installReplicatorSoftware			= false,
 			$replicationUser							= tungsten,
 			$replicationPassword					= secret,
+			$replicationLogDirectory		= false,
 
 		# Set this to 'true' or the path of a continuent-tungsten package
 		# If set to 'true', the 'continuent-tungsten' will be installed from
@@ -99,6 +100,7 @@ class tungsten (
 		installReplicatorSoftware 	=> $installReplicatorSoftware,
 			repUser 									=> $replicationUser,
 			repPassword 							=> $replicationPassword,
+			replicationLogDirectory						=> $replicationLogDirectory,
 		installClusterSoftware 			=> $installClusterSoftware,
 			clusterData 							=> $clusterData,
 			appUser 									=> $appUser,

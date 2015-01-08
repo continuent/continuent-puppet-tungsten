@@ -1,6 +1,9 @@
 [defaults]
 user=tungsten
 home-directory=/opt/continuent
+<% if scope.lookupvar('::tungsten::tungsten::replicationLogDirectory') != false -%>
+thl-directory=<%= scope.lookupvar('::tungsten::tungsten::replicationLogDirectory') %>
+<% end -%>
 <% if scope.lookupvar('::tungsten::prereq::mysqlj::mysqljLocation') != false -%>
 mysql-connectorj-path=<%= scope.lookupvar('::tungsten::prereq::mysqlj::mysqljLocation') %>
 <% end -%>

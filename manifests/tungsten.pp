@@ -26,6 +26,7 @@ class tungsten::tungsten (
 	$installReplicatorSoftware	      = false,
 		$repUser						            = tungsten,
 		$repPassword				            = secret,
+		$replicationLogDirectory	= false,
 	
   # Set this to 'true' or the path of a continuent-tungsten package
 	# If set to 'true', the 'continuent-tungsten' will be installed from 
@@ -53,6 +54,17 @@ class tungsten::tungsten (
 		anchor{ "tungsten::tungsten::ini": }
 	} else {
 		anchor{ "tungsten::tungsten::ini": }
+	}
+
+	# Create the replicationLogDirectory if specified
+	if $replicationLogDirectory != false {
+		Class["tungsten::prereq"] ->
+		exec { "mkdir-replicationLogDirectory":
+			command => "/bin/mkdir -p ${replicationLogDirectory}"
+		} ->
+		exec { "chown-replicationLogDirectory":
+			command => "/bin/chown -R ${tungsten::prereq::systemUserName}: ${replicationLogDirectory}"
+		}
 	}
 	
 	# The /root/.my.cnf file is created by tungsten::mysql and mysql::server classes
