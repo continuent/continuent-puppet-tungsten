@@ -1,4 +1,6 @@
 puppet apply /mnt/base.pp --modulepath=/mnt/modules
+wget http://releases.continuent.com.s3.amazonaws.com/ct-2.0.4/continuent-tungsten_2.0.4-589_all.deb
+dpkg -i continuent-tungsten_2.0.4-589_all.deb
 service ssh start
 service mysql start
 hc=$(cat /etc/hosts | grep 172 | grep -v `hostname`|wc -l)

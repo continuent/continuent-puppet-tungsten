@@ -12,22 +12,22 @@ puppet module install puppetlabs-mysql  --modulepath=$BUILDDIR/puppet/modules/
 rm -rf $BUILDDIR/puppet/modules/tungsten
 git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
 
-for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+#for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
 
-do
-  echo "Operating System =  $os"
-  rm -rf base$os/tungsten
-  docker build -t="cbase/$os" base$os | grep Error:
-  for f in puppet/*.pp
-  do
-   echo " ... $f"
-   basedir=$(dirname $f)
-   pwd=$(pwd)
-   filename=$(basename $f)
-   docker run --rm=true -v $BUILDDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename --modulepath=/mnt/modules &> logs/$os.$filename.log
-   cat logs/$os.$filename.log|grep Error|grep -v Unsupported
-  done
-done
+#do
+#  echo "Operating System =  $os"
+#  rm -rf base$os/tungsten
+#  docker build -t="cbase/$os" base$os | grep Error:
+#  for f in puppet/*.pp
+#  do
+#   echo " ... $f"
+#   basedir=$(dirname $f)
+#   pwd=$(pwd)
+#   filename=$(basename $f)
+#   docker run --rm=true -v $BUILDDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename --modulepath=/mnt/modules &> logs/$os.$filename.log
+#   cat logs/$os.$filename.log|grep Error|grep -v Unsupported
+#  done
+#done
 
 #for os in  centos7
 #do
@@ -42,7 +42,7 @@ done
 #  done
 #done
 
- 
+
 
 for t in centos6-cluster u14.04-cluster
 do

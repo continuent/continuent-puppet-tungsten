@@ -1,4 +1,5 @@
 puppet apply /mnt/base.pp --modulepath=/mnt/modules
+rpm -i http://releases.continuent.com.s3.amazonaws.com/ct-2.0.4/continuent-tungsten-2.0.4-589.noarch.rpm
 service sshd start
 service mysql start
 hc=$(cat /etc/hosts | grep 172 | grep -v `hostname`|wc -l)

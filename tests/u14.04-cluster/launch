@@ -6,4 +6,4 @@ docker run --name udb1  -v $1:/mnt -i -t -h udb1 -d continuent/u14.04-cluster
 echo "Starting DB2"
 docker run --name udb2  -v $1:/mnt -i -t -h udb2 -d continuent/u14.04-cluster
 echo "Starting DB3"
-docker run --name udb3 --v $1:/mnt --link udb1:udb1 --link udb2:udb2 -i -t -h udb3 -d continuent/u14.04-cluster 
+docker run --name udb3 -v $1:/mnt --link udb1:udb1 --link udb2:udb2 -i -t -h udb3 -d continuent/u14.04-cluster 
