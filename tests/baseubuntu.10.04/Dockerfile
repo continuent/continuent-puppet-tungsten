@@ -7,10 +7,4 @@ RUN dpkg -i puppetlabs-release-lucid.deb
 RUN  add-apt-repository ppa:pdoes/ppa
 
 RUN apt-get update
-RUN apt-get install -y  puppet git-core tar openssh-server  wget
-RUN mkdir -p /etc/puppet/modules
-RUN mkdir -p  /var/run/sshd
-RUN puppet module install continuent-tungsten
-RUN puppet module install puppetlabs-mysql
-RUN rm -rf /etc/puppet/modules/tungsten
-ADD tungsten /etc/pupppet/modules/tungsten
+RUN apt-get install -y  puppet  

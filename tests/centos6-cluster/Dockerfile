@@ -5,15 +5,7 @@ RUN rpm -i http://mirror.bytemark.co.uk/fedora/epel/6/i386/epel-release-6-8.noar
 RUN rpm --import https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs && \
     rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
 RUN yum -y install puppet git tar openssh-server
-RUN mkdir -p /etc/puppet/modules
-RUN puppet module install continuent-tungsten
-RUN puppet module install puppetlabs-mysql
-RUN rm -rf /etc/puppet/modules/tungsten
-ADD tungsten /etc/pupppet/modules/tungsten
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-ADD ./puppet.pp /root/puppet.pp
-RUN puppet apply /root/puppet.pp
-RUN rpm -i http://releases.continuent.com.s3.amazonaws.com/ct-2.0.4/continuent-tungsten-2.0.4-589.noarch.rpm
 RUN /usr/bin/ssh-keygen -b 1024 -t rsa -f /etc/ssh/ssh_host_key
 RUN /usr/bin/ssh-keygen -b 1024 -t rsa -f /etc/ssh/ssh_host_rsa_key
 RUN /usr/bin/ssh-keygen -b 1024 -t dsa -f /etc/ssh/ssh_host_dsa_key
