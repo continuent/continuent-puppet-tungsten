@@ -12,22 +12,21 @@ puppet module install puppetlabs-mysql  --modulepath=$BUILDDIR/puppet/modules/
 rm -rf $BUILDDIR/puppet/modules/tungsten
 git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
 
-#for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
-
-#do
-#  echo "Operating System =  $os"
-#  rm -rf base$os/tungsten
-#  docker build -t="cbase/$os" base$os | grep Error:
-#  for f in puppet/*.pp
-#  do
-#   echo " ... $f"
-#   basedir=$(dirname $f)
-#   pwd=$(pwd)
-#   filename=$(basename $f)
-#   docker run --rm=true -v $BUILDDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename --modulepath=/mnt/modules &> logs/$os.$filename.log
-#   cat logs/$os.$filename.log|grep Error|grep -v Unsupported
-#  done
-#done
+for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+do
+  echo "Operating System =  $os"
+  rm -rf base$os/tungsten
+  docker build -t="cbase/$os" base$os | grep Error:
+  for f in puppet/*.pp
+  do
+   echo " ... $f"
+   basedir=$(dirname $f)
+   pwd=$(pwd)
+   filename=$(basename $f)
+   docker run --rm=true -v $BUILDDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename --modulepath=/mnt/modules &> logs/$os.$filename.log
+   cat logs/$os.$filename.log|grep Error|grep -v Unsupported
+  done
+done
 
 #for os in  centos7
 #do
@@ -60,12 +59,11 @@ sleep 10m
 for node in cdb1 udb1
 do
 
-
    docker-enter $node ps -ef > logs/$node.log
    c=$(cat logs/$node.log|grep tungsten-manager|wc -l)
 
    if [ $c -eq 0 ]
    then
       echo "Error: Tungsten failed to launch on $node"
-  fi
+   fi
 done
