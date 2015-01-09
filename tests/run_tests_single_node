@@ -1,0 +1,42 @@
+#!/bin/bash
+
+
+docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi &> /dev/null
+WORKGIT=$1
+BUILDDIR=$2
+mkdir logs > /dev/null
+
+rm -rf $BUILDDIR/puppet/modules/*
+puppet module install continuent-tungsten --modulepath=$BUILDDIR/puppet/modules/
+puppet module install puppetlabs-mysql  --modulepath=$BUILDDIR/puppet/modules/
+rm -rf $BUILDDIR/puppet/modules/tungsten
+git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
+
+for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+do
+  echo "Operating System =  $os"
+  rm -rf base$os/tungsten
+  docker build -t="cbase/$os" base$os | grep Error:
+  for f in puppet/*.pp
+  do
+   echo " ... $f"
+   basedir=$(dirname $f)
+   pwd=$(pwd)
+   filename=$(basename $f)
+   docker run --rm=true -v $BUILDDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename --modulepath=/mnt/modules &> logs/$os.$filename.log
+   cat logs/$os.$filename.log|grep Error|grep -v Unsupported
+  done
+done
+
+#for os in  centos7
+#do
+#  echo "Operating System =  $os"
+#  docker build --no-cache -t="cbase/$os" base$os | grep Error:
+#  for f in puppet_centos7/*.pp
+#  do
+#   rm $os/puppet.pp
+#   cp $f $os/puppet.pp
+#   echo " ... $f"
+#   docker build  -t="continuent/$os" $os | grep Error: | grep -v Unsupported
+#  done
+#done

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+WORKGIT=$1
+BUILDDIR=$2
+mkdir logs > /dev/null
+
+for t in centos6-cluster u14.04-cluster
+do
+   rm -rf $t/tungsten
+   git clone $WORKGIT $t/tungsten
+   docker build  -t="continuent/$t" $t | grep Error:
+   $t/launch $BUILDDIR/$basedir
+
+
+done
+
+#Wait for the containers to start and tungsten to install
+sleep 10m
+
+for node in cdb1 udb1
+do
+
+   docker-enter $node ps -ef > logs/$node.log
+   c=$(cat logs/$node.log|grep tungsten-manager|wc -l)
+
+   if [ $c -eq 0 ]
+   then
+      echo "Error: Tungsten failed to launch on $node"
+   fi
+done
