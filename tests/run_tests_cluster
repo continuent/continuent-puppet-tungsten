@@ -4,6 +4,11 @@ WORKGIT=$1
 BUILDDIR=$2
 mkdir logs > /dev/null
 
+chmod +x get_modules
+./get_modules $BUILDDIR $WORKGIT
+
+
+
 for t in centos6-cluster u14.04-cluster
 do
    rm -rf $t/tungsten
