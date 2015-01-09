@@ -31,24 +31,6 @@ class tungsten::tungstenmysql (
     $fullOverrideOptionsClient=merge($tungsten::tungstenmysql::params::baseOverrideOptionsClient,$overrideOptionsClient)
     $fullOverrideOptionsMysqldSafe=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqldSafe,$overrideOptionsMysqldSafe)
 
-
-    if $::osfamily == "RedHat" and  $::operatingsystemmajrelease >= 7 {
-				user {"mysql": ensure => 'present'}->
-        file { "/var/run/mariadb/":
-          ensure => directory,
-          owner	=> mysql,
-          group	=> mysql,
-          mode => 750,
-        }->
-
-        file { "/var/log/mariadb/":
-          ensure => directory,
-          owner	=> mysql,
-          group	=> mysql,
-          mode => 750,
-        }
-    }
-
     class { 'tungsten::tungstenmysql::tungstenrepo' :
 					mySQLBuild				 => $mySQLBuild,
 					mySQLVersion			 => $mySQLVersion
