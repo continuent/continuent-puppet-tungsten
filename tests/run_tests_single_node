@@ -10,7 +10,7 @@ chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT
 
 
-for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+for os in centos5 centos6 centos7 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
 do
   echo "Operating System =  $os"
   rm -rf base$os/tungsten
@@ -25,16 +25,3 @@ do
    cat logs/$os.$filename.log|grep Error|grep -v Unsupported
   done
 done
-
-#for os in  centos7
-#do
-#  echo "Operating System =  $os"
-#  docker build --no-cache -t="cbase/$os" base$os | grep Error:
-#  for f in puppet_centos7/*.pp
-#  do
-#   rm $os/puppet.pp
-#   cp $f $os/puppet.pp
-#   echo " ... $f"
-#   docker build  -t="continuent/$os" $os | grep Error: | grep -v Unsupported
-#  done
-#done

@@ -1,4 +1,3 @@
-# == Class: tungsten See README.md for documentation.
 #
 # Copyright (C) 2014 Continuent, Inc.
 #
@@ -14,18 +13,23 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-class tungsten::prereq::tungstenselinux(
-  $disableSELinux							= true,
+class tungsten::tungstenmysql::centos7dirs (
+
 ) {
 
-  if $disableSELinux == true {
-    if $::osfamily == 'RedHat' and  $operatingsystemmajrelease > 5 {
-        if $::operatingsystem != 'Amazon' {
-          class { 'selinux':
-              mode => 'permissive'
-           }
-           contain selinux::config
-         }
-      }
-    }
+    if $::osfamily == "RedHat" and  $::operatingsystemmajrelease >= 7 {
+        user {"mysql": ensure => 'present'}->
+        file { "/var/run/mariadb/":
+          ensure => directory,
+          owner	=> mysql,
+          group	=> mysql,
+          mode => 750,
+        }->
+        file { "/var/log/mariadb/":
+          ensure => directory,
+          owner	=> mysql,
+          group	=> mysql,
+          mode => 750,
+        }
+   }
 }

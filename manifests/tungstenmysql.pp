@@ -31,6 +31,7 @@ class tungsten::tungstenmysql (
     $fullOverrideOptionsClient=merge($tungsten::tungstenmysql::params::baseOverrideOptionsClient,$overrideOptionsClient)
     $fullOverrideOptionsMysqldSafe=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqldSafe,$overrideOptionsMysqldSafe)
 
+		class { 'tungsten::tungstenmysql::centos7dirs' : } ->
     class { 'tungsten::tungstenmysql::tungstenrepo' :
 					mySQLBuild				 => $mySQLBuild,
 					mySQLVersion			 => $mySQLVersion

@@ -38,22 +38,6 @@ class tungsten::tungstenmysql::params (
   $baseOverrideOptionsMysqldSafe =  {}
   $baseOverrideOptionsClient =  {}
 
-	if $::osfamily == "RedHat" and  $::operatingsystemmajrelease >= 7 {
-				user {"mysql": ensure => 'present'}->
-				file { "/var/run/mariadb/":
-					ensure => directory,
-					owner	=> mysql,
-					group	=> mysql,
-					mode => 750,
-				}->
-				file { "/var/log/mariadb/":
-					ensure => directory,
-					owner	=> mysql,
-					group	=> mysql,
-					mode => 750,
-				}
-	 }
-
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
     $configFileName               = "/etc/my.cnf"
     $logError                     = "/var/log/mysqld.log"

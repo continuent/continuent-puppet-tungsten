@@ -1,1 +1,0 @@
-class { 'tungsten': installSSHKeys => true, installMysql=> true,disableSELinux=>false,overrideOptionsMysqld=>{'port'=>'3306'}, mySQLBuild=>'mariadb', mySQLVersion=>'10.0', disableFirewall=> false, skipHostConfig=> true }
