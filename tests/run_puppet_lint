@@ -8,4 +8,4 @@ chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT
 
 
-puppet-lint $BUILDDIR/tests/puppet/modules
+puppet-lint $BUILDDIR/puppet/modules
