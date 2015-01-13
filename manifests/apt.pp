@@ -17,8 +17,8 @@
 class tungsten::apt {
   if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
     include apt
-	  include apt::update
+    include apt::update
 
-    Class["apt::update"] -> Package <| |>
+    Class['apt::update'] -> Package <| |>
   }
 }
