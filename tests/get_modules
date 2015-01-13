@@ -1,0 +1,11 @@
+
+BUILDDIR=$1
+WORKGIT=$2
+rm -rf $BUILDDIR/puppet/modules/*
+puppet module install continuent-tungsten --modulepath=$BUILDDIR/puppet/modules/
+puppet module install puppetlabs-mysql  --modulepath=$BUILDDIR/puppet/modules/
+rm -rf $BUILDDIR/puppet/modules/tungsten
+git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
+
+rm -rf $BUILDDIR/puppet/modules/selinux
+git clone https://github.com/continuent/puppet-selinux.git $BUILDDIR/puppet/modules/selinux

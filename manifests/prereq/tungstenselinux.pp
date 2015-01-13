@@ -28,5 +28,4 @@ class tungsten::prereq::tungstenselinux(
          }
       }
     }
-
 }
