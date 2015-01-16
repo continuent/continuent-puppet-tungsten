@@ -10,7 +10,7 @@ chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT
 
 
-for os in centos5 centos6 centos7 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
 do
   echo "Operating System =  $os"
   rm -rf base$os/tungsten
