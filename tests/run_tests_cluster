@@ -22,6 +22,7 @@ done
 #Wait for the containers to start and tungsten to install.
 sleep 5m
 
+RC=0
 for node in cdb1 udb1
 do
 
@@ -31,5 +32,8 @@ do
    if [ $c -eq 0 ]
    then
       echo "Error: Tungsten failed to launch on $node"
+      RC=2
    fi
 done
+
+exit $RC
