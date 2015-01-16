@@ -15,13 +15,12 @@ do
    git clone $WORKGIT $t/tungsten
    docker build  -t="continuent/$t" $t | grep Error:
    $t/launch $BUILDDIR/$basedir
-
-
 done
 
 #Wait for the containers to start and tungsten to install.
-sleep 10m
+sleep 5m
 
+RC=0
 for node in cdb1 udb1
 do
 
@@ -31,5 +30,24 @@ do
    if [ $c -eq 0 ]
    then
       echo "Error: Tungsten failed to launch on $node"
+      RC=2
    fi
 done
+
+if [ $RC == 0 ]
+then
+
+  echo "Cleaning up old Containers"
+
+  for type in u c
+  do
+    for node in db1 db2 db3
+    do
+      docker stop ${type}${node}  > /dev/null
+      docker rm ${type}${node}  > /dev/null
+    done
+  done
+fi
+
+
+exit $RC
