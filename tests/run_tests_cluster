@@ -18,7 +18,7 @@ do
 done
 
 #Wait for the containers to start and tungsten to install.
-sleep 5m
+sleep 10m
 
 RC=0
 for node in cdb1 udb1
