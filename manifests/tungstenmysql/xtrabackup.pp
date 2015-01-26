@@ -1,0 +1,80 @@
+#
+# Copyright (C) 2015 Continuent, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License.  You may obtain
+# a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true
+
+) {
+
+    if $installXtrabackup == true {
+
+        if $::osfamily == "RedHat" {
+            if ($operatingsystem =~ /(?i:amazon)/) {
+                $release = $epel_version
+            } else {
+              $release = $operatingsystemmajrelease
+            }
+            case $release {
+              5:          { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/redhat/5/x86_64/percona-xtrabackup-2.2.8-5059.el5.x86_64.rpm" }
+              6:          { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/redhat/6/x86_64/percona-xtrabackup-2.2.8-5059.el6.x86_64.rpm" }
+              7:          { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/redhat/7/x86_64/percona-xtrabackup-2.2.8-5059.el7.x86_64.rpm"  }
+              default:    { fail("Xtrabackup is not supported on an ${::operatingsystem}:${release} based system.") }
+            }
+
+            package {'perl-DBD-MySQL': ensure=>'present'} ->
+            package {'perl-Time-HiRes': ensure=>'present'} ->
+
+            exec { 'download-xtrabackup-redhat':
+              command => "/usr/bin/wget  -O /tmp/xtrabackup.rpm $download",
+              cwd => "/tmp",
+              logoutput => "on_failure",
+              creates => "/tmp/xtrabackup.rpm"
+            } ->
+            exec { 'install-xtrabackup-redhat':
+              command => "/bin/rpm -i /tmp/xtrabackup.rpm",
+              cwd => "/tmp",
+              logoutput => "on_failure",
+              creates => "/usr/bin/xtrabackup"
+            }
+
+
+        } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+
+            case $::lsbdistcodename {
+              'squeeze':   { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/debian/squeeze/x86_64/percona-xtrabackup_2.2.8-5059-1.squeeze_amd64.deb" }
+              "wheezy":    { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/debian/wheezy/x86_64/percona-xtrabackup_2.2.8-5059-1.wheezy_amd64.deb" }
+              'lucid':     { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/debian/lucid/x86_64/percona-xtrabackup_2.2.8-5059-1.lucid_amd64.deb"}
+              'precise':   { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/debian/precise/x86_64/percona-xtrabackup_2.2.8-5059-1.precise_amd64.deb"}
+              'trusty':    { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/debian/trusty/x86_64/percona-xtrabackup_2.2.8-5059-1.trusty_amd64.deb" }
+              default:     { fail("Xtrabackup is not supported on an ${::operatingsystem}:${lsbdistcodename} based system.") }
+            }
+
+          exec { 'download-agent-ubuntu':
+            command => "/usr/bin/wget  -O /tmp/xtrabackup.deb $download",
+            cwd => "/tmp",
+            logoutput => "on_failure",
+            creates => "/tmp/xtrbackup.deb"
+          } ->
+          exec { 'install-agent':
+            command => "/usr/bin/dpkg -i /tmp/xtrabackup.deb",
+            cwd => "/tmp",
+            logoutput => "on_failure",
+            creates => "/usr/bin/xtrbackup"
+          }
+
+        } else {
+            fail("Xtrabackup is not supported on an ${::operatingsystem} based system.")
+        }
+    }
+}

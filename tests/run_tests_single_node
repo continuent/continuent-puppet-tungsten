@@ -14,7 +14,7 @@ for os in centos5 centos6 squeeze ubuntu.10.04 ubuntu.12.04 ubuntu.14.04  wheezy
 do
   echo "Operating System =  $os"
   rm -rf base$os/tungsten
-  docker build -t="cbase/$os" base$os | grep Error:
+  docker build --no-cache -t="cbase/$os" base$os | grep Error:
   for f in puppet/*.pp
   do
    echo " ... $f"

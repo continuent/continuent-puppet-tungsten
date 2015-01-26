@@ -25,12 +25,13 @@ class tungsten::tungstenmysql (
 	$mySQLVersion				   					    = false,
 	$disableSELinux											= true,
 	$clusterData												= nil,
-	$mySQLSetAuto												= false,
+	$mySQLSetAutoIncrement												= false,
+	$installXtrabackup								  = true,
 ) inherits tungsten::tungstenmysql::params  {
 
   if $installMysql == true {
 
-		if $mySQLSetAuto == true {
+		if $mySQLSetAutoIncrement == true {
 			 $autoInc=getMySQLAutoIncrementIncrement($clusterData)
 			 $autoOffset=getMySQLAutoIncrementOffset($clusterData, $::fqdn)
 			 $autoSettings={'auto_increment_increment'=>$autoInc,'auto_increment_offset'=>$autoOffset}
@@ -58,7 +59,8 @@ class tungsten::tungstenmysql (
       'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
       'client'       =>  $fullOverrideOptionsClient},
       restart => true,
-    }
+    } ->
+		class { 'tungsten::tungstenmysql::xtrabackup' : installXtrabackup => $installXtrabackup }
 
     User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
   }

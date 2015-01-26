@@ -43,7 +43,8 @@ class tungsten (
 			#Version to install based on repo 5.5, 5.6, 5.7, 10.0
 			$mySQLVersion									 = '5.5',
 			#Set the my.cnf autoinc and autoinc offset based on clusterData
-			$mySQLSetAuto									 = false,
+			$mySQLSetAutoIncrement				= false,
+			$installXtrabackup						 = true,
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -86,7 +87,8 @@ class tungsten (
 			mySQLBuild				 				=> $mySQLBuild,
 			mySQLVersion				   		=> $mySQLVersion,
 			clusterData 							=> $clusterData,
-			mySQLSetAuto							=> $mySQLSetAuto
+			mySQLSetAutoIncrement							=> $mySQLSetAutoIncrement,
+			installXtrabackup				  => $installXtrabackup
 	}  ->
   class{ "tungsten::prereq":
     nodeHostName                => $nodeHostName,
