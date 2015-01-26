@@ -38,8 +38,12 @@ class tungsten (
       $overrideOptionsMysqld         = {},
       $overrideOptionsClient         = {},
       $overrideOptionsMysqldSafe     = {},
+			#Which Repo to install percona,mysql or mariadb
 			$mySQLBuild									   = 'percona',
+			#Version to install based on repo 5.5, 5.6, 5.7, 10.0
 			$mySQLVersion									 = '5.5',
+			#Set the my.cnf autoinc and autoinc offset based on clusterData
+			$mySQLSetAuto									 = false,
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -81,6 +85,8 @@ class tungsten (
       installMysql 							=> $installMysql,
 			mySQLBuild				 				=> $mySQLBuild,
 			mySQLVersion				   		=> $mySQLVersion,
+			clusterData 							=> $clusterData,
+			mySQLSetAuto							=> $mySQLSetAuto
 	}  ->
   class{ "tungsten::prereq":
     nodeHostName                => $nodeHostName,

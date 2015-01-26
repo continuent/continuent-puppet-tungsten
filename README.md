@@ -184,6 +184,27 @@ e.g. to override the port
   }
   ```
 
+## Setting AutoIncrement and AutoIncrement offset automatically
+
+The auto_increment_increment and auto_increment_offset can be determined automatically from the supplied clusterData by setting the mySQLSetAuto flag to true. This then used the Functions described below to determine the correct values
+
+```
+    $clusterData = {
+      "east" => {
+        "topology" => "master-slave",
+        "master" =>  db1,
+        "slaves" => "db2,db3",
+        },
+      }
+
+  class { 'tungsten':
+      installSSHKeys => true,
+      installMysql=> true,
+      mySQLSetAuto=> true,
+      clusterData=>$clusterData }
+
+```
+
 ## Integration with custom MySQL classes
 
 The continuent/tungsten module is compatible with the puppetlabs/mysql module. See examples above on how to use it. If you have an existing method for configuring MySQL, it is simple to update it so the continuent/tungsten module recognizes it.

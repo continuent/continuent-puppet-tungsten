@@ -24,10 +24,22 @@ class tungsten::tungstenmysql (
 	$mySQLBuild											    = false,
 	$mySQLVersion				   					    = false,
 	$disableSELinux											= true,
+	$clusterData												= nil,
+	$mySQLSetAuto												= false,
 ) inherits tungsten::tungstenmysql::params  {
 
   if $installMysql == true {
-    $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
+
+		if $mySQLSetAuto == true {
+			 $autoInc=getMySQLAutoIncrementIncrement($clusterData)
+			 $autoOffset=getMySQLAutoIncrementOffset($clusterData, $::fqdn)
+			 $autoSettings={'auto_increment_increment'=>$autoInc,'auto_increment_offset'=>$autoOffset}
+			 $tmpOverrideOptionsMysqld=merge($overrideOptionsMysqld,$autoSettings)
+			 $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$tmpOverrideOptionsMysqld)
+		}else {
+    	$fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
+		}
+
     $fullOverrideOptionsClient=merge($tungsten::tungstenmysql::params::baseOverrideOptionsClient,$overrideOptionsClient)
     $fullOverrideOptionsMysqldSafe=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqldSafe,$overrideOptionsMysqldSafe)
 
