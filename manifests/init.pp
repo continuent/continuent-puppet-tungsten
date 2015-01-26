@@ -44,7 +44,7 @@ class tungsten (
 			$mySQLVersion									 = '5.5',
 			#Set the my.cnf autoinc and autoinc offset based on clusterData
 			$mySQLSetAutoIncrement				= false,
-			$installXtrabackup						 = true,
+			$installXtrabackup						 = false,
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
