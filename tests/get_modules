@@ -8,6 +8,7 @@ rm -rf $BUILDDIR/puppet/modules/tungsten
 
 if [ $WORKGIT == 'local' ]
 then
+  mkdir $BUILDDIR/puppet/modules/tungsten/
   cp -r ../* $BUILDDIR/puppet/modules/tungsten/
 else
   git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten

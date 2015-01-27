@@ -87,7 +87,7 @@ class tungsten (
 			mySQLBuild				 				=> $mySQLBuild,
 			mySQLVersion				   		=> $mySQLVersion,
 			clusterData 							=> $clusterData,
-			mySQLSetAutoIncrement							=> $mySQLSetAutoIncrement,
+			mySQLSetAutoIncrement			=> $mySQLSetAutoIncrement,
 			installXtrabackup				  => $installXtrabackup
 	}  ->
   class{ "tungsten::prereq":

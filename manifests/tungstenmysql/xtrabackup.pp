@@ -13,40 +13,57 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true
+class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
+  	                                        $mySQLBuild	= 'percona'
 
 ) {
 
     if $installXtrabackup == true {
 
-        if $::osfamily == "RedHat" {
-            if ($operatingsystem =~ /(?i:amazon)/) {
-                $release = $epel_version
-            } else {
-              $release = $operatingsystemmajrelease
-            }
-            case $release {
-              5:          { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/redhat/5/x86_64/percona-xtrabackup-2.2.8-5059.el5.x86_64.rpm" }
-              6:          { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/redhat/6/x86_64/percona-xtrabackup-2.2.8-5059.el6.x86_64.rpm" }
-              7:          { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/redhat/7/x86_64/percona-xtrabackup-2.2.8-5059.el7.x86_64.rpm"  }
-              default:    { fail("Xtrabackup is not supported on an ${::operatingsystem}:${release} based system.") }
+        if $mySQLBuild == 'percona' {
+
+            if $::osfamily == "RedHat" and $operatingsystemmajrelease == 5 {
+              notice ("xtrabackup is not supported on ${::operatingsystem}:${release} based system")
+            }else {
+              package { 'percona-xtrabackup': ensure => 'present' }
             }
 
-            package {'perl-DBD-MySQL': ensure=>'present'} ->
-            package {'perl-Time-HiRes': ensure=>'present'} ->
+        } else {
+          if $::osfamily == "RedHat" {
+              if ($operatingsystem =~ /(?i:amazon)/) {
+                  $release = $epel_version
+              } else {
+                $release = $operatingsystemmajrelease
+              }
 
-            exec { 'download-xtrabackup-redhat':
-              command => "/usr/bin/wget  -O /tmp/xtrabackup.rpm $download",
-              cwd => "/tmp",
-              logoutput => "on_failure",
-              creates => "/tmp/xtrabackup.rpm"
-            } ->
-            exec { 'install-xtrabackup-redhat':
-              command => "/bin/rpm -i /tmp/xtrabackup.rpm",
-              cwd => "/tmp",
-              logoutput => "on_failure",
-              creates => "/usr/bin/xtrabackup"
-            }
+              if $release != 5 {
+                case $release {
+                  6:          { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/redhat/6/x86_64/percona-xtrabackup-2.2.8-5059.el6.x86_64.rpm" }
+                  7:          { $download = "http://www.percona.com/downloads/XtraBackup/XtraBackup-2.2.8/binary/redhat/7/x86_64/percona-xtrabackup-2.2.8-5059.el7.x86_64.rpm"  }
+                  default:    { fail("Xtrabackup is not supported on an ${::operatingsystem}:${release} based system.") }
+                }
+                if ! defined(Package['continuent-wget']) {
+                    package {'continuent-wget': ensure => present, name => "wget", }
+                }
+                package {'perl-DBD-MySQL': ensure=>'present'} ->
+                package {'perl-Time-HiRes': ensure=>'present'} ->
+
+                exec { 'download-xtrabackup-redhat':
+                  command => "/usr/bin/wget  -O /tmp/xtrabackup.rpm $download",
+                  cwd => "/tmp",
+                  logoutput => "on_failure",
+                  require => Package['continuent-wget'],
+                  creates => "/tmp/xtrabackup.rpm"
+                } ->
+                exec { 'install-xtrabackup-redhat':
+                  command => "/bin/rpm -i /tmp/xtrabackup.rpm",
+                  cwd => "/tmp",
+                  logoutput => "on_failure",
+                  creates => "/usr/bin/xtrabackup"
+                }
+              } else {
+                notice ("xtrabackup is not supported on ${::operatingsystem}:${release} based system")
+              }
 
 
         } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
@@ -75,6 +92,7 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true
 
         } else {
             fail("Xtrabackup is not supported on an ${::operatingsystem} based system.")
+        }
         }
     }
 }
