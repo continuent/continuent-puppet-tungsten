@@ -48,6 +48,7 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
                 package {'perl-DBD-MySQL': ensure=>'present'} ->
                 package {'perl-Time-HiRes': ensure=>'present'} ->
 
+
                 exec { 'download-xtrabackup-redhat':
                   command => "/usr/bin/wget  -O /tmp/xtrabackup.rpm $download",
                   cwd => "/tmp",
@@ -77,22 +78,27 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
               default:     { fail("Xtrabackup is not supported on an ${::operatingsystem}:${lsbdistcodename} based system.") }
             }
 
-          exec { 'download-agent-ubuntu':
+          if ! defined(Package['continuent-wget']) {
+                    package {'continuent-wget': ensure => present, name => "wget", }
+          }
+                  package {'libdbd-mysql-perl': ensure=>'present'} ->
+          exec { 'download-xtrabackup-ubuntu':
             command => "/usr/bin/wget  -O /tmp/xtrabackup.deb $download",
             cwd => "/tmp",
             logoutput => "on_failure",
-            creates => "/tmp/xtrbackup.deb"
+            require => Package['continuent-wget'],
+            creates => "/tmp/xtrabackup.deb"
           } ->
-          exec { 'install-agent':
+          exec { 'install-xtrabackup-ubuntu':
             command => "/usr/bin/dpkg -i /tmp/xtrabackup.deb",
             cwd => "/tmp",
-            logoutput => "on_failure",
-            creates => "/usr/bin/xtrbackup"
+            logoutput => true,
+            creates => "/usr/bin/xtrabackup"
           }
 
         } else {
             fail("Xtrabackup is not supported on an ${::operatingsystem} based system.")
         }
-        }
+      }
     }
 }

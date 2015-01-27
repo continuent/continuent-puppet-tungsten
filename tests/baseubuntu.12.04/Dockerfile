@@ -5,4 +5,4 @@ RUN apt-get update;apt-get -y install wget
 RUN wget --no-check-certificate  https://apt.puppetlabs.com/puppetlabs-release-precise.deb
 RUN dpkg -i puppetlabs-release-precise.deb
 RUN apt-get update
-RUN apt-get install -y  puppet  
+RUN apt-get install -y  puppet  rsync  

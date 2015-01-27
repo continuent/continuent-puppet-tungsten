@@ -285,6 +285,7 @@ If a valid value cannot be determined, the value 1 is returned.
 ### Xtrabackup
 Currently xtrabackup will be installed on the following operating systems
 * Centos6
+* Ubuntu 10.04, 12.04, 14.04
 
 It is currently not possible to install it automatically on the following operating systems, if it is required it will need to be installed via an alternative way
 * Centos5
