@@ -23,7 +23,7 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
         if $mySQLBuild == 'percona' {
 
             if $::osfamily == "RedHat" and $operatingsystemmajrelease == 5 {
-              notice ("xtrabackup is not supported on ${::operatingsystem}:${release} based system")
+              notice ("xtrabackup is not supported on ${::operatingsystem}:${operatingsystemmajrelease} based system")
             }else {
               package { 'percona-xtrabackup': ensure => 'present' }
             }
