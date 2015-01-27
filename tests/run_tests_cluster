@@ -31,6 +31,8 @@ do
    then
       echo "Error: Tungsten failed to launch on $node"
       RC=2
+   else
+      echo "OK: Tungsten cluster launched on $node"
    fi
 done
 
