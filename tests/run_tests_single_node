@@ -9,12 +9,12 @@ mkdir logs > /dev/null
 chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT
 
-
-for os in centos5 centos6 squeeze wheezy ubuntu.10.04 ubuntu.12.04 ubuntu.14.04
+RC=0
+for os in centos5 centos6 squeeze ubuntu.10.04 ubuntu.12.04 ubuntu.14.04  wheezy
 do
   echo "Operating System =  $os"
   rm -rf base$os/tungsten
-  docker build -t="cbase/$os" base$os | grep Error:
+  docker build --no-cache -t="cbase/$os" base$os | grep Error:
   for f in puppet/*.pp
   do
    echo " ... $f"
@@ -22,6 +22,15 @@ do
    pwd=$(pwd)
    filename=$(basename $f)
    docker run --rm=true -v $BUILDDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename --modulepath=/mnt/modules &> logs/$os.$filename.log
-   cat logs/$os.$filename.log|grep Error|grep -v Unsupported
+   c=$(cat logs/$os.$filename.log|grep Error|grep -v Unsupported|wc -l)
+   if [ $c -ne 0 ]
+   then
+      RC=2
+      cat logs/$os.$filename.log|grep Error|grep -v Unsupported
+   else
+      cat logs/$os.$filename.log|grep supported
+   fi
   done
 done
+
+exit $RC

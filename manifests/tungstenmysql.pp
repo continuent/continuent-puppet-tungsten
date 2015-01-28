@@ -24,10 +24,23 @@ class tungsten::tungstenmysql (
 	$mySQLBuild											    = false,
 	$mySQLVersion				   					    = false,
 	$disableSELinux											= true,
+	$clusterData												= nil,
+	$mySQLSetAutoIncrement							= false,
+	$installXtrabackup								  = true,
 ) inherits tungsten::tungstenmysql::params  {
 
   if $installMysql == true {
-    $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
+
+		if $mySQLSetAutoIncrement == true {
+			 $autoInc=getMySQLAutoIncrementIncrement($clusterData)
+			 $autoOffset=getMySQLAutoIncrementOffset($clusterData, $::fqdn)
+			 $autoSettings={'auto_increment_increment'=>$autoInc,'auto_increment_offset'=>$autoOffset}
+			 $tmpOverrideOptionsMysqld=merge($overrideOptionsMysqld,$autoSettings)
+			 $fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$tmpOverrideOptionsMysqld)
+		}else {
+    	$fullOverrideOptionsMysqld=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqld,$overrideOptionsMysqld)
+		}
+
     $fullOverrideOptionsClient=merge($tungsten::tungstenmysql::params::baseOverrideOptionsClient,$overrideOptionsClient)
     $fullOverrideOptionsMysqldSafe=merge($tungsten::tungstenmysql::params::baseOverrideOptionsMysqldSafe,$overrideOptionsMysqldSafe)
 
@@ -46,7 +59,10 @@ class tungsten::tungstenmysql (
       'mysqld_safe'  =>  $fullOverrideOptionsMysqldSafe,
       'client'       =>  $fullOverrideOptionsClient},
       restart => true,
-    }
+    } ->
+		class { 'tungsten::tungstenmysql::xtrabackup' :
+							installXtrabackup => $installXtrabackup ,
+							mySQLBuild				 => $mySQLBuild }
 
     User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
   }

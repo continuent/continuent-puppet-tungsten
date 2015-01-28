@@ -41,7 +41,9 @@ class tungsten::prereq (
   include tungsten::apt
 
 	package {'continuent-ruby': ensure => present, name => "ruby", }
-	package {'continuent-wget': ensure => present, name => "wget", }
+	if ! defined(Package['continuent-wget']) {
+			package {'continuent-wget': ensure => present, name => "wget", }
+	}
 	package {'continuent-sudo': ensure => present, name => "sudo", }
 	package {'continuent-rsync': ensure => present, name => "rsync", }
 
@@ -77,7 +79,7 @@ class tungsten::prereq (
 			nodeHostName                => $nodeHostName,
 		}
 	}
-	
+
 	class { "tungsten::prereq::unix_user":
 		installSSHKeys                => $installSSHKeys,
 		  sshPublicKey                => $sshPublicKey,

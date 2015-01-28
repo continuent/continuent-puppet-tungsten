@@ -7,4 +7,4 @@ RUN dpkg -i puppetlabs-release-lucid.deb
 RUN  add-apt-repository ppa:pdoes/ppa
 
 RUN apt-get update
-RUN apt-get install -y  puppet  
+RUN apt-get install -y  puppet  rsync  

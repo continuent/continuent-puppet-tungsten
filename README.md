@@ -17,6 +17,24 @@ This module helps install [Continuent Tungsten](https://www.continuent.com) Data
 
 * Currently supports RedHat RHEL/ Centos / AWS Linux / Debian / Ubuntu
 
+## Supported Operating Systems
+
+* Centos5->7
+* Ubuntu 10.04,12.04 and 14.04
+* Debian Wheezy and Squeeze
+* Amazon AWS Linux
+
+It may work on other platform but it has not been tested against them
+
+
+## Supported MySQL Builds
+
+* Percona 5.5 and 5.6
+* MySQL 5.5 and 5.6
+* MariaDB 5.5 and 10.0
+
+Yum and Apt repositories will be installed from these builds and packages installed from them based on the mySQLBuild and mySQLVerson parameters. By default Percona 5.5 will be installed if no values are provided.
+
 ## Examples
 
 ### Install the module into your module directory
@@ -184,6 +202,27 @@ e.g. to override the port
   }
   ```
 
+## Setting AutoIncrement and AutoIncrement offset automatically
+
+The auto_increment_increment and auto_increment_offset can be determined automatically from the supplied clusterData by setting the mySQLSetAutoIncrement flag to true. This then used the Functions described below to determine the correct values
+
+```
+    $clusterData = {
+      "east" => {
+        "topology" => "master-slave",
+        "master" =>  db1,
+        "slaves" => "db2,db3",
+        },
+      }
+
+  class { 'tungsten':
+      installSSHKeys => true,
+      installMysql=> true,
+      mySQLSetAutoIncrement=> true,
+      clusterData=>$clusterData }
+
+```
+
 ## Integration with custom MySQL classes
 
 The continuent/tungsten module is compatible with the puppetlabs/mysql module. See examples above on how to use it. If you have an existing method for configuring MySQL, it is simple to update it so the continuent/tungsten module recognizes it.
@@ -242,3 +281,12 @@ If a valid value cannot be determined, the value 1 is returned.
 * If you are installing any version of MySQL on Centos7 other than MariaDB the puppetlabs module forces the directories to be MariaDB specific so the following directories have to be created
 ** /var/log/mariadb
 ** /var/run/mariadb
+
+### Xtrabackup
+Currently xtrabackup will be installed on the following operating systems
+* Centos6
+* Ubuntu 10.04, 12.04, 14.04
+* Debian wheezy and squeeze
+
+It is currently not possible to install it automatically on the following operating systems, if it is required it will need to be installed via an alternative way
+* Centos5

@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 MAINTAINER Neil Armitage <narmitage@vmware.com>
 
 RUN apt-get update
-RUN apt-get install -y  puppet git tar openssh-server  wget
+RUN apt-get install -y  puppet git tar openssh-server  wget rsync
 RUN mkdir -p /etc/puppet/modules
 RUN mkdir -p  /var/run/sshd
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
