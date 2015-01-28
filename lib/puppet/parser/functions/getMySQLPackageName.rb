@@ -25,20 +25,20 @@ module Puppet::Parser::Functions
 
 
     if (os !~ /(?i:centos|redhat|oel|amazon|ubuntu|debian)/)
-      raise Puppet::ParseError, "Unsupported Operating System"
+      raise Puppet::ParseError, "Unsupported Operating System - #{os} "
     end
 
     if build == 'percona'
       if (os =~ /(?i:centos|redhat|oel|amazon)/)
         if (version !~ /(?i:5.1|5.5|5.6)/)
-          raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
+          raise Puppet::ParseError, "Unsupported Version (#{version})  for the Percona Repo on #{os}"
         end
         version=version.gsub(".", "")
         packageServer="Percona-Server-server-#{version}"
         packageClient="Percona-Server-client-#{version}"
       else
         if (version !~ /(?i:5.5|5.6)/)
-          raise Puppet::ParseError, "Unsupported Version for the Percona Repo on #{os}"
+          raise Puppet::ParseError, "Unsupported Version (#{version}) for the Percona Repo on #{os}"
         end
         packageServer="percona-server-server-#{version}"
         packageClient="percona-server-client-#{version}"
@@ -47,7 +47,7 @@ module Puppet::Parser::Functions
 
     if build == 'mariadb'
       if (version !~ /(?i:5.5|10.0)/)
-        raise Puppet::ParseError, "Unsupported Version for the Mariadb Repo on #{os}"
+        raise Puppet::ParseError, "Unsupported Version (#{version}) for the Mariadb Repo on #{os}"
       end
 
       if (os =~ /(?i:centos|redhat|oel|amazon)/)
@@ -62,7 +62,7 @@ module Puppet::Parser::Functions
     #5.7. is not supported my the puppetlab module as it regnerates old variables
     if build == 'mysql'
       if (version !~ /(?i:5.5|5.6)/)
-        raise Puppet::ParseError, "Unsupported Version for the MySQL Repo on #{os}"
+        raise Puppet::ParseError, "Unsupported Version (#{version}) for the MySQL Repo on #{os}"
       end
 
       if (os =~ /(?i:centos|redhat|oel|amazon)/) and  osversion == '5'
@@ -70,10 +70,10 @@ module Puppet::Parser::Functions
       end
 
       if (os =~ /(?i:ubuntu|debian)/) and  (version !~ /(?i:5.6)/)
-        raise Puppet::ParseError, "Unsupported Version for the MySQL Repo on #{os}"
+        raise Puppet::ParseError, "Unsupported Version (#{version}) for the MySQL Repo on #{os}"
       end
       if (os =~ /(?i:debian)/)
-        raise Puppet::ParseError, "MySQL repo is Unsupported  on Debian"
+        raise Puppet::ParseError, "MySQL repo is Unsupported on Debian"
       end
       if (os =~ /(?i:ubuntu)/)  and  (osreleasename =~ /(?i:lucid)/)
         raise Puppet::ParseError, "MySQL repo is Unsupported  on Lucid"
