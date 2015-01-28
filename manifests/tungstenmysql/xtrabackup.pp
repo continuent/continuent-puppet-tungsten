@@ -47,6 +47,7 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
                 }
                 package {'perl-DBD-MySQL': ensure=>'present'} ->
                 package {'perl-Time-HiRes': ensure=>'present'} ->
+                package {'perl-Digest-MD5': ensure=>'present'} ->
 
 
                 exec { 'download-xtrabackup-redhat':
