@@ -45,9 +45,10 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
                 if ! defined(Package['continuent-wget']) {
                     package {'continuent-wget': ensure => present, name => "wget", }
                 }
+
+                if $release == 7 {package {'perl-Digest-MD5': ensure=>'present'}} ->
                 package {'perl-DBD-MySQL': ensure=>'present'} ->
                 package {'perl-Time-HiRes': ensure=>'present'} ->
-                package {'perl-Digest-MD5': ensure=>'present'} ->
 
 
                 exec { 'download-xtrabackup-redhat':
