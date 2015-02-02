@@ -45,8 +45,9 @@ class tungsten::prereq (
 			package {'continuent-wget': ensure => present, name => "wget", }
 	}
 	package {'continuent-sudo': ensure => present, name => "sudo", }
-	package {'continuent-rsync': ensure => present, name => "rsync", }
-
+	if ! defined(Package['continuent-rsync']) {
+		package {'continuent-rsync': ensure => present, name => "rsync", }
+	}
   if $osfamily == 'RedHat' {
     package {'continuent-rubygems': ensure => present, name => "rubygems",}
   }

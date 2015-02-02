@@ -45,6 +45,9 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
                 if ! defined(Package['continuent-wget']) {
                     package {'continuent-wget': ensure => present, name => "wget", }
                 }
+                if ! defined(Package['continuent-rsync']) {
+                  package {'continuent-rsync': ensure => present, name => "rsync", }
+                }
 
                 if $release == 7 {package {'perl-Digest-MD5': ensure=>'present'}}
                 package {'perl-DBD-MySQL': ensure=>'present'} ->
@@ -62,6 +65,7 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
                   command => "/bin/rpm -i /tmp/xtrabackup.rpm",
                   cwd => "/tmp",
                   logoutput => "on_failure",
+                  require => Package['continuent-rsync'],
                   creates => "/usr/bin/xtrabackup"
                 }
               } else {
