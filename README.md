@@ -281,7 +281,6 @@ If a valid value cannot be determined, the value 1 is returned.
 * If you are installing any version of MySQL on Centos7 other than MariaDB the puppetlabs module forces the directories to be MariaDB specific so the following directories have to be created
 ** /var/log/mariadb
 ** /var/run/mariadb
-* The $disableFirewall setting does not currently disable the firewall on Centos7 if it is running firewalld instead of iptables
 
 ### Xtrabackup
 Currently xtrabackup will be installed on the following operating systems

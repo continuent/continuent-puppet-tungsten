@@ -73,6 +73,9 @@ class tungsten::prereq (
 
 	if $disableFirewall == true {
 		class { "firewall": ensure    => stopped, }
+		if $::osfamily == "RedHat" and  $::operatingsystemmajrelease == 7 {
+			service {"firewalld": ensure => 'stopped'}
+		}
 	}
 
 	if $skipHostConfig == false {
