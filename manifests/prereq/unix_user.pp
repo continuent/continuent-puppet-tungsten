@@ -68,7 +68,7 @@ class tungsten::prereq::unix_user(
   #Centos/Rhel 5 does not support /etc/sudoers.d files (CONT-147)
   if $osfamily == 'RedHat' and $operatingsystemmajrelease == 5 {
       exec { "tungsten::prereq::sudo":
-        command => "/bin/echo  '$systemUserName ALL=(ALL) NOPASSWD: ALL' >>  /etc/sudoers",
+        command => "/bin/echo  '\n$systemUserName ALL=(ALL) NOPASSWD: ALL' >>  /etc/sudoers",
         unless => "/bin/grep $systemUserName /etc/sudoers",
         require => Package[sudo],
       }
