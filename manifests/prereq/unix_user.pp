@@ -99,8 +99,6 @@ class tungsten::prereq::unix_user(
 			}
   }
 
-#includedir /etc/sudoers.d
-
 
 	file { '/etc/security/limits.d/10tungsten.conf':
 		ensure => file,
