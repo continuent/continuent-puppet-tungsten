@@ -94,7 +94,7 @@ class tungsten::prereq::unix_user(
       }->
 			exec { "tungsten::prereq::sudo_include":
 					command => "/bin/echo  '\n#includedir /etc/sudoers.d' >>  /etc/sudoers",
-					unless => "/bin/grep includedir /etc/sudoers",
+					unless => "/bin/grep 'includedir /etc/sudoers.d' /etc/sudoers",
 					require => Package[sudo],
 			}
   }
