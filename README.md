@@ -276,7 +276,7 @@ If a valid value cannot be determined, the value 1 is returned.
 
 ## Current Known Limitations
 
-* SELinux needs to be disabled Centos5 and 7 before running the module.
+* SELinux needs to be disabled on Centos5 before running the module.
 * MySQL 5.7 does not install at the moment owing to issues with the puppetlabs-mysql module
 * If you are installing any version of MySQL on Centos7 other than MariaDB the puppetlabs module forces the directories to be MariaDB specific so the following directories have to be created
 ** /var/log/mariadb

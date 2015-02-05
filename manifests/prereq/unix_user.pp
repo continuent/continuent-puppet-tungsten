@@ -73,6 +73,15 @@ class tungsten::prereq::unix_user(
         require => Package[sudo],
       }
   }  else {
+
+			file { "tungsten::prereq::sudo.d" :
+				path    => "/etc/sudoers.d",
+				ensure  => directory,
+				owner   => "root",
+				group   => "root",
+				mode    => 0440,
+				require => Package[sudo],
+			} ->
       file { "tungsten::prereq::sudo":
         path    => "/etc/sudoers.d/10_tungsten",
         ensure  => present,
@@ -82,8 +91,15 @@ class tungsten::prereq::unix_user(
         replace => true,
         require => Package[sudo],
         content => template('tungsten/tungsten.sudo.erb'),
-      }
+      }->
+			exec { "tungsten::prereq::sudo_include":
+					command => "/bin/echo  '\n#includedir /etc/sudoers.d' >>  /etc/sudoers",
+					unless => "/bin/grep 'includedir /etc/sudoers.d' /etc/sudoers",
+					require => Package[sudo],
+			}
   }
+
+#includedir /etc/sudoers.d
 
 
 	file { '/etc/security/limits.d/10tungsten.conf':
