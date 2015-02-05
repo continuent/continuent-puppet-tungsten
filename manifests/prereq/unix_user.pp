@@ -68,11 +68,20 @@ class tungsten::prereq::unix_user(
   #Centos/Rhel 5 does not support /etc/sudoers.d files (CONT-147)
   if $osfamily == 'RedHat' and $operatingsystemmajrelease == 5 {
       exec { "tungsten::prereq::sudo":
-        command => "/bin/echo  '$systemUserName ALL=(ALL) NOPASSWD: ALL' >>  /etc/sudoers",
+        command => "/bin/echo  '\n$systemUserName ALL=(ALL) NOPASSWD: ALL' >>  /etc/sudoers",
         unless => "/bin/grep $systemUserName /etc/sudoers",
         require => Package[sudo],
       }
   }  else {
+
+			file { "tungsten::prereq::sudo.d" :
+				path    => "/etc/sudoers.d",
+				ensure  => directory,
+				owner   => "root",
+				group   => "root",
+				mode    => 0440,
+				require => Package[sudo],
+			} ->
       file { "tungsten::prereq::sudo":
         path    => "/etc/sudoers.d/10_tungsten",
         ensure  => present,
@@ -82,8 +91,15 @@ class tungsten::prereq::unix_user(
         replace => true,
         require => Package[sudo],
         content => template('tungsten/tungsten.sudo.erb'),
-      }
+      }->
+			exec { "tungsten::prereq::sudo_include":
+					command => "/bin/echo  '\n#includedir /etc/sudoers.d' >>  /etc/sudoers",
+					unless => "/bin/grep includedir /etc/sudoers",
+					require => Package[sudo],
+			}
   }
+
+#includedir /etc/sudoers.d
 
 
 	file { '/etc/security/limits.d/10tungsten.conf':
