@@ -1,6 +1,6 @@
 {
   "name": "continuent/tungsten",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "author": "Continuent",
   "summary": "Module for installing Continuent Tungsten",
   "license": "Apache 2.0",
