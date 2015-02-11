@@ -1,6 +1,6 @@
 {
   "name": "continuent/tungsten",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Continuent",
   "summary": "Module for installing Continuent Tungsten",
   "license": "Apache-2.0",
@@ -27,5 +27,5 @@
     "operatingsystem": "Ubuntu",
     "operatingsystemrelease": [ "12.04", "10.04","14.04" ]
     }
-   ],
+   ]
 }
