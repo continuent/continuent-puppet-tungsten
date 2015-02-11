@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Continuent",
   "summary": "Module for installing Continuent Tungsten",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/continuent/continuent-tungsten",
   "project_page": "https://github.com/continuent/continuent-tungsten",
   "issues_url": "https://github.com/continuent/continuent-tungsten/issues",
@@ -17,5 +17,15 @@
     {"name":"continuent/percona_repo","version_requirement":">= 0.1.0"},
     {"name":"continuent-selinux"},
     {"name":"puppetlabs/mysql","version_requirement":">= 3.1.0"}
-  ]
+  ],
+  "operatingsystem_support": [
+    {
+    "operatingsystem":"RedHat",
+    "operatingsystemrelease":[ "5.0", "6.0","7.0" ]
+    },
+    {
+    "operatingsystem": "Ubuntu",
+    "operatingsystemrelease": [ "12.04", "10.04","14.04" ]
+    }
+   ],
 }
