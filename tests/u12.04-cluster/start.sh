@@ -1,6 +1,6 @@
 puppet apply /mnt/base.pp --modulepath=/mnt/modules
 
-service sshd start
+service ssh start
 service mysql start
 hc=$(cat /etc/hosts | grep 172 | grep -v `hostname`|wc -l)
 if [ "$hc" -gt "0" ]; then
@@ -9,4 +9,6 @@ if [ "$hc" -gt "0" ]; then
     sudo -u tungsten ssh $h "sudo cp /tmp/hosts /etc"
    done
 fi
-rpm -i http://releases.continuent.com.s3.amazonaws.com/ct-2.0.4/continuent-tungsten-2.0.4-589.noarch.rpm
+wget http://releases.continuent.com.s3.amazonaws.com/ct-2.0.4/continuent-tungsten_2.0.4-589_all.deb
+dpkg -i continuent-tungsten_2.0.4-589_all.deb
+ 

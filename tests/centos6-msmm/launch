@@ -1,0 +1,17 @@
+echo "Cleaning up old Containers"
+docker stop mdb1 mdb2 mdb3 mdb4 mdb5 mdb6 &> /dev/null
+docker rm mdb1 mdb2 mdb3 mdb4 mdb5 mdb6 &> /dev/null
+echo "Starting DB1"
+docker run  --name mdb1 -v $1/puppet:/mnt  -i -t -h mdb1 -d continuent/centos6-msmm
+echo "Starting DB2"
+docker run  --name mdb2 -v $1/puppet:/mnt -i -t -h mdb2 -d continuent/centos6-msmm
+echo "Starting DB3"
+docker run  --name mdb3 -v $1/puppet:/mnt  -i -t -h mdb3 -d continuent/centos6-msmm
+echo "Starting DB4"
+docker run  --name mdb4 -v $1/puppet:/mnt -i -t -h mdb4 -d continuent/centos6-msmm
+echo "Starting DB5"
+docker run  --name mdb5 -v $1/puppet:/mnt  -i -t -h mdb5 -d continuent/centos6-msmm
+
+sleep 60
+echo "Starting DB6"
+docker run --name mdb6 -v $1/puppet:/mnt --link mdb1:mdb1 --link mdb2:mdb2 --link mdb3:mdb3 --link mdb4:mdb4 --link mdb5:mdb5   -i -t -h mdb6 -d continuent/centos6-msmm

@@ -1,6 +1,6 @@
 echo "Cleaning up old Containers"
-docker stop udb1 udb2 udb3 > /dev/null
-docker rm udb1 udb2 udb3 > /dev/null
+docker stop udb1 udb2 udb3 &> /dev/null
+docker rm udb1 udb2 udb3 &> /dev/null
 echo "Starting DB1"
 docker run --name udb1  -v $1/puppet:/mnt -i -t -h udb1 -d continuent/u14.04-cluster
 echo "Starting DB2"

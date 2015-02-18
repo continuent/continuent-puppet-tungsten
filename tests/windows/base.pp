@@ -1,0 +1,1 @@
+class { 'tungsten':  installMysql=>true }

@@ -9,19 +9,20 @@ chmod +x get_modules
 
 
 
-for t in centos6-cluster u14.04-cluster
+for t in centos5-cluster centos6-cluster   u14.04-cluster
 do
    rm -rf $t/tungsten
    git clone $WORKGIT $t/tungsten
    docker build  -t="continuent/$t" $t | grep Error:
+   chmod +x $t/launch
    $t/launch $BUILDDIR/$basedir
 done
 
 #Wait for the containers to start and tungsten to install.
-sleep 30m
+sleep 15m
 
 RC=0
-for node in cdb1 udb1
+for node in c5db1 cdb1 udb1
 do
 
    docker-enter $node ps -ef > logs/$node.log
@@ -41,7 +42,7 @@ then
 
   echo "Cleaning up old Containers"
 
-  for type in u c
+  for type in u c c5  
   do
     for node in db1 db2 db3
     do
