@@ -15,6 +15,5 @@ else
   git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
 fi
 
-
 wget -q $DEBFILE -O $BUILDDIR/puppet/ct.deb
 wget -q $RPMFILE -O $BUILDDIR/puppet/ct.rpm

@@ -11,7 +11,7 @@ chmod +x get_modules
 
 
 
-for t in centos5-cluster centos6-cluster   u14.04-cluster
+for t in  centos6-cluster u14.04-cluster
 do
    rm -rf $t/tungsten
    git clone $WORKGIT $t/tungsten
