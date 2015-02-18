@@ -9,4 +9,4 @@ if [ "$hc" -gt "0" ]; then
     sudo -u tungsten ssh $h "sudo cp /tmp/hosts /etc"
    done
 fi
-rpm -i http://releases.continuent.com.s3.amazonaws.com/ct-2.0.4/continuent-tungsten-2.0.4-589.noarch.rpm
+rpm -i /mnt/ct.rpm
