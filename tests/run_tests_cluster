@@ -24,7 +24,7 @@ done
 sleep 15m
 
 RC=0
-for node in c5db1 cdb1 udb1
+for node in  cdb1 udb1
 do
 
    docker-enter $node ps -ef > logs/$node.log
@@ -44,7 +44,7 @@ then
 
   echo "Cleaning up old Containers"
 
-  for type in u c c5
+  for type in u c
   do
     for node in db1 db2 db3
     do
