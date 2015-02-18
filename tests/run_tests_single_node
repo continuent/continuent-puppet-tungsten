@@ -1,20 +1,26 @@
 #!/bin/bash
 #
 
-docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi &> /dev/null
+#docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi &> /dev/null
 WORKGIT=$1
 BUILDDIR=$2
+OS_LIST='centos5 centos6 squeeze ubuntu.10.04 ubuntu.12.04 ubuntu.14.04  wheezy'
+
+if [ -n "$3" ]
+then
+  OS_LIST=$3
+fi
 mkdir logs > /dev/null
 
 chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT
 
 RC=0
-for os in centos5 centos6 squeeze ubuntu.10.04 ubuntu.12.04 ubuntu.14.04  wheezy
+for os in $OS_LIST 
 do
   echo "Operating System =  $os"
   rm -rf base$os/tungsten
-  docker build --no-cache -t="cbase/$os" base$os | grep Error:
+  docker build  -t="cbase/$os" base$os | grep Error:
   for f in puppet/*.pp
   do
    echo " ... $f"
@@ -27,8 +33,8 @@ do
    then
       RC=2
       cat logs/$os.$filename.log|grep Error|grep -v Unsupported
-   else
-      cat logs/$os.$filename.log|grep supported
+   #else
+   #    cat logs/$os.$filename.log|grep supported
    fi
   done
 done

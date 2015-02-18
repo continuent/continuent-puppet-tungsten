@@ -9,4 +9,5 @@ if [ "$hc" -gt "0" ]; then
     sudo -u tungsten ssh $h "sudo cp /tmp/hosts /etc"
    done
 fi
+sleep 5m
 rpm -i /mnt/ct.rpm

@@ -1,9 +1,10 @@
 
 BUILDDIR=$1
 WORKGIT=$2
+DEBFILE=$3
+RPMFILE=$4
 rm -rf $BUILDDIR/puppet/modules/*
 puppet module install continuent-tungsten --modulepath=$BUILDDIR/puppet/modules/
-puppet module install puppetlabs-mysql  --modulepath=$BUILDDIR/puppet/modules/
 rm -rf $BUILDDIR/puppet/modules/tungsten
 
 if [ $WORKGIT == 'local' ]
@@ -13,3 +14,7 @@ then
 else
   git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
 fi
+
+
+wget $DEBFILE -O $BUILDDIR/puppet/ct.deb
+wget $RPMFILE -O $BUILDDIR/puppet/ct.rpm

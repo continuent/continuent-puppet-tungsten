@@ -1,6 +1,6 @@
 puppet apply /mnt/base.pp --modulepath=/mnt/modules
 
-service sshd start
+service ssh start
 service mysql start
 hc=$(cat /etc/hosts | grep 172 | grep -v `hostname`|wc -l)
 if [ "$hc" -gt "0" ]; then
@@ -9,4 +9,4 @@ if [ "$hc" -gt "0" ]; then
     sudo -u tungsten ssh $h "sudo cp /tmp/hosts /etc"
    done
 fi
-rpm -i /mnt/ct.rpm
+dpkg -i /mnt/ct.deb 
