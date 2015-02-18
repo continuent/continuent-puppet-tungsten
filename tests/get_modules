@@ -16,5 +16,5 @@ else
 fi
 
 
-wget $DEBFILE -O $BUILDDIR/puppet/ct.deb
-wget $RPMFILE -O $BUILDDIR/puppet/ct.rpm
+wget -q $DEBFILE -O $BUILDDIR/puppet/ct.deb
+wget -q $RPMFILE -O $BUILDDIR/puppet/ct.rpm
