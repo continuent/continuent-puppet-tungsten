@@ -2,10 +2,12 @@
 
 WORKGIT=$1
 BUILDDIR=$2
+DEBFILE=$3
+RPMFILE=$4
 mkdir logs > /dev/null
 
 chmod +x get_modules
-./get_modules $BUILDDIR $WORKGIT
+./get_modules $BUILDDIR $WORKGIT $DEBFILE $RPMFILE
 
 
 
@@ -42,7 +44,7 @@ then
 
   echo "Cleaning up old Containers"
 
-  for type in u c c5  
+  for type in u c c5
   do
     for node in db1 db2 db3
     do
