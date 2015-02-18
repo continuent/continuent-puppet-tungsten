@@ -12,3 +12,7 @@ then
 else
   git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
 fi
+
+
+wget $DEBFILE -O $BUILDDIR/puppet/ct.deb
+wget $RPMFILE -O $BUILDDIR/puppet/ct.rpm
