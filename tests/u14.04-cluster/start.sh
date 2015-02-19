@@ -10,4 +10,4 @@ if [ "$hc" -gt "0" ]; then
    done
 fi
 
-dpkg -i /mnt/ct.deb
+dpkg -i /mnt/rpm/ct.deb

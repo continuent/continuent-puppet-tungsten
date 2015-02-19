@@ -2,16 +2,15 @@
 
 WORKGIT=$1
 BUILDDIR=$2
-DEBFILE=$3
-RPMFILE=$4
+RPMPREFIX=$3
 mkdir logs > /dev/null
 
 chmod +x get_modules
-./get_modules $BUILDDIR $WORKGIT $DEBFILE $RPMFILE
+./get_modules $BUILDDIR $WORKGIT  $RPMPREFIX
 
 
 
-for t in  centos6-cluster u14.04-cluster
+for t in  centos6-cluster u14.04-cluster centos5-cluster
 do
    rm -rf $t/tungsten
    git clone $WORKGIT $t/tungsten
@@ -24,7 +23,7 @@ done
 sleep 15m
 
 RC=0
-for node in  cdb1 udb1
+for node in  cdb1 udb1 c5db1
 do
 
    docker-enter $node ps -ef > logs/$node.log
@@ -44,7 +43,7 @@ then
 
   echo "Cleaning up old Containers"
 
-  for type in u c
+  for type in u c c5
   do
     for node in db1 db2 db3
     do
