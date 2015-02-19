@@ -78,7 +78,7 @@ class tungsten (
 
 
 	if $::puppetversion < '3.2.7' {
-			notice "This module is not supported on Puppet $::puppetversion - Please install at least 3.2.7"
+			fail "This module is not supported on Puppet $::puppetversion - Please install at least 3.2.7"
 	}
 
   class { 'tungsten::prereq::tungstenselinux': disableSELinux=>$disableSELinux }
