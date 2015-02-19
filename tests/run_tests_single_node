@@ -4,6 +4,8 @@
 #docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi &> /dev/null
 WORKGIT=$1
 BUILDDIR=$2
+RPMPREFIX=$3
+DEBPREFIX=$4
 OS_LIST='centos5 centos6 squeeze ubuntu.10.04 ubuntu.12.04 ubuntu.14.04  wheezy'
 
 if [ -n "$3" ]
@@ -13,10 +15,10 @@ fi
 mkdir logs > /dev/null
 
 chmod +x get_modules
-./get_modules $BUILDDIR $WORKGIT
+./get_modules $BUILDDIR $WORKGIT $RPMPREFIX $DEBPREFIX
 
 RC=0
-for os in $OS_LIST 
+for os in $OS_LIST
 do
   echo "Operating System =  $os"
   rm -rf base$os/tungsten

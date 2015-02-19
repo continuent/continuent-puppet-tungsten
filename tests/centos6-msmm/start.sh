@@ -10,4 +10,4 @@ if [ "$hc" -gt "0" ]; then
    done
 fi
 sleep 5m
-rpm -i /mnt/ct.rpm
+rpm -i /mnt/rpm/ct.rpm
