@@ -2,6 +2,7 @@
 BUILDDIR=$1
 WORKGIT=$2
 RPMPREFIX=$3
+DEBPREFIX=$4
 
 rm -rf $BUILDDIR/puppet/modules/*
 puppet module install continuent-tungsten --modulepath=$BUILDDIR/puppet/modules/
@@ -16,6 +17,6 @@ else
 fi
 mkdir $BUILDDIR/puppet/rpm/
 set -x
-wget -q ${RPMPREFIX}_all.deb -O $BUILDDIR/puppet/rpm/ct.deb
+wget -q ${DEBPREFIX}_all.deb -O $BUILDDIR/puppet/rpm/ct.deb
 wget -q ${RPMPREFIX}.noarch.rpm -O $BUILDDIR/puppet/rpm/ct.rpm
 wget -q ${RPMPREFIX}.RHEL5.noarch.rpm -O $BUILDDIR/puppet/rpm/ct.rhel5.rpm

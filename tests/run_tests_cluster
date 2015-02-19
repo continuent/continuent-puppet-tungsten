@@ -3,6 +3,7 @@
 WORKGIT=$1
 BUILDDIR=$2
 RPMPREFIX=$3
+DEBPREFIX=$4
 mkdir logs > /dev/null
 
 chmod +x get_modules
