@@ -7,7 +7,7 @@ DEBPREFIX=$4
 mkdir logs > /dev/null
 
 chmod +x get_modules
-./get_modules $BUILDDIR $WORKGIT  $RPMPREFIX
+./get_modules $BUILDDIR $WORKGIT  $RPMPREFIX $DEBPREFIX
 
 
 
