@@ -15,6 +15,7 @@ else
   git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
 fi
 mkdir $BUILDDIR/puppet/rpm/
+set -x
 wget -q ${RPMPREFIX}_all.deb -O $BUILDDIR/puppet/rpm/ct.deb
 wget -q ${RPMPREFIX}.noarch.rpm -O $BUILDDIR/puppet/rpm/ct.rpm
 wget -q ${RPMPREFIX}.RHEL5.noarch.rpm -O $BUILDDIR/puppet/rpm/ct.rhel5.rpm
