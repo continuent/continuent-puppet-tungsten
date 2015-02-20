@@ -9,5 +9,5 @@ done
 for node in udb1 udb2 udb3
 do
   echo "Starting $node"
-  docker run  --name $node -v $1/puppet:/mnt  -i -t -h $node.u14.04-cluster.dev.docker -d continuent/u14.04-cluster
+  docker run  --name $node -v $1/puppet:/mnt  -i -t -h $node.u1404-cluster.dev.docker -d continuent/u1404-cluster
 done

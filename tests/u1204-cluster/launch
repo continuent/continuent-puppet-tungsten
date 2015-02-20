@@ -9,5 +9,5 @@ done
 for node in u2db1 u2db2 u2db3
 do
   echo "Starting $node"
-  docker run  --name $node -v $1/puppet:/mnt  -i -t -h $node.u12.04-cluster.dev.docker -d continuent/u12.04-cluster
+  docker run  --name $node -v $1/puppet:/mnt  -i -t -h $node.u1204-cluster.dev.docker -d continuent/u1204-cluster
 done
