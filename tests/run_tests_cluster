@@ -13,8 +13,9 @@ chmod +x get_modules
 
 for t in  centos6-cluster u14.04-cluster centos5-cluster
 do
-   rm -rf $t/tungsten
-   git clone $WORKGIT $t/tungsten
+   #rm -rf $t/tungsten
+   #git clone $WORKGIT $t/tungsten
+   
    docker build  -t="continuent/$t" $t | grep Error:
    chmod +x $t/launch
    $t/launch $BUILDDIR/$basedir

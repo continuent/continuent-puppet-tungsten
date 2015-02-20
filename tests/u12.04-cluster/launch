@@ -1,10 +1,13 @@
-echo "Cleaning up old Containers."
-docker stop u2db1 u2db2 u2db3 &> /dev/null
-docker rm u2db1 u2db2 u2db3 &> /dev/null
-echo "Starting DB1"
-docker run --name u2db1  -v $1/puppet:/mnt -i -t -h u2db1 -d continuent/u12.04-cluster
-echo "Starting DB2"
-docker run --name u2db2  -v $1/puppet:/mnt -i -t -h u2db2 -d continuent/u12.04-cluster
-sleep 60
-echo "Starting DB3"
-docker run --name u2db3 -v $1/puppet:/mnt --link u2db1:u2db1 --link u2db2:u2db2 -i -t -h u2db3 -d continuent/u12.04-cluster
+echo "Cleaning up old Containers"
+
+for node in u2db1 u2db2 u2db3
+do
+  docker stop $node &> /dev/null
+  docker rm $node &> /dev/null
+done
+
+for node in u2db1 u2db2 u2db3
+do
+  echo "Starting $node"
+  docker run  --name $node -v $1/puppet:/mnt  -i -t -h $node.u12.04-cluster.dev.docker -d continuent/u12.04-cluster
+done

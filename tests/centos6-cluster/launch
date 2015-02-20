@@ -1,10 +1,13 @@
 echo "Cleaning up old Containers"
-docker stop cdb1 cdb2 cdb3 &> /dev/null
-docker rm cdb1 cdb2 cdb3 &> /dev/null
-echo "Starting DB1"
-docker run  --name cdb1 -v $1/puppet:/mnt  -i -t -h cdb1 -d continuent/centos6-cluster
-echo "Starting DB2"
-docker run  --name cdb2 -v $1/puppet:/mnt -i -t -h cdb2 -d continuent/centos6-cluster
-sleep 60
-echo "Starting DB3"
-docker run --name cdb3 -v $1/puppet:/mnt --link cdb1:cdb1 --link cdb2:cdb2  -i -t -h cdb3 -d continuent/centos6-cluster
+
+for node in cdb1 cdb2 cdb3
+do
+  docker stop $node &> /dev/null
+  docker rm $node &> /dev/null
+done
+
+for node in cdb1 cdb2 cdb3
+do
+  echo "Starting $node"
+  docker run  --name $node -v $1/puppet:/mnt  -i -t -h $node.centos6-cluster.dev.docker -d continuent/centos6-cluster
+done
