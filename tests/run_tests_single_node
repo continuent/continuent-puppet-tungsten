@@ -14,8 +14,25 @@ then
 fi
 mkdir logs > /dev/null
 
-chmod +x get_modules
-./get_modules $BUILDDIR $WORKGIT $RPMPREFIX $DEBPREFIX
+#chmod +x get_modules
+#./get_modules $BUILDDIR $WORKGIT $RPMPREFIX $DEBPREFIX
+
+rm -rf $BUILDDIR/puppet/modules/*
+puppet module install continuent-tungsten --modulepath=$BUILDDIR/puppet/modules/
+rm -rf $BUILDDIR/puppet/modules/tungsten
+
+if [ $WORKGIT == 'local' ]
+then
+  mkdir $BUILDDIR/puppet/modules/tungsten/
+  cp -r ../* $BUILDDIR/puppet/modules/tungsten/
+else
+  git clone $WORKGIT $BUILDDIR/puppet/modules/tungsten
+fi
+mkdir $BUILDDIR/puppet/rpm/
+
+wget -q ${DEBPREFIX}_all.deb -O $BUILDDIR/puppet/rpm/ct.deb
+wget -q ${RPMPREFIX}.noarch.rpm -O $BUILDDIR/puppet/rpm/ct.rpm
+wget -q ${RPMPREFIX}.RHEL5.noarch.rpm -O $BUILDDIR/puppet/rpm/ct.rhel5.rpm
 
 RC=0
 for os in $OS_LIST
