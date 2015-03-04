@@ -6,6 +6,8 @@ RPMPREFIX=$3
 DEBPREFIX=$4
 mkdir logs > /dev/null
 
+#Restart skyDock
+/home/narmitag/startSkydock
 chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT  $RPMPREFIX $DEBPREFIX
 
