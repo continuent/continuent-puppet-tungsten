@@ -8,14 +8,16 @@ RPMPREFIX=$3
 DEBPREFIX=$4
 OS_LIST='centos5 centos6 squeeze ubuntu.10.04 ubuntu.12.04 ubuntu.14.04  wheezy'
 
-if [ -n "$3" ]
+if [ -n "$5" ]
 then
-  OS_LIST=$3
+  OS_LIST=$5
 fi
 mkdir logs > /dev/null
 
 chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT $RPMPREFIX $DEBPREFIX
+
+
 
 RC=0
 for os in $OS_LIST

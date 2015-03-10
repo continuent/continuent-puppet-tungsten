@@ -6,15 +6,18 @@ RPMPREFIX=$3
 DEBPREFIX=$4
 mkdir logs > /dev/null
 
+#Restart skyDock
+/home/narmitag/startSkydock
 chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT  $RPMPREFIX $DEBPREFIX
 
 
 
-for t in  centos6-cluster u14.04-cluster centos5-cluster
+for t in  centos6-cluster u1404-cluster centos5-cluster
 do
-   rm -rf $t/tungsten
-   git clone $WORKGIT $t/tungsten
+   #rm -rf $t/tungsten
+   #git clone $WORKGIT $t/tungsten
+
    docker build  -t="continuent/$t" $t | grep Error:
    chmod +x $t/launch
    $t/launch $BUILDDIR/$basedir
