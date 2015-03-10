@@ -109,7 +109,7 @@ class tungsten::prereq::unix_user(
 		ensure => "directory",
 		owner	=> $systemUserName,
 		group	=> $systemUserName,
-		mode	 => 750,
+		mode	 => 700,
 		require => User["tungsten::systemUser"]
 	}
 
@@ -125,7 +125,7 @@ class tungsten::prereq::unix_user(
 		ensure => "directory",
 		owner	=> $systemUserName,
 		group	=> $systemUserName,
-		mode	 => 750,
+		mode	 => 700,
 		require => User["tungsten::systemUser"]
 	}
 
@@ -133,7 +133,7 @@ class tungsten::prereq::unix_user(
 		ensure => "directory",
 		owner	=> $systemUserName,
 		group	=> $systemUserName,
-		mode	 => 750,
+		mode	 => 700,
 		require => User["tungsten::systemUser"],
 	}
 
@@ -141,7 +141,7 @@ class tungsten::prereq::unix_user(
 		ensure => "directory",
 		owner	=> $systemUserName,
 		group	=> $systemUserName,
-		mode	 => 750,
+		mode	 => 700,
 	}
 
 	#Create tungsten .ssh dir
