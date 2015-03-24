@@ -24,12 +24,12 @@ module Puppet::Parser::Functions
     packageClient = nil
 
 
-    if (os !~ /(?i:centos|redhat|oel|amazon|ubuntu|debian)/)
+    if (os !~ /(?i:centos|redhat|oel|OracleLinux|amazon|ubuntu|debian)/)
       raise Puppet::ParseError, "Unsupported Operating System - #{os} "
     end
 
     if build == 'percona'
-      if (os =~ /(?i:centos|redhat|oel|amazon)/)
+      if (os =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/)
         if (version !~ /(?i:5.1|5.5|5.6)/)
           raise Puppet::ParseError, "Unsupported Version (#{version})  for the Percona Repo on #{os}"
         end
@@ -50,7 +50,7 @@ module Puppet::Parser::Functions
         raise Puppet::ParseError, "Unsupported Version (#{version}) for the Mariadb Repo on #{os}"
       end
 
-      if (os =~ /(?i:centos|redhat|oel|amazon)/)
+      if (os =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/)
         packageServer="MariaDB-server"
         packageClient="MariaDB-client"
       else
@@ -65,7 +65,7 @@ module Puppet::Parser::Functions
         raise Puppet::ParseError, "Unsupported Version (#{version}) for the MySQL Repo on #{os}"
       end
 
-      if (os =~ /(?i:centos|redhat|oel|amazon)/) and  osversion == '5'
+      if (os =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) and  osversion == '5'
         raise Puppet::ParseError, "MySQL repo is Unsupported on Centos5"
       end
 

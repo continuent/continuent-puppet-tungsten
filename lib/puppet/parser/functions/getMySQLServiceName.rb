@@ -19,7 +19,7 @@ module Puppet::Parser::Functions
     os            = lookupvar('operatingsystem')
     serviceName   = nil
 
-    if (os !~ /(?i:centos|redhat|oel|amazon|ubuntu|debian)/)
+    if (os !~ /(?i:centos|redhat|oel|OracleLinux|amazon|ubuntu|debian)/)
       raise Puppet::ParseError, "Unsupported Operating System"
     end
 
@@ -32,7 +32,7 @@ module Puppet::Parser::Functions
     end
 
     if build == 'mysql'
-      if (os =~ /(?i:centos|redhat|oel|amazon)/)
+      if (os =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/)
         serviceName = 'mysqld'
       else
         serviceName = 'mysql'
