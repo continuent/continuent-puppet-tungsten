@@ -1,13 +1,13 @@
 # == Class: tungsten::prereq::repo See README.md for documentation.
 #
 # Copyright (C) 2014 Continuent, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License.  You may obtain
 # a copy of the License at
-# 
+#
 #         http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -17,7 +17,7 @@
 class tungsten::prereq::repo(
 	$replicatorRepo							= false,
 ) {
-  if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+  if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
 		if $replicatorRepo == "nightly" {
   		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.noarch.rpm"
   	} elsif $replicatorRepo == "stable" {

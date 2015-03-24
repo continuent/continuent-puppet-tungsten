@@ -25,7 +25,7 @@ class tungsten::tungstenmysql::tungstenrepo (
   }
 
   if ($mySQLBuild  =~ /(?i:percona)/) {
-    if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+    if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
       if ($operatingsystem =~ /(?i:amazon)/) {
         $baseurl = "http://repo.percona.com/centos/${epel_version}/os/\$basearch/"
       } else {
@@ -57,7 +57,7 @@ class tungsten::tungstenmysql::tungstenrepo (
 
 
   if ($mySQLBuild  =~ /(?i:mariadb)/) {
-    if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+    if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
       if ($operatingsystem =~ /(?i:amazon)/) {
         $baseurl = "http://yum.mariadb.org/${mySQLVersion}/centos${epel_version}-amd64"
       } else {
@@ -89,7 +89,7 @@ class tungsten::tungstenmysql::tungstenrepo (
   }
 
   if ($mySQLBuild  =~ /(?i:mysql)/) {
-      if ($operatingsystem =~ /(?i:centos|redhat|oel|amazon)/) {
+      if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
           if ($operatingsystem =~ /(?i:amazon)/) {
             $baseurl ="http://repo.mysql.com/yum/mysql-${mySQLVersion}-community/el/${epel_version}/\$basearch/"
           } else {
