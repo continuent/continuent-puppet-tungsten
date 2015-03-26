@@ -6,4 +6,4 @@ RUN wget --no-check-certificate  https://apt.puppetlabs.com/puppetlabs-release-p
 RUN dpkg -i puppetlabs-release-precise.deb
 RUN apt-get update
 RUN apt-get install -y  puppet  rsync
-RUN /usr/bin/apt-key adv --keyserver keyserver.ubuntu.com:80 --recv-keys CD2EFD2A
+RUN /usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CD2EFD2A
