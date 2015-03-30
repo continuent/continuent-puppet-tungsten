@@ -11,4 +11,4 @@ RUN /usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C
 #MariaDB
 RUN /usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CBCB082A1BB943DB
 #MySQL
-/usr/bin/apt-key adv adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 5072E1F5
+RUN /usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 5072E1F5
