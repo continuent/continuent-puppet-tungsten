@@ -68,7 +68,7 @@ Yum and Apt repositories will be installed from these builds and packages instal
     	installSSHKeys => true,
     	installMysql => true,
       mySQLBuild => 'mysql|percona|mariadb',
-      mySQLVersion => "5.5|5.6|10.0"
+      mySQLVersion => "5.5|5.6|10.0",
     	clusterData => $clusterData,
     	installClusterSoftware => "/root/continuent-tungsten-2.0.1-1002.rpm",
     }
@@ -88,7 +88,7 @@ This will install the latest stable version of Tungsten Replicator with master-s
     	installSSHKeys => true,
     	installMysql => true,
       mySQLBuild => 'mysql|percona|mariadb',
-      mySQLVersion => "5.5|5.6|10.0"
+      mySQLVersion => "5.5|5.6|10.0",
     	clusterData => $clusterData,
     	replicatorRepo => "stable",
     	installReplicatorSoftware => true,
