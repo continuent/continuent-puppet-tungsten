@@ -19,11 +19,11 @@ class tungsten::prereq::repo(
 ) {
   if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
 		if $replicatorRepo == "nightly" {
-  		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-nightly-0.0-1.noarch.rpm"
+  		$url = "http://yum.tungsten-replicator.org/replicator-release-nightly-0.0-1.noarch.rpm"
   	} elsif $replicatorRepo == "stable" {
-  		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.noarch.rpm"
+  		$url = "http://yum.tungsten-replicator.org/replicator-release-stable-0.0-1.noarch.rpm"
   	} elsif $replicatorRepo == true {
-  		$url = "http://releases.continuent.com.s3.amazonaws.com/replicator-release-stable-0.0-1.noarch.rpm"
+  		$url = "http://yum.tungsten-replicator.org/replicator-release-stable-0.0-1.noarch.rpm"
   	} else {
   		$url = false
   	}

@@ -7,7 +7,7 @@ DEBPREFIX=$4
 mkdir logs > /dev/null
 
 #Restart skyDock
-/home/narmitag/startSkydock
+/var/docker/startSkyDock
 chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT  $RPMPREFIX $DEBPREFIX
 
@@ -24,13 +24,13 @@ do
 done
 
 #Wait for the containers to start and tungsten to install.
-sleep 15m
+sleep 10m
 
 RC=0
 for node in  cdb1 udb1 c5db1
 do
 
-   docker-enter $node ps -ef > logs/$node.log
+   docker exec $node ps -ef > logs/$node.log
    c=$(cat logs/$node.log|grep tungsten-manager|wc -l)
 
    if [ $c -eq 0 ]
