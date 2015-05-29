@@ -30,6 +30,13 @@ class tungsten::prereq::unix_user(
 		shell => "/bin/bash",
 	}
 
+	if $osfamily == 'Suse' {
+    group {$systemUserName: ensure => 'present'}
+    file { '/etc/security/limits.d/':
+            ensure => directory,
+    }
+	}
+
   group {"mysql": ensure => 'present'} ->
 	User <| title == "tungsten::systemUser" |>
 

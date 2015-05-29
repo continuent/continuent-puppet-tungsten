@@ -38,7 +38,7 @@ class tungsten::tungstenmysql::params (
   $baseOverrideOptionsMysqldSafe =  {}
   $baseOverrideOptionsClient =  {}
 
-	if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
+	if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon|SLES)/) {
     $configFileName               = "/etc/my.cnf"
     $logError                     = "/var/log/mysqld.log"
     $pidFile                      = '/var/run/mysqld/mysqld.pid'
