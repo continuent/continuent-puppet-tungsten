@@ -20,6 +20,8 @@ class tungsten::tungstenhadoop (
   anchor{"tungsten::tungstenhadoop::end": }
 
   if $distribution == "cdh5" {
+    include tungsten::tungstenhadoop::tools
+
     class{ "tungsten::tungstenhadoop::cdh5": } ->
     Anchor["tungsten::tungstenhadoop::end"]
   } elsif $distribution != false {

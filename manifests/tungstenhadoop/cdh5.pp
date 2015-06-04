@@ -81,23 +81,11 @@ class tungsten::tungstenhadoop::cdh5 (
 	package {"hive-server2": } ->
 	package {"hive-hbase": } ->
 	service {"hive-metastore":
-	  ensure => "running",
-	  enable => true
+	  ensure => "stopped",
+	  enable => false
 	} ->
 	service {"hive-server2":
-	  ensure => "running",
-	  enable => true
-	} ->
-	package {"tungstenhadoop::cdh5::git":
-	  name => "git"
-	} ->
-	exec {"exec-git-continuent-tools-hadoop":
-	  command => "/usr/bin/git clone https://github.com/continuent/continuent-tools-hadoop.git /opt/continuent/software/continuent-tools-hadoop",
-	  creates => "/opt/continuent/software/continuent-tools-hadoop",
-	  notify => Exec["exec-chown-continuent-tools-hadoop"]
-	} ->
-	exec {"exec-chown-continuent-tools-hadoop":
-	  command => "/bin/chown -R tungsten: /opt/continuent/software/continuent-tools-hadoop",
-	  refreshonly => true
-	} 
+	  ensure => "stopped",
+	  enable => false
+	}
 }
