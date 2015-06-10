@@ -100,6 +100,11 @@ class tungsten::prereq (
 		enabled => $installMysqlj,
     location => $mysqljLocation
 	} ->
+	sysctl { 'vm.swappiness':
+		ensure => present,
+		permanent => yes,
+		value => '10',
+	} ->
 	anchor { "tungsten::prereq::end":
 		require => [
 			Class["tungsten::prereq::unix_user"],
