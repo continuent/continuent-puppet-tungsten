@@ -41,10 +41,11 @@ class tungsten::prereq (
 ) inherits tungsten::params {
 	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		class { 'apt':
-		update => {
-		frequency => 'always',
-		},
-	}
+			update => {
+			frequency => 'always',
+			},
+	  }
+	}	 
 
 	package {'continuent-ruby': ensure => present, name => "ruby", }
 	if ! defined(Package['continuent-wget']) {
