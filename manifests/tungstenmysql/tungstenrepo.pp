@@ -72,7 +72,6 @@ class tungsten::tungstenmysql::tungstenrepo (
         gpgcheck => 1,
       }
     } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-      include apt
 
       $tempos=downcase($operatingsystem)
       apt::source { 'mariadb':
