@@ -37,7 +37,7 @@ class tungsten::prereq (
 
   #If this is set to true no setting of hostname will be done
   $skipHostConfig                 = false,
-	$vmSwappiness										= 10,
+	$vmSwappiness										= 10
 ) inherits tungsten::params {
 	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		class { 'apt':
