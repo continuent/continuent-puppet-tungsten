@@ -24,6 +24,9 @@ class tungsten (
 
 		$disableSELinux                 = true,
 
+		#Tungsten needs swappiness set to 10 but can be overridden
+		$vmSwappiness										= 10,
+
 		# This may be set to 'nightly', 'stable' or 'true
 		# If set to 'true', the stable repository will be used
 		$replicatorRepo									= false,
@@ -105,7 +108,8 @@ class tungsten (
     installJava                 => $installJava,
     installNTP                  => $installNTP,
     disableFirewall             => $disableFirewall,
-    skipHostConfig              => $skipHostConfig
+    skipHostConfig              => $skipHostConfig,
+		vmSwappiness								=> $vmSwappiness
   } ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,

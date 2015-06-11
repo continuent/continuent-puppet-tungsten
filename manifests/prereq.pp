@@ -37,6 +37,7 @@ class tungsten::prereq (
 
   #If this is set to true no setting of hostname will be done
   $skipHostConfig                 = false,
+	$vmSwappiness										= 10,
 ) inherits tungsten::params {
 	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		class { 'apt':
@@ -108,7 +109,7 @@ class tungsten::prereq (
 	sysctl { 'vm.swappiness':
 		ensure => present,
 		permanent => yes,
-		value => '10',
+		value => $vmSwappiness,
 	} ->
 	anchor { "tungsten::prereq::end":
 		require => [
