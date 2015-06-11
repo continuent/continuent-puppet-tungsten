@@ -40,11 +40,9 @@ class tungsten::tungstenmysql::tungstenrepo (
         gpgcheck => 1,
       }
     } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-      include apt
 
       apt::source { 'percona':
         ensure => present,
-        include_src => true,
         location => 'http://repo.percona.com/apt',
         release => $::lsbdistcodename,
         repos => 'main',
@@ -76,7 +74,6 @@ class tungsten::tungstenmysql::tungstenrepo (
       $tempos=downcase($operatingsystem)
       apt::source { 'mariadb':
         ensure => present,
-        include_src => true,
         location => "http://mirrors.coreix.net/mariadb/repo/$mySQLVersion/$tempos",
         release => $::lsbdistcodename,
         repos => 'main',
@@ -110,12 +107,9 @@ class tungsten::tungstenmysql::tungstenrepo (
             gpgcheck => 1,
           }
       } elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-        include apt
-
         $tempos=downcase($operatingsystem)
         apt::source { 'mysql':
           ensure => present,
-          include_src => true,
           location => "http://repo.mysql.com/apt/$tempos/",
           release => $::lsbdistcodename,
           repos => "mysql-$mySQLVersion",
