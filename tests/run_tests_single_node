@@ -53,7 +53,10 @@ wait
 
 for os in $OS_LIST
 do
+  echo '-------------------------------------------------------------------------------------'
+  echo
   cat logs2/$os.log
+  echo 
 done
 
 exit $RC
