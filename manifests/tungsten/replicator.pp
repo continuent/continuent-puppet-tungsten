@@ -57,7 +57,7 @@ class tungsten::tungsten::replicator (
     		} ~>
     		exec { "install-tungsten-replicator":
     		  path => ["/bin", "/usr/bin"],
-    		  command => "sudo -i -u $tungsten::prereq::systemUserName /opt/continuent/software/$basename/tools/tpm update --tty --log=/opt/continuent/service_logs/tungsten-configure.log > /opt/continuent/service_logs/rpm.output 2>&1",
+    		  command => "sudo -i -u $tungsten::prereq::systemUserName /opt/continuent/software/$basename/tools/tpm update --tty --log=/opt/replicator/service_logs/tungsten-configure.log > /opt/replicator/service_logs/rpm.output 2>&1",
     		  onlyif => "test -f /etc/tungsten/tungsten.ini",
       		refreshonly => true,
       		returns => [0, 1],

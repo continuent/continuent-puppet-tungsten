@@ -47,8 +47,12 @@ class tungsten::tungsten (
 		class{ "tungsten::tungsten::ini": }->
 		anchor{ "tungsten::tungsten::ini": }
 
-		Anchor["tungsten::tungsten::replicator"] ->
-		class{ "tungsten::tungsten::update": }
+    # Scheduling updates to existing installations must be done 
+    # before the clustering or replication software is installed.
+    # If not, `tpm update` will be run twice during the initial
+    # installation process.
+    class{ "tungsten::tungsten::update": } ->
+		Anchor["tungsten::tungsten::cluster"]
 	} elsif $writeTungstenDefaults == true {
 		class{ "tungsten::tungsten::defaultsini": }->
 		anchor{ "tungsten::tungsten::ini": }

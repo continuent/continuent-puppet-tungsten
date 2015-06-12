@@ -18,19 +18,19 @@ class tungsten::tungsten::update (
 ) inherits tungsten::params {
   # Run /opt/continuent/tungsten/tools/tpm update if there is a change to tungsten.ini
 	exec { "tungsten::tungsten::update::opt_continuent":
-		path => ["/usr/bin"],
-		command => "sudo -i -u tungsten /opt/continuent/tungsten/tools/tpm update --log=/opt/continuent/service_logs/tungsten-configure.log",
+		path => ["/bin", "/usr/bin"],
+		command => "sudo -i -u $tungsten::prereq::systemUserName /opt/continuent/tungsten/tools/tpm update --tty > /opt/continuent/service_logs/puppet-update.output 2>&1",
 		subscribe => File["/etc/tungsten/tungsten.ini"],
-		onlyif => "test -f /opt/continuent/tungsten",
+		onlyif => "test -e /opt/continuent/tungsten",
 		refreshonly => true
 	}
 	
 	# Run /opt/replicator/tungsten/tools/tpm update if there is a change to tungsten.ini
 	exec { "tungsten::tungsten::update::opt_replicator":
-		path => ["/usr/bin"],
-		command => "sudo -i -u tungsten /opt/replicator/tungsten/tools/tpm update --log=/opt/continuent/service_logs/tungsten-configure.log",
+		path => ["/bin", "/usr/bin"],
+		command => "sudo -i -u $tungsten::prereq::systemUserName /opt/replicator/tungsten/tools/tpm update --tty > /opt/replicator/service_logs/puppet-update.output 2>&1",
 		subscribe => File["/etc/tungsten/tungsten.ini"],
-		onlyif => "test -f /opt/replicator/tungsten",
+		onlyif => "test -e /opt/replicator/tungsten",
 		refreshonly => true
 	}
 }
