@@ -44,7 +44,7 @@ class tungsten (
 			#Which Repo to install percona,mysql or mariadb
 			$mySQLBuild									   = 'percona',
 			#Version to install based on repo 5.5, 5.6, 5.7, 10.0
-			$mySQLVersion									 = '5.5',
+			$mySQLVersion									 = '5.6',
 			#Set the my.cnf autoinc and autoinc offset based on clusterData
 			$mySQLSetAutoIncrement				= false,
 			$installXtrabackup						 = true,
