@@ -19,7 +19,7 @@ rm logs2/*
 
 chmod +x get_modules
 chmod +x run_tests_single_node_os
-./get_modules $BUILDDIR $WORKGIT $RPMPREFIX $DEBPREFIX
+./get_modules $BUILDDIR $WORKGIT $RPMPREFIX  
 
 
 
