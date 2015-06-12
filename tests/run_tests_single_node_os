@@ -18,6 +18,7 @@ do
   if [ $c -ne 0 ]
   then
     RC=2
+    touch logs/errors_exist
     cat logs/$os.$filename.log|grep Error|grep -v Unsupported
   #else
   #    cat logs/$os.$filename.log|grep supported

@@ -13,7 +13,9 @@ then
   OS_LIST=$5
 fi
 mkdir logs > /dev/null
+rm logs/*
 mkdir logs2 > /dev/null
+rm logs2/*
 
 chmod +x get_modules
 chmod +x run_tests_single_node_os
@@ -56,7 +58,13 @@ do
   echo '-------------------------------------------------------------------------------------'
   echo
   cat logs2/$os.log
-  echo 
+  echo
 done
 
-exit $RC
+if [ -f logs/errors_exist ]
+then
+  echo 'errors exist in log files'
+  exit 2
+else
+  exit 0
+fi
