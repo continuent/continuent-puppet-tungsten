@@ -42,10 +42,10 @@ class tungsten::prereq (
 	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		class { 'apt':
 			update => {
-			frequency => 'always',
+			   frequency => 'always',
 			},
-	  }
-	}	 
+	  }  -> Package <| |>
+	}
 
 	package {'continuent-ruby': ensure => present, name => "ruby", }
 	if ! defined(Package['continuent-wget']) {
