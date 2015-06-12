@@ -2,6 +2,7 @@
 #
 
 os=$1
+BUILDDIR=$2
 
 echo "Operating System =  $os"
 rm -rf base$os/tungsten

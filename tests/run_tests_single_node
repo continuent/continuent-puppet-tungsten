@@ -25,7 +25,7 @@ RC=0
 for os in $OS_LIST
 do
 
-  ./run_tests_single_node_os $os &> logs2/$os.log &
+  ./run_tests_single_node_os $os $BUILDDIR &> logs2/$os.log &
   # echo "Operating System =  $os"
   # rm -rf base$os/tungsten
   # docker build  -t="cbase/$os" base$os | grep Error:
