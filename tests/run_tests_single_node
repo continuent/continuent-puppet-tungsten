@@ -6,7 +6,7 @@ WORKGIT=$1
 BUILDDIR=$2
 RPMPREFIX=$3
 DEBPREFIX=$4
-OS_LIST='centos5 centos6 squeeze ubuntu.10.04 ubuntu.12.04 ubuntu.14.04 wheezy oracle6'
+OS_LIST='centos5 centos6 ubuntu.12.04 ubuntu.14.04 wheezy oracle6'
 
 if [ -n "$5" ]
 then
