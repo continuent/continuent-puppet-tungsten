@@ -26,6 +26,8 @@ This module helps install [Continuent Tungsten](https://www.continuent.com) Data
 
 It may work on other platform but it has not been tested against them
 
+* SLES12 is supported for pre-requisites only, MySQL installs do not work
+
 
 ## Supported MySQL Builds
 
