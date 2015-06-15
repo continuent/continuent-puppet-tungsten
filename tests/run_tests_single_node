@@ -19,7 +19,7 @@ rm logs2/*
 
 chmod +x get_modules
 chmod +x run_tests_single_node_os
-./get_modules $BUILDDIR $WORKGIT $RPMPREFIX  
+./get_modules $BUILDDIR $WORKGIT $RPMPREFIX
 
 
 
@@ -28,26 +28,6 @@ for os in $OS_LIST
 do
 
   ./run_tests_single_node_os $os $BUILDDIR &> logs2/$os.log &
-  # echo "Operating System =  $os"
-  # rm -rf base$os/tungsten
-  # docker build  -t="cbase/$os" base$os | grep Error:
-  # for f in puppet/*.pp
-  # do
-  #  echo " ... $f"
-  #  basedir=$(dirname $f)
-  #  pwd=$(pwd)
-  #  filename=$(basename $f)
-  #  docker run --rm=true -v $BUILDDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename --modulepath=/mnt/modules &> logs/$os.$filename.log
-  #  c=$(cat logs/$os.$filename.log|grep Error|grep -v Unsupported|wc -l)
-  #  if [ $c -ne 0 ]
-  #  then
-  #     RC=2
-  #     cat logs/$os.$filename.log|grep Error|grep -v Unsupported
-  #  #else
-  #  #    cat logs/$os.$filename.log|grep supported
-  #  fi
-  # done
-
 
 done
 

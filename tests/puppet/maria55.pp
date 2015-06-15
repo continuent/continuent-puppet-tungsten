@@ -1,1 +1,2 @@
-class { 'tungsten': installSSHKeys => true, installMysql=> true, mySQLBuild=>'mariadb', mySQLVersion=>'5.5', disableFirewall=> false, skipHostConfig=> true ,vmSwappiness	=> 60  }
+class { 'tungsten': installSSHKeys => true, installMysql=> true, mySQLBuild=>'mariadb', mySQLVersion=>'5.5',
+        disableFirewall=> false, skipHostConfig=> true ,docker => true    }

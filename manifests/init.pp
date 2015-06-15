@@ -24,6 +24,9 @@ class tungsten (
 
 		$disableSELinux                 = true,
 
+		#Some kernel parameters can't be altered in docker
+		$docker													= false,
+
 		#Tungsten needs swappiness set to 10 but can be overridden
 		$vmSwappiness										= 10,
 
@@ -109,7 +112,8 @@ class tungsten (
     installNTP                  => $installNTP,
     disableFirewall             => $disableFirewall,
     skipHostConfig              => $skipHostConfig,
-		vmSwappiness								=> $vmSwappiness
+		vmSwappiness								=> $vmSwappiness,
+		docker											=> docker
   } ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,
