@@ -1,11 +1,11 @@
 
 BUILDDIR=$1
 WORKGIT=$2
-RPMPREFIX=$3
-DEBPREFIX=$4
+RPMLOC=$3
 
 rm -rf $BUILDDIR/puppet/modules/*
 puppet module install continuent-tungsten --modulepath=$BUILDDIR/puppet/modules/
+puppet module install fiddyspence/sysctl --modulepath=$BUILDDIR/puppet/modules/
 rm -rf $BUILDDIR/puppet/modules/tungsten
 
 if [ $WORKGIT == 'local' ]
@@ -17,10 +17,7 @@ else
 fi
 mkdir $BUILDDIR/puppet/rpm/
 
-#wget -q ${DEBPREFIX}_all.deb -O $BUILDDIR/puppet/rpm/ct.deb
-#wget -q ${RPMPREFIX}.noarch.rpm -O $BUILDDIR/puppet/rpm/ct.rpm
-#wget -q ${RPMPREFIX}.RHEL5.noarch.rpm -O $BUILDDIR/puppet/rpm/ct.rhel5.rpm
 
-cp ${DEBPREFIX}_all.deb  $BUILDDIR/puppet/rpm/ct.deb
-cp ${RPMPREFIX}.noarch.rpm  $BUILDDIR/puppet/rpm/ct.rpm
-cp ${RPMPREFIX}.RHEL5.noarch.rpm  $BUILDDIR/puppet/rpm/ct.rhel5.rpm
+cp ${RPMLOC}/latest.deb  $BUILDDIR/puppet/rpm/ct.deb
+cp ${RPMLOC}/latest.noarch.rpm $BUILDDIR/puppet/rpm/ct.rpm
+cp ${RPMLOC}/latest.RHEL5.noarch.rpm $BUILDDIR/puppet/rpm/ct.rhel5.rpm

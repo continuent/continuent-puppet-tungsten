@@ -24,6 +24,9 @@ class tungsten (
 
 		$disableSELinux                 = true,
 
+		#Tungsten needs swappiness set to 10 but can be overridden
+		$vmSwappiness										= 10,
+
 		# This may be set to 'nightly', 'stable' or 'true
 		# If set to 'true', the stable repository will be used
 		$replicatorRepo									= false,
@@ -41,7 +44,7 @@ class tungsten (
 			#Which Repo to install percona,mysql or mariadb
 			$mySQLBuild									   = 'percona',
 			#Version to install based on repo 5.5, 5.6, 5.7, 10.0
-			$mySQLVersion									 = '5.5',
+			$mySQLVersion									 = '5.6',
 			#Set the my.cnf autoinc and autoinc offset based on clusterData
 			$mySQLSetAutoIncrement				= false,
 			$installXtrabackup						 = true,
@@ -105,7 +108,8 @@ class tungsten (
     installJava                 => $installJava,
     installNTP                  => $installNTP,
     disableFirewall             => $disableFirewall,
-    skipHostConfig              => $skipHostConfig
+    skipHostConfig              => $skipHostConfig,
+		vmSwappiness								=> $vmSwappiness
   } ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,

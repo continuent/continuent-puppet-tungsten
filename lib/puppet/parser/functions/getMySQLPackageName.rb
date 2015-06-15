@@ -37,7 +37,7 @@ module Puppet::Parser::Functions
         packageServer="Percona-Server-server-#{version}"
         packageClient="Percona-Server-client-#{version}"
       else
-        if (version !~ /(?i:5.5|5.6)/)
+        if (version !~ /(?i:5.6)/)
           raise Puppet::ParseError, "Unsupported Version (#{version}) for the Percona Repo on #{os}"
         end
         packageServer="percona-server-server-#{version}"

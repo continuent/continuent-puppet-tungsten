@@ -37,8 +37,15 @@ class tungsten::prereq (
 
   #If this is set to true no setting of hostname will be done
   $skipHostConfig                 = false,
+	$vmSwappiness										= 10
 ) inherits tungsten::params {
-  include tungsten::apt
+	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+		class { 'apt':
+			update => {
+			   frequency => 'always',
+			},
+	  }  -> Package <| |>
+	}
 
 	package {'continuent-ruby': ensure => present, name => "ruby", }
 	if ! defined(Package['continuent-wget']) {
@@ -99,6 +106,11 @@ class tungsten::prereq (
 	class{ "tungsten::prereq::mysqlj":
 		enabled => $installMysqlj,
     location => $mysqljLocation
+	} ->
+	sysctl { 'vm.swappiness':
+		ensure => present,
+		permanent => yes,
+		value => $vmSwappiness,
 	} ->
 	anchor { "tungsten::prereq::end":
 		require => [

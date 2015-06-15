@@ -33,6 +33,7 @@ class tungsten::tungstenmysql::params (
     'auto_increment_increment' => 1,
     'auto_increment_offset' => 1,
     'innodb_file_per_table' => true,
+    'innodb_log_file_size' => '48m',
     'datadir'=> '/var/lib/mysql'
     }
   $baseOverrideOptionsMysqldSafe =  {}
