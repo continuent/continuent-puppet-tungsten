@@ -140,4 +140,8 @@ class tungsten::tungsten (
 	if defined(Anchor["mysql::server::end"]) {
     Anchor["mysql::server::end"] -> Class["tungsten::tungsten"]
   }
+
+	if defined(Anchor["tungsten::tungstenhadoop::end"]) {
+	  Anchor["tungsten::tungstenhadoop::end"] -> Class["tungsten::tungsten"]
+	}
 }
