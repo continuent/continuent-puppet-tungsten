@@ -143,6 +143,14 @@ class tungsten::prereq::unix_user(
 		mode	 => 700,
 		require => User["tungsten::systemUser"],
 	}
+	
+	file { "/opt/replicator/service_logs":
+		ensure => "directory",
+		owner	=> $systemUserName,
+		group	=> $systemUserName,
+		mode	 => 700,
+		require => User["tungsten::systemUser"]
+	}
 
 	file { "/etc/tungsten":
 		ensure => "directory",
