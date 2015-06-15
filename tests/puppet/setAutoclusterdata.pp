@@ -6,4 +6,6 @@ $clusterData = {
       },
     }
 
-class { 'tungsten': installSSHKeys => true, installMysql=> true, disableFirewall=> false, skipHostConfig=> true ,mySQLSetAutoIncrement=>true,clusterData=>$clusterData,vmSwappiness	=> 60   }
+class { 'tungsten': installSSHKeys => true,
+        installMysql=> true,
+        disableFirewall=> false, skipHostConfig=> true ,mySQLSetAutoIncrement=>true,clusterData=>$clusterData,docker => true     }

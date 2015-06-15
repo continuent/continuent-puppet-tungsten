@@ -37,7 +37,8 @@ class tungsten::prereq (
 
   #If this is set to true no setting of hostname will be done
   $skipHostConfig                 = false,
-	$vmSwappiness										= 10
+	$vmSwappiness										= 10,
+	$docker													= false
 ) inherits tungsten::params {
 	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		class { 'apt':
@@ -107,11 +108,10 @@ class tungsten::prereq (
 		enabled => $installMysqlj,
     location => $mysqljLocation
 	} ->
-	sysctl { 'vm.swappiness':
-		ensure => present,
-		permanent => yes,
-		value => $vmSwappiness,
-	} ->
+	class {"tungsten::prereq::sysctl":
+		 vmSwappiness => $vmSwappiness,
+		 docker 			=> $docker
+	}->
 	anchor { "tungsten::prereq::end":
 		require => [
 			Class["tungsten::prereq::unix_user"],
