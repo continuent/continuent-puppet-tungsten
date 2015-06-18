@@ -1,6 +1,6 @@
 # == Class: tungsten See README.md for documentation.
 #
-# Copyright (C) 2014 Continuent, Inc.
+# Copyright (C) 2015 VMware, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License.  You may obtain
@@ -53,6 +53,9 @@ class tungsten (
 			$installXtrabackup						 = true,
 			
 		$installHadoop                  = false,
+		
+  	$installVertica                 = false,
+  	$verticaDatabaseName            = false,
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -101,7 +104,7 @@ class tungsten (
 			clusterData 							=> $clusterData,
 			mySQLSetAutoIncrement			=> $mySQLSetAutoIncrement,
 			installXtrabackup				  => $installXtrabackup
-	}  ->
+	} ->
   class{ "tungsten::prereq":
     nodeHostName                => $nodeHostName,
     replicatorRepo              => $replicatorRepo,
@@ -117,9 +120,28 @@ class tungsten (
 		vmSwappiness								=> $vmSwappiness,
 		docker											=> docker
   } ->
-  class { "tungsten::tungstenhadoop":
-    distribution                => $installHadoop
-  } ->
+  anchor{ "tungsten::prereq": }
+  
+  anchor{ "tungsten::db": }
+  
+  if $installHadoop != false {
+    Anchor["tungsten::prereq"] ->
+    class { "tungsten::tungstenhadoop":
+      distribution                => $installHadoop
+    } ->
+    Anchor["tungsten::db"]
+  }
+  
+  if $installVertica != false {
+    class { "tungsten::tungstenvertica":
+      package                     => $installVertica,
+      databaseName                => $verticaDatabaseName,
+      password                    => $replicationPassword,
+    } ->
+    Anchor["tungsten::db"]
+  }
+  
+  Anchor["tungsten::db"] ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,
 		installReplicatorSoftware 	=> $installReplicatorSoftware,
