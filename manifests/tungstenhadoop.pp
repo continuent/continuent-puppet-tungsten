@@ -25,6 +25,6 @@ class tungsten::tungstenhadoop (
     class{ "tungsten::tungstenhadoop::cdh5": } ->
     Anchor["tungsten::tungstenhadoop::end"]
   } elsif $distribution != false {
-    fail("The ${module_name} module is not able to install ${distribution}.")
+    fail("The ${module_name} module is not able to install the ${distribution} Hadoop distribution.")
   }
 }

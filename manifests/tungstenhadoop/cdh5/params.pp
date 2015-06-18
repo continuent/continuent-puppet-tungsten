@@ -16,8 +16,8 @@
 
 class tungsten::tungstenhadoop::cdh5::params (
 ) {
-  if $architecture != "x86_64" {
-    fail("The ${module_name} module is not able to install ${architecture}.")
+  unless $architecture =~ /(?i:x86_64|amd64)/ {
+    fail("The ${module_name} module is not able to install Hadoop on the ${architecture} architecture.")
   }
   
 	if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
@@ -28,8 +28,8 @@ class tungsten::tungstenhadoop::cdh5::params (
     }
 	  
 	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
-    fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")
+    fail("The ${module_name} module is not able to install Cloudera 5 on an ${::operatingsystem} based system.")
 	} else {
-		fail("The ${module_name} module is not supported on an ${::operatingsystem} based system.")
+		fail("The ${module_name} module is not able to install Cloudera 5 on an ${::operatingsystem} based system.")
 	}
 }
