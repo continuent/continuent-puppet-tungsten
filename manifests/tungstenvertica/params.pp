@@ -1,6 +1,6 @@
-# == Class: tungsten::tungstenhadoop See README.md for documentation.
+# == Class: tungsten::tungstenvertica::params See README.md for documentation.
 #
-# Copyright (C) 2015 VMware, Inc.
+# Copyright (C) 2014 Continuent, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License.  You may obtain
@@ -14,17 +14,15 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-class tungsten::tungstenhadoop (
-	$distribution = false
+class tungsten::tungstenvertica::params (
 ) {
-  anchor{"tungsten::tungstenhadoop::end": }
-
-  if $distribution == "cdh5" {
-    include tungsten::tungstenhadoop::tools
-
-    class{ "tungsten::tungstenhadoop::cdh5": } ->
-    Anchor["tungsten::tungstenhadoop::end"]
-  } elsif $distribution != false {
-    fail("The ${module_name} module is not able to install the ${distribution} Hadoop distribution.")
-  }
+	if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|SLES)/) {
+    # Do nothing
+    $provider = "rpm"
+	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
+	  # Do nothing
+	  $provider = "dpkg"
+	} else {
+		fail("Installing Vertica in the ${module_name} module is not supported on an ${::operatingsystem} based system.")
+	}
 }

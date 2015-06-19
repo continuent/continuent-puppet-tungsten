@@ -1,0 +1,7 @@
+#!/bin/bash
+set -ex
+
+/opt/vertica/bin/admintools -t create_db \
+--hosts=<%=scope.lookupvar('::fqdn')%> \
+--database=<%=scope.lookupvar('::tungsten::tungstenvertica::databaseName')%> \
+--password=<%=scope.lookupvar('::tungsten::tungstenvertica::password')%>
