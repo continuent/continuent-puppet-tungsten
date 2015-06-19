@@ -16,7 +16,7 @@
 
 class tungsten::tungstenvertica::params (
 ) {
-	if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon|SLES)/) {
+	if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|SLES)/) {
     # Do nothing
     $provider = "rpm"
 	} elsif ($operatingsystem =~ /(?i:debian|ubuntu)/) {
