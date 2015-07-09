@@ -11,11 +11,20 @@ PATH=$PATH:$HOME/bin
 
 export PATH
 
-# Begin Tungsten Environment
+# Begin Tungsten Environment for /opt/continuent
 # Include the Tungsten variables
 # Anything in this section may be changed during the next operation
 if [ -f "/opt/continuent/share/env.sh" ]; then
 . "/opt/continuent/share/env.sh"
 fi
-# End Tungsten Environment
+# End Tungsten Environment for /opt/continuent
+
+# Begin Tungsten Environment for /opt/replicator
+# Include the Tungsten variables
+# Anything in this section may be changed during the next operation
+if [ -f "/opt/replicator/share/env.sh" ]; then
+. "/opt/replicator/share/env.sh"
+fi
+# End Tungsten Environment for /opt/replicator
+
 PS1="\u@\h:\w  $ "
