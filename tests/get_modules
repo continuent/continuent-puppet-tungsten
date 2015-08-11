@@ -5,7 +5,7 @@ RPMLOC=$3
 
 rm -rf $BUILDDIR/puppet/modules/*
 puppet module install continuent-tungsten --modulepath=$BUILDDIR/puppet/modules/
-puppet module install fiddyspence/sysctl --modulepath=$BUILDDIR/puppet/modules/
+#puppet module install fiddyspence/sysctl --modulepath=$BUILDDIR/puppet/modules/
 rm -rf $BUILDDIR/puppet/modules/tungsten
 
 if [ $WORKGIT == 'local' ]
