@@ -13,6 +13,7 @@ do
   basedir=$(dirname $f)
   pwd=$(pwd)
   filename=$(basename $f)
+  echo "Starting $os:$filename"
   docker run --rm=true -v $BUILDDIR/$basedir:/mnt cbase/$os puppet apply /mnt/$filename --modulepath=/mnt/modules &> logs/$os.$filename.log
   c=$(cat logs/$os.$filename.log|grep Error|grep -v Unsupported|wc -l)
   if [ $c -ne 0 ]
