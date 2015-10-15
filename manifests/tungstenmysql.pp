@@ -27,6 +27,7 @@ class tungsten::tungstenmysql (
 	$clusterData												= nil,
 	$mySQLSetAutoIncrement							= false,
 	$installXtrabackup								  = true,
+	$xtraBackupPackage 									= 'auto'
 ) inherits tungsten::tungstenmysql::params  {
 
   if $installMysql == true {
@@ -62,7 +63,8 @@ class tungsten::tungstenmysql (
     } ->
 		class { 'tungsten::tungstenmysql::xtrabackup' :
 							installXtrabackup => $installXtrabackup ,
-							mySQLBuild				 => $mySQLBuild }
+							mySQLBuild				 => $mySQLBuild,
+						  xtraBackupPackage  => 'auto' }
 
     User <| title == "tungsten::systemUser" |> { groups +> "mysql" }
   }

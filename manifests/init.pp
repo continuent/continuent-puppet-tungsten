@@ -51,9 +51,12 @@ class tungsten (
 			#Set the my.cnf autoinc and autoinc offset based on clusterData
 			$mySQLSetAutoIncrement				= false,
 			$installXtrabackup						 = true,
-			
+			#If wanted the source will be autodetected either from a repo or rpm/deb
+			#download. if set to a valid location it will be installed from there
+			$xtraBackupPackage 						= 'auto'
+
 		$installHadoop                  = false,
-		
+
   	$installVertica                 = false,
   	$verticaDatabaseName            = false,
 
@@ -103,7 +106,8 @@ class tungsten (
 			mySQLVersion				   		=> $mySQLVersion,
 			clusterData 							=> $clusterData,
 			mySQLSetAutoIncrement			=> $mySQLSetAutoIncrement,
-			installXtrabackup				  => $installXtrabackup
+			installXtrabackup				  => $installXtrabackup,
+			xtraBackupPackage 				=> $xtraBackupPackage
 	} ->
   class{ "tungsten::prereq":
     nodeHostName                => $nodeHostName,
@@ -121,9 +125,9 @@ class tungsten (
 		docker											=> docker
   } ->
   anchor{ "tungsten::prereq": }
-  
+
   anchor{ "tungsten::db": }
-  
+
   if $installHadoop != false {
     Anchor["tungsten::prereq"] ->
     class { "tungsten::tungstenhadoop":
@@ -131,7 +135,7 @@ class tungsten (
     } ->
     Anchor["tungsten::db"]
   }
-  
+
   if $installVertica != false {
     class { "tungsten::tungstenvertica":
       package                     => $installVertica,
@@ -140,7 +144,7 @@ class tungsten (
     } ->
     Anchor["tungsten::db"]
   }
-  
+
   Anchor["tungsten::db"] ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,

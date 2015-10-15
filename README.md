@@ -225,6 +225,22 @@ The auto_increment_increment and auto_increment_offset can be determined automat
 
 ```
 
+## Installing XtraBackup
+
+By default if selected the module will determine were to install it from automatically. If installing Percona MySQL it will install it from the Percona repo otherwise it will download the required RPM or DEB from the Percona Website.
+
+If required it can be download or use a rpm/deb from a private location
+
+```
+
+  class { 'tungsten':
+      installSSHKeys => true,
+      installMysql=> true,
+      xtraBackupPackage=>'/mnt/nfs/xtrabackup-x.x.x.rpm' or 'http://192.168.2.300/xtrabackup-x.x.x.rpm',
+      clusterData=>$clusterData }
+
+```
+
 ## Integration with custom MySQL classes
 
 The continuent/tungsten module is compatible with the puppetlabs/mysql module. See examples above on how to use it. If you have an existing method for configuring MySQL, it is simple to update it so the continuent/tungsten module recognizes it.
