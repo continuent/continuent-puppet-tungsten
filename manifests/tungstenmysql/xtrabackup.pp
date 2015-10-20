@@ -34,7 +34,7 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
                   'Debian': {$provider='dpkg'}
                 }
                 package { "percona-xtrabackup":
-                   provider => $provider
+                   provider => $provider,
                    ensure => present,
                    source => $download,
                  }
