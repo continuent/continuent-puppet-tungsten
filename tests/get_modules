@@ -20,3 +20,6 @@ mkdir $BUILDDIR/puppet/rpm/
 cp ${RPMLOC}/latest.deb  $BUILDDIR/puppet/rpm/ct.deb
 cp ${RPMLOC}/latest.noarch.rpm $BUILDDIR/puppet/rpm/ct.rpm
 cp ${RPMLOC}/latest.RHEL5.noarch.rpm $BUILDDIR/puppet/rpm/ct.rhel5.rpm
+
+mkdir $BUILDDIR/puppet/xtrabackup
+cp /mnt/mysql/percona-xtrabackup* $BUILDDIR/puppet/xtrabackup
