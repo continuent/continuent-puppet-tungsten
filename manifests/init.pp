@@ -87,7 +87,15 @@ class tungsten (
 			$provisionDonor								= "autodetect",
 
     #If this is set to true no setting of hostname will be done
-    $skipHostConfig                 = false
+    $skipHostConfig                 = false,
+
+		#Takes 3 options
+		#       true   = install via usual gem route
+		#       false  = dont install any gems
+		#       local  = install from local gem location ($localGemLocation)
+		$installGems										= true,
+		$localGemLocation								= false
+
 ) inherits tungsten::params {
 
 
@@ -122,7 +130,9 @@ class tungsten (
     disableFirewall             => $disableFirewall,
     skipHostConfig              => $skipHostConfig,
 		vmSwappiness								=> $vmSwappiness,
-		docker											=> docker
+		docker											=> docker,
+		installGems									=> $installGems,
+		localGemLocation						=> $localGemLocation
   } ->
   anchor{ "tungsten::prereq": }
 
