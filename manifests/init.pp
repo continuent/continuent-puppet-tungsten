@@ -53,7 +53,7 @@ class tungsten (
 			$installXtrabackup						 = true,
 			#If wanted the source will be autodetected either from a repo or rpm/deb
 			#download. if set to a valid location it will be installed from there
-			$xtraBackupPackage 						= 'auto'
+			$xtraBackupPackage 						= 'auto',
 
 		$installHadoop                  = false,
 

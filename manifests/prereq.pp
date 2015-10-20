@@ -51,6 +51,14 @@ class tungsten::prereq (
 	  }  -> Package <| |>
 	}
 
+	define install_local_gems {
+
+		package { $name:
+			provider => "gem",
+			source   => "$installGemLocation/$name",
+	 }
+	}
+
 	package {'continuent-ruby': ensure => present, name => "ruby", }
 	if ! defined(Package['continuent-wget']) {
 			package {'continuent-wget': ensure => present, name => "wget", }
@@ -89,13 +97,7 @@ class tungsten::prereq (
 		if $localGemLocation == false {
 			fail "If local install specified for gem a installGemLocation=> must be specified"
 		}
-		define install_local_gems {
 
-			package { $name:
-				provider => "gem",
-				source   => "$installGemLocation/$name",
-		 }
-    }
 			$localGemsToInstall=[
 				"zip-2.0.2.gem",
 				"xhr-ifconfig-1.2.3.gem",
