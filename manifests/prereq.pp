@@ -113,7 +113,7 @@ class tungsten::prereq (
 				"json_pure-1.8.2.gem",
 				"continuent-monitors-nagios-0.7.0.gem"]
 
-			install_local_gems { $localGemsToInstall : $loc=>$localGemLocation }
+			install_local_gems { $localGemsToInstall : loc=>$localGemLocation }
 
 	}
 
