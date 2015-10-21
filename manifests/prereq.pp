@@ -51,7 +51,7 @@ class tungsten::prereq (
 	  }  -> Package <| |>
 	}
 
-	define install_local_gems { $loc  = false
+	define install_local_gems  ( $loc  = false ) {
 
 		if $loc == false {
 			fail "install local gems failed as it was not passed a location"
