@@ -113,6 +113,11 @@ class tungsten::prereq (
 				"json_pure-1.8.2.gem",
 				"continuent-monitors-nagios-0.7.0.gem"]
 
+			#If puppet is installing remotely if defaults to --no-ri --no-rdoc
+			#for local gems it doesn't do this will set it
+			file { "~/.gemrc" :
+				content => "gem: --no-rdoc --no-ri"
+			} ->
 			install_local_gems { $localGemsToInstall : loc=>$localGemLocation }
 
 	}
