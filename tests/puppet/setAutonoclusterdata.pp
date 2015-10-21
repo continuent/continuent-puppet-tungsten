@@ -1,3 +1,5 @@
+
+
 if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
   case $::lsbdistcodename {
     'squeeze':   { $download = "percona-xtrabackup_2.2.8-5059-1.squeeze_amd64.deb" }
@@ -13,4 +15,4 @@ if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
    }
 }
 class { 'tungsten': installSSHKeys => true, installMysql=> true, disableFirewall=> false, skipHostConfig=> true ,mySQLSetAutoIncrement=>true ,
-  docker => true  ,    xtraBackupPackage=>"/mnt/xtrabackup/$download"  ,  }
+  docker => true  ,    xtraBackupPackage=>"/mnt/xtrabackup/$download"    }

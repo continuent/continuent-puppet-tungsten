@@ -14,6 +14,6 @@ if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 }
 class { 'tungsten': installSSHKeys => true, installMysql=> true,
       disableFirewall=> false, skipHostConfig=> true,docker => true ,
-      xtraBackupPackage=>"/mnt/xtrabackup/$download"  ,
+      xtraBackupPackage=> "/mnt/xtrabackup/$download"  ,
       installGems										=> 'local',
   		localGemLocation							=> '/mnt/gem/' }
