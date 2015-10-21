@@ -51,11 +51,14 @@ class tungsten::prereq (
 	  }  -> Package <| |>
 	}
 
-	define install_local_gems {
+	define install_local_gems { $loc  = false
 
+		if $loc == false {
+			fail "install local gems failed as it was not passed a location"
+		}
 		package { $name:
 			provider => "gem",
-			source   => "$installGemLocation/$name",
+			source   => "$loc/$name",
 	 }
 	}
 
@@ -110,7 +113,7 @@ class tungsten::prereq (
 				"json_pure-1.8.2.gem",
 				"continuent-monitors-nagios-0.7.0.gem"]
 
-			install_local_gems { $localGemsToInstall : }
+			install_local_gems { $localGemsToInstall : $loc=>$localGemLocation }
 
 	}
 
