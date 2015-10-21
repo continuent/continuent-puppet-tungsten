@@ -9,4 +9,4 @@ $clusterData = {
 class { 'tungsten': installSSHKeys => true,
         installMysql=> true,
         disableFirewall=> false, skipHostConfig=> true ,mySQLSetAutoIncrement=>true,clusterData=>$clusterData,docker => true,
-        xtraBackupPackage=>$download    }
+          xtraBackupPackage=>"/mnt/xtrabackup/$download"  ,d    }

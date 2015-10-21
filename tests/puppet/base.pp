@@ -15,4 +15,4 @@
 
 class { 'tungsten': installSSHKeys => true, installMysql=> true,
       disableFirewall=> false, skipHostConfig=> true,docker => true ,
-      xtraBackupPackage=>$download   }
+        xtraBackupPackage=>"/mnt/xtrabackup/$download"  ,   }

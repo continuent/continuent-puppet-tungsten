@@ -13,4 +13,4 @@ if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
    }
 }
 class { 'tungsten': installSSHKeys => true, installMysql=> true, mySQLBuild=>'mariadb', mySQLVersion=>'5.5',
-        disableFirewall=> false, skipHostConfig=> true ,docker => true ,  xtraBackupPackage=>$download     }
+        disableFirewall=> false, skipHostConfig=> true ,docker => true ,    xtraBackupPackage=>"/mnt/xtrabackup/$download"  ,    }

@@ -13,4 +13,4 @@ if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
    }
 }
 class { 'tungsten': installSSHKeys => true, installMysql=> true, disableFirewall=> false, skipHostConfig=> true ,mySQLSetAutoIncrement=>true ,
-  docker => true  ,  xtraBackupPackage=>$download   }
+  docker => true  ,    xtraBackupPackage=>"/mnt/xtrabackup/$download"  ,  }
