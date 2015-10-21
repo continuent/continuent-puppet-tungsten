@@ -243,7 +243,7 @@ If required it can be download or use a rpm/deb from a private location
 
 ## Installing with local Ruby gems
 
-By default the gems will be installed from www.rubygems.org. If this is blocked the gems can be installed from a local directory
+By default the gems will be installed from www.rubygems.org. If this is blocked the gems can be installed from a local directory. Copies of the gems required can be found in the tests/local_gems directory in github.
 
 ```
 class { 'tungsten': installSSHKeys => true, installMysql=> true,
