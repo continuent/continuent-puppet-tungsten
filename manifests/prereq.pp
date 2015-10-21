@@ -105,7 +105,7 @@ class tungsten::prereq (
 				"zip-2.0.2.gem",
 				"xhr-ifconfig-1.2.3.gem",
 				"open4-1.3.4.gem",
-				"net-ssh-3.0.1.gem",
+				"net-ssh-2.9.2.gem",
 				"net-scp-1.2.1.gem",
 				"escape-0.0.4.gem",
 				"continuent-tools-core-0.11.0.gem",
