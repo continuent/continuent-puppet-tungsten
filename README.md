@@ -241,6 +241,34 @@ If required it can be download or use a rpm/deb from a private location
 
 ```
 
+## Installing with local Ruby gems
+
+By default the gems will be installed from www.rubygems.org. If this is blocked the gems can be installed from a local directory
+
+```
+class { 'tungsten': installSSHKeys => true, installMysql=> true,
+      disableFirewall=> false, skipHostConfig=> true,docker => true ,
+      xtraBackupPackage=>'/mnt/xtrabackup/percona-xtrabackup-2.2.12-1.el6.x86_64.rpm'  ,
+      installGems										=> 'local',
+  		localGemLocation							=> '/mnt/gem/' }
+
+```
+
+The following gems need to be in the local file system specified in localGemLocation=>
+
+```
+zip-2.0.2.gem
+xhr-ifconfig-1.2.3.gem
+open4-1.3.4.gem
+net-ssh-2.9.2.gem
+net-scp-1.2.1.gem
+escape-0.0.4.gem
+continuent-tools-core-0.11.0.gem
+continuent-tools-monitoring-0.7.0.gem
+json_pure-1.8.2.gem
+continuent-monitors-nagios-0.7.0.gem
+```
+
 ## Integration with custom MySQL classes
 
 The continuent/tungsten module is compatible with the puppetlabs/mysql module. See examples above on how to use it. If you have an existing method for configuring MySQL, it is simple to update it so the continuent/tungsten module recognizes it.
