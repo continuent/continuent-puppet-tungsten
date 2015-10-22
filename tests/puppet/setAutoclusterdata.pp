@@ -7,9 +7,9 @@ if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
     'trusty':    { $download = "percona-xtrabackup_2.2.8-5059-1.trusty_amd64.deb" }
   }
 } else {
- case $release {
-   6:          { $download = "percona-xtrabackup-2.2.8-5059.el6.x86_64.rpm" }
-   7:          { $download = "percona-xtrabackup-2.2.8-5059.el7.x86_64.rpm"  }
+ case $::operatingsystemmajrelease {
+   6:          { $download = "percona-xtrabackup-2.2.12-1.el6.x86_64.rpm" }
+   7:          { $download = "percona-xtrabackup-2.2.12-1.el7.x86_64.rpm"  }
    }
 }
 
