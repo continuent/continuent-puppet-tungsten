@@ -37,6 +37,11 @@ It may work on other platform but it has not been tested against them
 
 Yum and Apt repositories will be installed from these builds and packages installed from them based on the mySQLBuild and mySQLVerson parameters. By default Percona 5.5 will be installed if no values are provided.
 
+## Supported Oracle Versions
+
+- Oracle 11g
+- Oracle 12c (Non pluggable database)
+
 ## Examples
 
 ### Install the module into your module directory
@@ -267,6 +272,30 @@ continuent-tools-core-0.11.0.gem
 continuent-tools-monitoring-0.7.0.gem
 json_pure-1.8.2.gem
 continuent-monitors-nagios-0.7.0.gem
+```
+
+
+## Installing Oracle
+
+```
+class { 'tungsten': installSSHKeys => true, installOracle=> true,
+      oracleVersion=>12, oracleBinaries=>/vagrant/downloads }
+
+```
+
+The oracle install files need to exist in the oracleBinaries location, they need to be downloaded seperatly from Oracle Technet
+
+For Oracle 11g the following 2 files are needed
+```
+linux.x64_11gR2_database_1of2.zip
+linux.x64_11gR2_database_2of2.zip
+```
+
+For 12c the following are needed
+
+```
+linuxamd64_12c_database_1of2.zip
+linuxamd64_12c_database_2of2.zip
 ```
 
 ## Integration with custom MySQL classes

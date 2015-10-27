@@ -60,6 +60,10 @@ class tungsten (
   	$installVertica                 = false,
   	$verticaDatabaseName            = false,
 
+		$installOracle								= false,
+		   $oracleVersion 						= 12,
+			 $oracleBinaries						= '/vagrant/downloads',
+
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
 	  # to be created
@@ -155,6 +159,14 @@ class tungsten (
     Anchor["tungsten::db"]
   }
 
+	if $installOracle != false {
+		class { "tungsten::tungstenoracle":
+			oracleVersion               => $oracleVersion,
+			oracleBinaries							=> $oracleBinaries
+		} ->
+		Anchor["tungsten::db"]
+	}
+
   Anchor["tungsten::db"] ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,
@@ -169,5 +181,6 @@ class tungsten (
 			applicationPort 					=> $applicationPort,
 		provision 									=> $provisionNode,
 			provisionDonor 						=> $provisionDonor,
+		installOracle								=> $installOracle,
 	}
 }

@@ -27,6 +27,7 @@ class tungsten::tungsten (
 		$repUser						            = tungsten,
 		$repPassword				            = secret,
 		$replicationLogDirectory	= false,
+	$installOracle										= false,
 
   # Set this to 'true' or the path of a continuent-tungsten package
 	# If set to 'true', the 'continuent-tungsten' will be installed from
@@ -47,7 +48,7 @@ class tungsten::tungsten (
 		class{ "tungsten::tungsten::ini": }->
 		anchor{ "tungsten::tungsten::ini": }
 
-    # Scheduling updates to existing installations must be done 
+    # Scheduling updates to existing installations must be done
     # before the clustering or replication software is installed.
     # If not, `tpm update` will be run twice during the initial
     # installation process.
@@ -102,6 +103,21 @@ class tungsten::tungsten (
 	} else {
 	  Anchor["tungsten::tungsten::ini"] ->
 		anchor{ "tungsten::tungsten::create-users": }
+	}
+
+	if $installOracle == true {
+		file { "/home/oracle/tungsten_create_users_oracle":
+      ensure => file,
+      owner => 'oracle',
+      mode => 700,
+      content => template('tungsten/tungsten_create_users_oracle.erb'),
+    } ~>
+		exec { "tungsten_create_users":
+			command => "/usr/bin/sudo -u oracle /home/oracle/tungsten_create_users_oracle",
+			require => Exec['start_oracle'],
+			refreshonly => true,
+		}
+
 	}
 
 	if $installClusterSoftware != false {
