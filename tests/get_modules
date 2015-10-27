@@ -25,4 +25,11 @@ mkdir $BUILDDIR/puppet/xtrabackup
 cp /mnt/mysql/percona-xtrabackup* $BUILDDIR/puppet/xtrabackup
 
 mkdir $BUILDDIR/puppet/gem
-cp local_gems/*  $BUILDDIR/puppet/gem 
+cp local_gems/*  $BUILDDIR/puppet/gem
+
+mkdir $BUILDDIR/puppet/oracle
+cp /mnt/oracle/linuxamd64_12c_database_1of2.zip $BUILDDIR/puppet/oracle
+cp /mnt/oracle/linuxamd64_12c_database_2of2.zip $BUILDDIR/puppet/oracle
+
+cp /mnt/oracle/linux.x64_11gR2_database_1of2.zip $BUILDDIR/puppet/oracle
+cp /mnt/oracle/linux.x64_11gR2_database_2of2.zip $BUILDDIR/puppet/oracle
