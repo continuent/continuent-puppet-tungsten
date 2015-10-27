@@ -28,3 +28,12 @@ fi
 # End Tungsten Environment for /opt/replicator
 
 PS1="\u@\h:\w  $ "
+
+<% if scope.lookupvar('::tungsten::installOracle') == true -%>
+#Oracle only settings
+
+export ORACLE_BASE=/app/oracle/local
+export ORACLE_HOME=/app/oracle/local/product/<%= scope.lookupvar('::tungsten::oracleVersion') %>/db_1
+export PATH=$PATH:$ORACLE_HOME/bin
+export ORACLE_SID=ORCL
+<% end -%>

@@ -63,6 +63,8 @@ class tungsten (
 		$installOracle								= false,
 		   $oracleVersion 						= 12,
 			 $oracleBinaries						= '/vagrant/downloads',
+			 $oracleTungstenTS					= 'tungsten_test',
+			 $oracleCreateTS						= true,
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file

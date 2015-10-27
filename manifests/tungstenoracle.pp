@@ -24,4 +24,5 @@ class tungsten::tungstenoracle (
       oracleVersion => $oracleVersion,
 			installFiles => $oracleBinaries
   	}
+
 }

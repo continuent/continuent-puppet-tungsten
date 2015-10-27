@@ -5,15 +5,22 @@ replication_password=<%= scope.lookupvar('::tungsten::tungsten::repPassword') %>
 application_user=<%= scope.lookupvar('::tungsten::tungsten::appUser') %>
 application_password=<%= scope.lookupvar('::tungsten::tungsten::appPassword')  %>
 root_home=<%= scope.lookupvar('::root_home') %>
+ts_name=<%= scope.lookupvar('::tungsten::oracleTungstenTS') %>
 
 
 source /home/oracle/.bash_profile
+
+<% if scope.lookupvar('::tungsten::oracleCreateTS') == true -%>
 sqlplus / as sysdba <<EOF
-create tablespace tungsten_test datafile '/app/oracle/data/tungsten_test.dbf' size 1000M extent management local autoallocate segment space management auto;
-create user $replication_user identified by "$replication_password" default tablespace tungsten_test;
-grant connect to tungsten;
-alter user tungsten quota unlimited on tungsten_test;
-grant create table to tungsten;
-grant create view to tungsten;
-grant execute on dbms_flashback to tungsten;
+create tablespace $ts_name datafile '/app/oracle/data/$ts_name.dbf' size 1000M extent management local autoallocate segment space management auto;
 EOF
+<% end -%>
+
+sqlplus / as sysdba <<EOF2
+create user $replication_user identified by "$replication_password" default tablespace $ts_name;
+grant connect to $replication_user ;
+alter user $replication_user  quota unlimited on $ts_name;
+grant create table to $replication_user ;
+grant create view to $replication_user ;
+grant execute on dbms_flashback to $replication_user ;
+EOF2
