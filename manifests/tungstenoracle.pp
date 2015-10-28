@@ -23,6 +23,11 @@ class tungsten::tungstenoracle (
     class { 'oracle' :
       oracleVersion => $oracleVersion,
 			installFiles => $oracleBinaries
-  	}
+  	}->
+		exec {"tungsten-oinstall":
+		  unless => "/bin/grep -q 'oinstall\\S*tungsten ' /etc/group",
+		  command => "/usr/sbin/usermod -aG oinstall tungsten",
+		  require => [User['tungsten'],Group['oinstall']]
+		}
 
 }

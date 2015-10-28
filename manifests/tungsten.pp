@@ -38,6 +38,13 @@ class tungsten::tungsten (
 		$appPassword								  	= secret,
 		$applicationPort						  	= 3306,
 
+	$installRedoReaderSoftware			= false,
+			$redoReaderUser 							= tungsten,
+			$redoReaderPassword	   				= secret,
+			$oracleSysPassword						= password,
+			$oracleSystemPassword				= password,
+			$oracleSID										= 'orcl',
+
 	# Run the `tungsten_provision_slave` script after installing Tungsten
 	$provision								      	= false,
 	  $provisionDonor						    	= "autodetect",
@@ -140,6 +147,14 @@ class tungsten::tungsten (
 	} else {
 	  Anchor["tungsten::tungsten::cluster"] ->
 		anchor{ "tungsten::tungsten::replicator": }
+	}
+
+	if $installRedoReaderSoftware != false {
+		Anchor["tungsten::tungsten::cluster"] ->
+		class{ "tungsten::tungsten::redoreader":
+			location => $installRedoReaderSoftware,
+		} ->
+		anchor{ "tungsten::tungsten::redoreader": }
 	}
 
 	if $provision == true {

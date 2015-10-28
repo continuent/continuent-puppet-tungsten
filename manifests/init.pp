@@ -79,6 +79,7 @@ class tungsten (
 			$replicationPassword					= secret,
 			$replicationLogDirectory		= false,
 
+
 		# Set this to 'true' or the path of a continuent-tungsten package
 		# If set to 'true', the 'continuent-tungsten' will be installed from
 		# configured repositories.
@@ -87,6 +88,16 @@ class tungsten (
 			$appUser											= app_user,
 			$appPassword									= secret,
 			$applicationPort							= 3306,
+
+		# Set this to 'true' or the path of a tungsten-replicator package
+		# If set to 'true', the 'tungsten-replicator' will be installed from
+		# configured repositories.
+		$installRedoReaderSoftware			= false,
+			$redoReaderUser 							= tungsten,
+			$redoReaderPassword	   				= secret,
+			$oracleSysPassword						= password,
+			$oracleSystemPassword						= password,
+			$oracleSID										= 'orcl',
 
 		# Run the `tungsten_provision_slave` script after installing Tungsten
 		$provisionNode									= false,
@@ -181,6 +192,12 @@ class tungsten (
 			appUser 									=> $appUser,
 			appPassword 							=> $appPassword,
 			applicationPort 					=> $applicationPort,
+		installRedoReaderSoftware			=> $installRedoReaderSoftware,
+			redoReaderUser 							=> $redoReaderUser,
+			redoReaderPassword	   			=> $redoReaderPassword,
+			oracleSysPassword						=> $oracleSysPassword,
+			oracleSystemPassword			=> $oracleSystemPassword,
+			oracleSID										=> $oracleSID,
 		provision 									=> $provisionNode,
 			provisionDonor 						=> $provisionDonor,
 		installOracle								=> $installOracle,
