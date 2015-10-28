@@ -65,6 +65,7 @@ class tungsten (
 			 $oracleBinaries						= '/vagrant/downloads',
 			 $oracleTungstenTS					= 'tungsten_test',
 			 $oracleCreateTS						= true,
+			 $oracleTStoReplicate				= 'tungsten',
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -89,14 +90,13 @@ class tungsten (
 			$appPassword									= secret,
 			$applicationPort							= 3306,
 
-		# Set this to 'true' or the path of a tungsten-replicator package
-		# If set to 'true', the 'tungsten-replicator' will be installed from
-		# configured repositories.
+		# Set this to 'true' or the path of a redo-reader package
+
 		$installRedoReaderSoftware			= false,
 			$redoReaderUser 							= tungsten,
 			$redoReaderPassword	   				= secret,
 			$oracleSysPassword						= password,
-			$oracleSystemPassword						= password,
+			$oracleSystemPassword					= password,
 			$oracleSID										= 'orcl',
 
 		# Run the `tungsten_provision_slave` script after installing Tungsten

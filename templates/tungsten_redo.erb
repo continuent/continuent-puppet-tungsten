@@ -1,0 +1,80 @@
+[defaults]
+user=tungsten
+home-directory=/opt/continuent
+<% if scope.lookupvar('::tungsten::tungsten::replicationLogDirectory') != false -%>
+thl-directory=<%= scope.lookupvar('::tungsten::tungsten::replicationLogDirectory') %>
+<% end -%>
+<% if scope.lookupvar('::tungsten::prereq::mysqlj::mysqljLocation') != false -%>
+mysql-connectorj-path=<%= scope.lookupvar('::tungsten::prereq::mysqlj::mysqljLocation') %>
+<% end -%>
+datasource-user=<%= scope.lookupvar('::tungsten::tungsten::repUser') %>
+datasource-password=<%= scope.lookupvar('::tungsten::tungsten::repPassword') %>
+application-port=<%= scope.lookupvar('::tungsten::tungsten::applicationPort') %>
+application-user=<%= scope.lookupvar('::tungsten::tungsten::appUser') %>
+application-password=<%= scope.lookupvar('::tungsten::tungsten::appPassword') %>
+skip-validation-check=MySQLPermissionsCheck
+skip-validation-check=HostsFileCheck
+start-and-report=true
+disable-security-controls=true
+
+<% if scope.lookupvar('::tungsten::tungsten::installReplicatorSoftware') != false -%>
+  <%- if scope.lookupvar('::tungsten::tungsten::installClusterSoftware') != false -%>
+[defaults.replicator]
+home-directory=/opt/replicator
+rmi-port=10002
+
+  <%- end -%>
+<% end -%>
+<%
+clusterHash = scope.lookupvar('::tungsten::tungsten::clusterData')
+
+# All sections that start with "defaults"
+scope.function_getTungstenINIDefaultsSections([clusterHash]).each do |key| -%>
+  <%- cluster = clusterHash[key] -%>
+[<%= key -%>]
+  <%- cluster.keys.sort.each do |c_key| -%>
+<%= c_key -%>=<%= cluster[c_key] %>
+  <%- end -%>
+
+<% end -%>
+<%
+# All sections that do not have a topology, or have topology = "clustered"
+scope.function_getTungstenINIClusteredSections([clusterHash]).each do |key| -%>
+  <%- cluster = clusterHash[key] -%>
+[<%= key -%>]
+  <%- cluster.keys.sort.each do |c_key| -%>
+<%= c_key -%>=<%= cluster[c_key] %>
+  <%- end -%>
+
+<% end -%>
+<%
+# All remaining sections
+scope.function_getTungstenININonClusteredSections([clusterHash]).each do |key| -%>
+  <%- cluster = clusterHash[key] -%>
+[<%= key -%>]
+  <%- cluster.keys.sort.each do |c_key| -%>
+<%= c_key -%>=<%= cluster[c_key] %>
+  <%- end -%>
+<% end -%>
+
+
+------
+[defaults]
+install-directory=/opt/continuent/
+start-and-report=true
+replication-user=tungsten
+replication-password=secret
+user=tungsten
+
+
+[oracle2oracle]
+master=db1
+members=db1,db2
+datasource-type=oracle
+datasource-oracle-service=orcl
+install-vmware-redo-reader=true
+oracle-redo-tablespace=tungsten_test
+oracle-sys-user-password=password
+oracle-system-user-password=password
+oracle-redo-replicate-tables=tungsten
+oracle-extractor-method=redo

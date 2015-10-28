@@ -52,7 +52,7 @@ class tungsten::tungsten (
 	include tungsten::prereq
 
 	if $clusterData != false {
-		class{ "tungsten::tungsten::ini": }->
+		class{ "tungsten::tungsten::ini": installRedoReaderSoftware=>$installRedoReaderSoftware }->
 		anchor{ "tungsten::tungsten::ini": }
 
     # Scheduling updates to existing installations must be done
