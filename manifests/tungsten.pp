@@ -44,6 +44,9 @@ class tungsten::tungsten (
 			$oracleSysPassword						= password,
 			$oracleSystemPassword				= password,
 			$oracleSID										= 'orcl',
+			$redoReaderTopology				= false,
+			$redoReaderMaster					= db1,
+			$readReaderSlave					= db2,
 
 	# Run the `tungsten_provision_slave` script after installing Tungsten
 	$provision								      	= false,
@@ -51,8 +54,8 @@ class tungsten::tungsten (
 ) inherits tungsten::params {
 	include tungsten::prereq
 
-	if $clusterData != false {
-		class{ "tungsten::tungsten::ini": installRedoReaderSoftware=>$installRedoReaderSoftware }->
+	if $clusterData != false or $redoReaderTopology != false {
+		class{ "tungsten::tungsten::ini": installRedoReaderSoftware=>$installRedoReaderSoftware, redoReaderTopology=>$redoReaderTopology }->
 		anchor{ "tungsten::tungsten::ini": }
 
     # Scheduling updates to existing installations must be done
@@ -119,7 +122,7 @@ class tungsten::tungsten (
       mode => 700,
       content => template('tungsten/tungsten_create_users_oracle.erb'),
     } ~>
-		exec { "tungsten_create_users":
+		exec { "tungsten_create_users_oracle":
 			command => "/usr/bin/sudo -u oracle /home/oracle/tungsten_create_users_oracle",
 			require => Exec['start_oracle'],
 			refreshonly => true,

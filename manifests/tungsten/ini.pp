@@ -14,12 +14,17 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-class tungsten::tungsten::ini ( $installRedoReaderSoftware=false
+class tungsten::tungsten::ini ( $installRedoReaderSoftware=false, $redoReaderTopology=false
 ) inherits tungsten::tungsten {
 	include tungsten::prereq
 
-	if $installRedoReaderSoftware==true {
-		$iniTemplate='tungsten_redo.erb'
+	if $installRedoReaderSoftware != false {
+
+		#Check the topoloy is valid
+		$validTopologies=['OracleToOracle','MySQLToOracle','OracleToMySQL']
+		validate_re($redoReaderTopology,$validTopologies)
+
+		$iniTemplate="tungsten_$redoReaderTopology.erb"
 	} else {
 		$iniTemplate='tungsten.erb'
 	}

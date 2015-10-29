@@ -50,8 +50,9 @@ class tungsten::tungsten::redoreader (
     		} ~>
     		exec { "install-redo-reader":
     		  path => ["/bin", "/usr/bin"],
-    		  command => "sudo -i -u $tungsten::prereq::systemUserName /opt/continuent/software/$basename/tools/tpm update --tty --log=/opt/replicator/service_logs/tungsten-configure.log > /opt/replicator/service_logs/rpm.output 2>&1",
+    		  command => "sudo -i -u $tungsten::prereq::systemUserName /opt/continuent/software/$basename/tools/tpm install --tty ",
     		  onlyif => "test -f /etc/tungsten/tungsten.ini",
+					logoutput => true,
       		refreshonly => true,
       		returns => [0, 1],
     		}
