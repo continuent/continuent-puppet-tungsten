@@ -5,6 +5,7 @@ RPMLOC=$3
 
 rm -rf $BUILDDIR/puppet/modules/*
 puppet module install continuent-tungsten --modulepath=$BUILDDIR/puppet/modules/
+#puppet module install fiddyspence/sysctl --modulepath=$BUILDDIR/puppet/modules/
 rm -rf $BUILDDIR/puppet/modules/tungsten
 
 if [ $WORKGIT == 'local' ]
@@ -20,16 +21,3 @@ mkdir $BUILDDIR/puppet/rpm/
 cp ${RPMLOC}/latest.deb  $BUILDDIR/puppet/rpm/ct.deb
 cp ${RPMLOC}/latest.noarch.rpm $BUILDDIR/puppet/rpm/ct.rpm
 cp ${RPMLOC}/latest.RHEL5.noarch.rpm $BUILDDIR/puppet/rpm/ct.rhel5.rpm
-
-mkdir $BUILDDIR/puppet/xtrabackup
-cp /mnt/mysql/percona-xtrabackup* $BUILDDIR/puppet/xtrabackup
-
-mkdir $BUILDDIR/puppet/gem
-cp local_gems/*  $BUILDDIR/puppet/gem
-
-mkdir $BUILDDIR/puppet/oracle
-cp /mnt/oracle/linuxamd64_12c_database_1of2.zip $BUILDDIR/puppet/oracle
-cp /mnt/oracle/linuxamd64_12c_database_2of2.zip $BUILDDIR/puppet/oracle
-
-cp /mnt/oracle/linux.x64_11gR2_database_1of2.zip $BUILDDIR/puppet/oracle
-cp /mnt/oracle/linux.x64_11gR2_database_2of2.zip $BUILDDIR/puppet/oracle
