@@ -38,7 +38,10 @@ class tungsten::prereq (
   #If this is set to true no setting of hostname will be done
   $skipHostConfig                 = false,
 	$vmSwappiness										= 10,
-	$docker													= false
+	$docker													= false,
+	$installGems										= true,
+	$localGemLocation								= false
+
 ) inherits tungsten::params {
 	if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
 		class { 'apt':
@@ -46,6 +49,18 @@ class tungsten::prereq (
 			   frequency => 'always',
 			},
 	  }  -> Package <| |>
+	}
+
+	define install_local_gems  ( $loc  = false ) {
+
+		if $loc == false {
+			fail "install local gems failed as it was not passed a location"
+		}
+		package { $name:
+			provider => "gem",
+			require  => File['/etc/gemrc'],
+			source   => "$loc/$name",
+	 }
 	}
 
 	package {'continuent-ruby': ensure => present, name => "ruby", }
@@ -70,14 +85,44 @@ class tungsten::prereq (
         }
   }
 
-  package { "json_pure":
-     provider => "gem",
-  }
+	if $installGems == true {
+		package { "json_pure":
+	     provider => "gem",
+	  }
 
-  package { "continuent-monitors-nagios":
-     provider => "gem",
-     ensure => latest,
-  }
+	  package { "continuent-monitors-nagios":
+	     provider => "gem",
+	     ensure => latest,
+	  }
+	}
+
+	if $installGems == 'local' {
+
+		if $localGemLocation == false {
+			fail "If local install specified for gem a installGemLocation=> must be specified"
+		}
+
+			$localGemsToInstall=[
+				"zip-2.0.2.gem",
+				"xhr-ifconfig-1.2.3.gem",
+				"open4-1.3.4.gem",
+				"net-ssh-2.9.2.gem",
+				"net-scp-1.2.1.gem",
+				"escape-0.0.4.gem",
+				"continuent-tools-core-0.11.0.gem",
+				"continuent-tools-monitoring-0.7.0.gem",
+				"json_pure-1.8.2.gem",
+				"continuent-monitors-nagios-0.7.0.gem"]
+
+			#If puppet is installing remotely if defaults to --no-ri --no-rdoc
+			#for local gems it doesn't do this will set it
+			file { "/etc/gemrc" :
+				content => "gem: --no-rdoc --no-ri"
+			} ->
+			install_local_gems { $localGemsToInstall : loc=>$localGemLocation }
+
+	}
+
 
 	if $disableFirewall == true {
 		class { "firewall": ensure    => stopped, }

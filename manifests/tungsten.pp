@@ -27,6 +27,7 @@ class tungsten::tungsten (
 		$repUser						            = tungsten,
 		$repPassword				            = secret,
 		$replicationLogDirectory	= false,
+	$installOracle										= false,
 
   # Set this to 'true' or the path of a continuent-tungsten package
 	# If set to 'true', the 'continuent-tungsten' will be installed from
@@ -37,17 +38,27 @@ class tungsten::tungsten (
 		$appPassword								  	= secret,
 		$applicationPort						  	= 3306,
 
+	$installRedoReaderSoftware			= false,
+			$redoReaderUser 							= tungsten,
+			$redoReaderPassword	   				= secret,
+			$oracleSysPassword						= password,
+			$oracleSystemPassword				= password,
+			$oracleSID										= 'orcl',
+			$redoReaderTopology				= false,
+			$redoReaderMaster					= db1,
+			$readReaderSlave					= db2,
+
 	# Run the `tungsten_provision_slave` script after installing Tungsten
 	$provision								      	= false,
 	  $provisionDonor						    	= "autodetect",
 ) inherits tungsten::params {
 	include tungsten::prereq
 
-	if $clusterData != false {
-		class{ "tungsten::tungsten::ini": }->
+	if $clusterData != false or $redoReaderTopology != false {
+		class{ "tungsten::tungsten::ini": installRedoReaderSoftware=>$installRedoReaderSoftware, redoReaderTopology=>$redoReaderTopology }->
 		anchor{ "tungsten::tungsten::ini": }
 
-    # Scheduling updates to existing installations must be done 
+    # Scheduling updates to existing installations must be done
     # before the clustering or replication software is installed.
     # If not, `tpm update` will be run twice during the initial
     # installation process.
@@ -104,6 +115,21 @@ class tungsten::tungsten (
 		anchor{ "tungsten::tungsten::create-users": }
 	}
 
+	if $installOracle == true {
+		file { "/home/oracle/tungsten_create_users_oracle":
+      ensure => file,
+      owner => 'oracle',
+      mode => 700,
+      content => template('tungsten/tungsten_create_users_oracle.erb'),
+    } ~>
+		exec { "tungsten_create_users_oracle":
+			command => "/usr/bin/sudo -u oracle /home/oracle/tungsten_create_users_oracle",
+			require => Exec['start_oracle'],
+			refreshonly => true,
+		}
+
+	}
+
 	if $installClusterSoftware != false {
 	  Anchor["tungsten::tungsten::create-users"] ->
 		class{ "tungsten::tungsten::cluster":
@@ -124,6 +150,14 @@ class tungsten::tungsten (
 	} else {
 	  Anchor["tungsten::tungsten::cluster"] ->
 		anchor{ "tungsten::tungsten::replicator": }
+	}
+
+	if $installRedoReaderSoftware != false {
+		Anchor["tungsten::tungsten::cluster"] ->
+		class{ "tungsten::tungsten::redoreader":
+			location => $installRedoReaderSoftware,
+		} ->
+		anchor{ "tungsten::tungsten::redoreader": }
 	}
 
 	if $provision == true {
