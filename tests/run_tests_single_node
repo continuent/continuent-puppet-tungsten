@@ -4,12 +4,13 @@
 #docker images | grep '<none>' | awk '{print $3}'|xargs docker rmi &> /dev/null
 WORKGIT=$1
 BUILDDIR=$2
-RPMLOC=$3
+RPMPREFIX=$3
+DEBPREFIX=$4
 OS_LIST='centos5 centos6 ubuntu.12.04 ubuntu.14.04 wheezy oracle6'
 
-if [ -n "$4" ]
+if [ -n "$5" ]
 then
-  OS_LIST=$4
+  OS_LIST=$5
 fi
 mkdir logs > /dev/null
 rm logs/*
@@ -18,7 +19,7 @@ rm logs2/*
 
 chmod +x get_modules
 chmod +x run_tests_single_node_os
-./get_modules $BUILDDIR $WORKGIT $RPMLOC
+./get_modules $BUILDDIR $WORKGIT $RPMPREFIX
 
 
 
@@ -26,13 +27,8 @@ RC=0
 for os in $OS_LIST
 do
 
-  if [ -n "$4" ]
-  then
-      #If a single os is selected don't spool output to a file
-      ./run_tests_single_node_os $os $BUILDDIR
-  else
-      ./run_tests_single_node_os $os $BUILDDIR &> logs2/$os.log &
-  fi
+  ./run_tests_single_node_os $os $BUILDDIR &> logs2/$os.log &
+
 done
 
 wait
@@ -47,7 +43,7 @@ done
 
 if [ -f logs/errors_exist ]
 then
-  echo 'ERROR: errors exist in log files'
+  echo 'errors exist in log files'
   exit 2
 else
   exit 0
