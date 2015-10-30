@@ -17,7 +17,8 @@
     {"name":"continuent/percona_repo","version_requirement":">= 0.1.0"},
     {"name":"continuent-selinux"},
     {"name":"puppetlabs/mysql","version_requirement":">= 3.1.0"},
-    {"name":"fiddyspence/sysctl","version_requirement":">= 0.3.1"}
+    {"name":"fiddyspence/sysctl","version_requirement":">= 0.3.1"},
+    {"name":"continuent/oracle","version_requirement":">= 0.0.2"}
   ],
   "operatingsystem_support": [
     {

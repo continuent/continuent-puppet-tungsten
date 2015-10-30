@@ -12,16 +12,7 @@ if ($operatingsystem =~ /(?i:debian|ubuntu)/) {
    7:          { $download = "percona-xtrabackup-2.2.12-1.el7.x86_64.rpm"  }
    }
 }
-
-$clusterData = {
-      "east" => {
-        "topology" => "master-slave",
-        "master" =>  $::fqdn,
-        "slaves" => "db2,db3",
-      },
-    }
-
-class { 'tungsten': installSSHKeys => true,
-        installMysql=> true,
-        disableFirewall=> false, skipHostConfig=> true ,mySQLSetAutoIncrement=>true,clusterData=>$clusterData,docker => true,
-          xtraBackupPackage=>"/mnt/xtrabackup/$download"     }
+class { 'tungsten': installSSHKeys => true, installMysql=> true,
+      disableFirewall=> false, skipHostConfig=> true,docker => true ,
+        xtraBackupPackage=>"/mnt/xtrabackup/$download"  ,
+      installGems										=> false }

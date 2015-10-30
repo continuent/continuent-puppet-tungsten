@@ -45,17 +45,27 @@ class tungsten (
       $overrideOptionsClient         = {},
       $overrideOptionsMysqldSafe     = {},
 			#Which Repo to install percona,mysql or mariadb
-			$mySQLBuild									   = 'percona',
+			$mySQLBuild									   = 'mysql',
 			#Version to install based on repo 5.5, 5.6, 5.7, 10.0
 			$mySQLVersion									 = '5.6',
 			#Set the my.cnf autoinc and autoinc offset based on clusterData
 			$mySQLSetAutoIncrement				= false,
 			$installXtrabackup						 = true,
-			
+			#If wanted the source will be autodetected either from a repo or rpm/deb
+			#download. if set to a valid location it will be installed from there
+			$xtraBackupPackage 						= 'auto',
+
 		$installHadoop                  = false,
-		
+
   	$installVertica                 = false,
   	$verticaDatabaseName            = false,
+
+		$installOracle								= false,
+		   $oracleVersion 						= 12,
+			 $oracleBinaries						= '/vagrant/downloads',
+			 $oracleTungstenTS					= 'tungsten_test',
+			 $oracleCreateTS						= true,
+			 $oracleTStoReplicate				= 'tungsten',
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -70,6 +80,7 @@ class tungsten (
 			$replicationPassword					= secret,
 			$replicationLogDirectory		= false,
 
+
 		# Set this to 'true' or the path of a continuent-tungsten package
 		# If set to 'true', the 'continuent-tungsten' will be installed from
 		# configured repositories.
@@ -79,12 +90,33 @@ class tungsten (
 			$appPassword									= secret,
 			$applicationPort							= 3306,
 
+		# Set this to 'true' or the path of a redo-reader package
+
+		$installRedoReaderSoftware			= false,
+			$redoReaderUser 							= tungsten,
+			$redoReaderPassword	   				= secret,
+			$oracleSysPassword						= password,
+			$oracleSystemPassword					= password,
+			$oracleSID										= 'orcl',
+			$redoReaderTopology						= false,
+			$redoReaderMaster							= db1,
+			$redoReaderSlave							= db2,
+
+
 		# Run the `tungsten_provision_slave` script after installing Tungsten
 		$provisionNode									= false,
 			$provisionDonor								= "autodetect",
 
     #If this is set to true no setting of hostname will be done
-    $skipHostConfig                 = false
+    $skipHostConfig                 = false,
+
+		#Takes 3 options
+		#       true   = install via usual gem route
+		#       false  = dont install any gems
+		#       local  = install from local gem location ($localGemLocation)
+		$installGems										= true,
+		$localGemLocation								= false
+
 ) inherits tungsten::params {
 
 
@@ -103,7 +135,8 @@ class tungsten (
 			mySQLVersion				   		=> $mySQLVersion,
 			clusterData 							=> $clusterData,
 			mySQLSetAutoIncrement			=> $mySQLSetAutoIncrement,
-			installXtrabackup				  => $installXtrabackup
+			installXtrabackup				  => $installXtrabackup,
+			xtraBackupPackage 				=> $xtraBackupPackage
 	} ->
   class{ "tungsten::prereq":
     nodeHostName                => $nodeHostName,
@@ -118,12 +151,14 @@ class tungsten (
     disableFirewall             => $disableFirewall,
     skipHostConfig              => $skipHostConfig,
 		vmSwappiness								=> $vmSwappiness,
-		docker											=> docker
+		docker											=> docker,
+		installGems									=> $installGems,
+		localGemLocation						=> $localGemLocation
   } ->
   anchor{ "tungsten::prereq": }
-  
+
   anchor{ "tungsten::db": }
-  
+
   if $installHadoop != false {
     Anchor["tungsten::prereq"] ->
     class { "tungsten::tungstenhadoop":
@@ -131,7 +166,7 @@ class tungsten (
     } ->
     Anchor["tungsten::db"]
   }
-  
+
   if $installVertica != false {
     class { "tungsten::tungstenvertica":
       package                     => $installVertica,
@@ -140,7 +175,15 @@ class tungsten (
     } ->
     Anchor["tungsten::db"]
   }
-  
+
+	if $installOracle != false {
+		class { "tungsten::tungstenoracle":
+			oracleVersion               => $oracleVersion,
+			oracleBinaries							=> $oracleBinaries
+		} ->
+		Anchor["tungsten::db"]
+	}
+
   Anchor["tungsten::db"] ->
 	class { "tungsten::tungsten":
 		writeTungstenDefaults				=> $writeTungstenDefaults,
@@ -153,7 +196,17 @@ class tungsten (
 			appUser 									=> $appUser,
 			appPassword 							=> $appPassword,
 			applicationPort 					=> $applicationPort,
+		installRedoReaderSoftware		=> $installRedoReaderSoftware,
+			redoReaderUser 						=> $redoReaderUser,
+			redoReaderPassword	   		=> $redoReaderPassword,
+			oracleSysPassword					=> $oracleSysPassword,
+			oracleSystemPassword			=> $oracleSystemPassword,
+			oracleSID									=> $oracleSID,
+			redoReaderTopology				=> $redoReaderTopology,
+			redoReaderMaster					=> $redoReaderMaster,
+			readReaderSlave						=> $redoReaderSlave,
 		provision 									=> $provisionNode,
 			provisionDonor 						=> $provisionDonor,
+		installOracle								=> $installOracle,
 	}
 }
