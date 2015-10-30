@@ -37,6 +37,11 @@ It may work on other platform but it has not been tested against them
 
 Yum and Apt repositories will be installed from these builds and packages installed from them based on the mySQLBuild and mySQLVerson parameters. By default Percona 5.5 will be installed if no values are provided.
 
+## Supported Oracle Versions
+
+- Oracle 11g
+- Oracle 12c (Non pluggable database)
+
 ## Examples
 
 ### Install the module into your module directory
@@ -223,6 +228,74 @@ The auto_increment_increment and auto_increment_offset can be determined automat
       mySQLSetAutoIncrement=> true,
       clusterData=>$clusterData }
 
+```
+
+## Installing XtraBackup
+
+By default if selected the module will determine were to install it from automatically. If installing Percona MySQL it will install it from the Percona repo otherwise it will download the required RPM or DEB from the Percona Website.
+
+If required it can be download or use a rpm/deb from a private location
+
+```
+
+  class { 'tungsten':
+      installSSHKeys => true,
+      installMysql=> true,
+      xtraBackupPackage=>'/mnt/nfs/xtrabackup-x.x.x.rpm' or 'http://192.168.2.300/xtrabackup-x.x.x.rpm',
+      clusterData=>$clusterData }
+
+```
+
+## Installing with local Ruby gems
+
+By default the gems will be installed from www.rubygems.org. If this is blocked the gems can be installed from a local directory. Copies of the gems required can be found in the tests/local_gems directory in github.
+
+```
+class { 'tungsten': installSSHKeys => true, installMysql=> true,
+      disableFirewall=> false, skipHostConfig=> true,docker => true ,
+      xtraBackupPackage=>'/mnt/xtrabackup/percona-xtrabackup-2.2.12-1.el6.x86_64.rpm'  ,
+      installGems										=> 'local',
+  		localGemLocation							=> '/mnt/gem/' }
+
+```
+
+The following gems need to be in the local file system specified in localGemLocation=>
+
+```
+zip-2.0.2.gem
+xhr-ifconfig-1.2.3.gem
+open4-1.3.4.gem
+net-ssh-2.9.2.gem
+net-scp-1.2.1.gem
+escape-0.0.4.gem
+continuent-tools-core-0.11.0.gem
+continuent-tools-monitoring-0.7.0.gem
+json_pure-1.8.2.gem
+continuent-monitors-nagios-0.7.0.gem
+```
+
+
+## Installing Oracle
+
+```
+class { 'tungsten': installSSHKeys => true, installOracle=> true,
+      oracleVersion=>12, oracleBinaries=>/vagrant/downloads }
+
+```
+
+The oracle install files need to exist in the oracleBinaries location, they need to be downloaded seperatly from Oracle Technet
+
+For Oracle 11g the following 2 files are needed
+```
+linux.x64_11gR2_database_1of2.zip
+linux.x64_11gR2_database_2of2.zip
+```
+
+For 12c the following are needed
+
+```
+linuxamd64_12c_database_1of2.zip
+linuxamd64_12c_database_2of2.zip
 ```
 
 ## Integration with custom MySQL classes
