@@ -178,6 +178,13 @@ class tungsten (
   }
 
 	if $installOracle != false {
+		if $oracleSysPassword != 'password' {
+			fail ("oracleSysPassword must be set to password when using the standard oracle install")
+		}
+		if $oracleSystemPassword != 'password' {
+			fail ("oracleSystemPassword must be set to password when using the standard oracle install")
+		}
+
 		class { "tungsten::tungstenoracle":
 			oracleVersion               => $oracleVersion,
 			oracleBinaries							=> $oracleBinaries
