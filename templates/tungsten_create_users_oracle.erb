@@ -11,11 +11,13 @@ source /home/oracle/.bash_profile
 
 <% if scope.lookupvar('::tungsten::oracleCreateTS') == true -%>
 sqlplus / as sysdba <<EOF
+whenever sqlerror exit 2;
 create tablespace $ts_name datafile '/app/oracle/data/$ts_name.dbf' size 1000M extent management local autoallocate segment space management auto;
 EOF
 <% end -%>
 
 sqlplus / as sysdba <<EOF2
+whenever sqlerror exit 2;
 create user $replication_user identified by "$replication_password" default tablespace $ts_name;
 grant connect to $replication_user ;
 alter user $replication_user  quota unlimited on $ts_name;
@@ -27,6 +29,7 @@ EOF2
 
 <% if scope.lookupvar('::tungsten::oracleCreateAppUser') == true -%>
 sqlplus / as sysdba <<EOF3
+whenever sqlerror exit 2;
 CREATE USER $application_user IDENTIFIED BY $application_password;
 grant connect to $application_user ;
 grant create table to $application_user ;
