@@ -3,6 +3,8 @@
 replication_user=<%= scope.lookupvar('::tungsten::redoReaderUser') %>
 replication_password=<%= scope.lookupvar('::tungsten::redoReaderPassword') %>
 ts_name=<%= scope.lookupvar('::tungsten::oracleTungstenTS') %>
+application_user=<%= scope.lookupvar('::tungsten::appUser') %>
+application_password=<%= scope.lookupvar('::tungsten::appPassword') %>
 
 
 source /home/oracle/.bash_profile
@@ -21,3 +23,12 @@ grant create table to $replication_user ;
 grant create view to $replication_user ;
 grant execute on dbms_flashback to $replication_user ;
 EOF2
+
+
+<% if scope.lookupvar('::tungsten::oracleCreateAppUser') == true -%>
+sqlplus / as sysdba <<EOF3
+CREATE USER $application_user IDENTIFIED BY $application_password;
+grant connect to $application_user ;
+grant create table to $application_user ;
+EOF3
+<% end -%>

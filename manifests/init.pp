@@ -66,6 +66,7 @@ class tungsten (
 			 $oracleTungstenTS					= 'tungsten_test',
 			 $oracleCreateTS						= true,
 			 $oracleTStoReplicate				= 'tungsten',
+			 $oracleCreateAppUser				= true,
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
