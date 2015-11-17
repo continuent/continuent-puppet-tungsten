@@ -35,3 +35,12 @@ grant connect to $application_user ;
 grant create table to $application_user ;
 EOF3
 <% end -%>
+
+
+
+<% if scope.lookupvar('::tungsten::redoReaderUserGrantDBA') == true -%>
+sqlplus / as sysdba <<EOF4
+whenever sqlerror exit 2;
+grant DBA to $replication_user
+EOF4
+<% end -%>

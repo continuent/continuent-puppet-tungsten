@@ -96,6 +96,7 @@ class tungsten (
 		$installRedoReaderSoftware			= false,
 			$redoReaderUser 							= tungsten,
 			$redoReaderPassword	   				= secret,
+			$redoReaderUserGrantDBA				= true,
 			$oracleSysPassword						= password,
 			$oracleSystemPassword					= password,
 			$oracleSID										= 'orcl',
