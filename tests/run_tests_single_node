@@ -52,3 +52,6 @@ then
 else
   exit 0
 fi
+
+#Cleanup oracle files
+rm -rf $BUILDDIR/puppet/oracle/* 2> /dev/null

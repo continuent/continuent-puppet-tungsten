@@ -66,6 +66,7 @@ class tungsten (
 			 $oracleTungstenTS					= 'tungsten_test',
 			 $oracleCreateTS						= true,
 			 $oracleTStoReplicate				= 'tungsten',
+			 $oracleCreateAppUser				= true,
 
 		# Set this to true if you are not passing $clusterData
 	  # and want the /etc/tungsten/defaults.tungsten.ini file
@@ -95,6 +96,7 @@ class tungsten (
 		$installRedoReaderSoftware			= false,
 			$redoReaderUser 							= tungsten,
 			$redoReaderPassword	   				= secret,
+			$redoReaderUserGrantDBA				= true,
 			$oracleSysPassword						= password,
 			$oracleSystemPassword					= password,
 			$oracleSID										= 'orcl',
@@ -177,6 +179,13 @@ class tungsten (
   }
 
 	if $installOracle != false {
+		if $oracleSysPassword != 'password' {
+			fail ("oracleSysPassword must be set to password when using the standard oracle install")
+		}
+		if $oracleSystemPassword != 'password' {
+			fail ("oracleSystemPassword must be set to password when using the standard oracle install")
+		}
+
 		class { "tungsten::tungstenoracle":
 			oracleVersion               => $oracleVersion,
 			oracleBinaries							=> $oracleBinaries
