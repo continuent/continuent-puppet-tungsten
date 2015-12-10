@@ -7,7 +7,7 @@ DEBPREFIX=$4
 mkdir logs > /dev/null
 
 #Restart skyDock
-/var/docker/startSkyDock
+#/var/docker/startSkyDock
 chmod +x get_modules
 ./get_modules $BUILDDIR $WORKGIT  $RPMPREFIX $DEBPREFIX
 
