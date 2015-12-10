@@ -7,13 +7,14 @@ DEBPREFIX=$4
 mkdir logs > /dev/null
 
 #Restart skyDock
-/var/docker/startSkyDock
+#/var/docker/startSkyDock
 chmod +x get_modules
-./get_modules $BUILDDIR $WORKGIT  $RPMPREFIX $DEBPREFIX
+./get_modules $BUILDDIR $WORKGIT $RPMLOC
 
 
 
-for t in  centos6-cluster u1404-cluster centos5-cluster
+#for t in  centos6-cluster u1404-cluster centos5-cluster
+for t in  centos6-cluster
 do
    #rm -rf $t/tungsten
    #git clone $WORKGIT $t/tungsten
@@ -24,10 +25,11 @@ do
 done
 
 #Wait for the containers to start and tungsten to install.
-sleep 10m
+sleep 15m
 
 RC=0
-for node in  cdb1 udb1 c5db1
+#for node in  cdb1 udb1 c5db1
+for node in  cdb1
 do
 
    docker exec $node ps -ef > logs/$node.log
@@ -47,7 +49,8 @@ then
 
   echo "Cleaning up old Containers"
 
-  for type in u c c5
+  #or type in u c c5
+  for type in c
   do
     for node in db1 db2 db3
     do
