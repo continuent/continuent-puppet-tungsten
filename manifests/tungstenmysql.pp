@@ -64,6 +64,7 @@ class tungsten::tungstenmysql (
 		class { 'tungsten::tungstenmysql::xtrabackup' :
 							installXtrabackup => $installXtrabackup ,
 							mySQLBuild				 => $mySQLBuild,
+						mySQLVersion			 => $mySQLVersion,
 						  xtraBackupPackage  => $xtraBackupPackage }
 
     User <| title == "tungsten::systemUser" |> { groups +> "mysql" }

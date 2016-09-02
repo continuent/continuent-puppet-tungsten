@@ -85,7 +85,9 @@ class tungsten::tungstenmysql::tungstenrepo (
   }
 
   if ($mySQLBuild  =~ /(?i:mysql)/) {
-      if ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
+      if ($operatingsystem =~ /(?i:amazon)/) {
+          notice('Amazon OS found - skipping repo')
+      } elsif ($operatingsystem =~ /(?i:centos|redhat|oel|OracleLinux|amazon)/) {
           if ($operatingsystem =~ /(?i:amazon)/) {
             $baseurl ="http://repo.mysql.com/yum/mysql-${mySQLVersion}-community/el/${epel_version}/\$basearch/"
           } else {

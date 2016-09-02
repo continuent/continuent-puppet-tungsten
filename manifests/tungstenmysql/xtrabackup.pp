@@ -15,6 +15,7 @@
 
 class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
   	                                        $mySQLBuild	= 'percona',
+  	                                        $mySQLVersion	= false,
                                             $xtraBackupPackage = 'auto'
 
 ) {
@@ -45,8 +46,10 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
           if $::osfamily == "RedHat" {
               if ($operatingsystem =~ /(?i:amazon)/) {
                   $release = $epel_version
+                  $perlDBDpackage = getPerlDBDPackageName($mySQLBuild,$mySQLVersion)
               } else {
                 $release = $operatingsystemmajrelease
+                  $perlDBDpackage = 'perl-DBD-MySQL'
               }
 
               if $release != 5 {
@@ -68,7 +71,7 @@ class tungsten::tungstenmysql::xtrabackup ( $installXtrabackup = true,
                 }
 
                 if $release == 7 {package {'perl-Digest-MD5': ensure=>'present'}}
-                package {'perl-DBD-MySQL': ensure=>'present'} ->
+                package {$perlDBDpackage: ensure=>'present'} ->
                 package {'perl-Time-HiRes': ensure=>'present'} ->
 
 
