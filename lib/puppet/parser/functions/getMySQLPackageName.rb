@@ -78,8 +78,26 @@ module Puppet::Parser::Functions
       if (os =~ /(?i:ubuntu)/)  and  (osreleasename =~ /(?i:lucid)/)
         raise Puppet::ParseError, "MySQL repo is Unsupported  on Lucid"
       end
-      packageServer="mysql-community-server"
-      packageClient="mysql-community-client"
+      if (os =~ /(?i:amazon)/)
+		case version
+		when '5.7'
+			packageServer="mysql57-server"
+			packageClient="mysql57"
+		when '5.6'
+			packageServer="mysql56-server"
+			packageClient="mysql56"
+		when '5.5'
+			packageServer="mysql55-server"
+			packageClient="mysql55"
+		else
+			packageServer="mysql-server"
+			packageClient="mysql"
+		end
+
+      else
+		packageServer="mysql-community-server"
+		packageClient="mysql-community-client"
+      end
     end
 
     if packageType=='server'
